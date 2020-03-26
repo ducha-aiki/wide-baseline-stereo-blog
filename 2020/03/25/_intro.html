@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>The Role of Wide Baseline Stereo in the Deep Learning World | fastpages</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="The Role of Wide Baseline Stereo in the Deep Learning World" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="History of wide baseline stereo." />
+<meta property="og:description" content="History of wide baseline stereo." />
+<link rel="canonical" href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2020/03/25/_intro.html" />
+<meta property="og:url" content="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2020/03/25/_intro.html" />
+<meta property="og:site_name" content="fastpages" />
+<meta property="og:image" content="https://ducha-aiki.github.io/wide-baseline-stereo-blog/00_intro_files/att_00001.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-25T00:00:00-05:00" />
+<script type="application/ld+json">
+{"datePublished":"2020-03-25T00:00:00-05:00","dateModified":"2020-03-25T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://ducha-aiki.github.io/wide-baseline-stereo-blog/2020/03/25/_intro.html"},"description":"History of wide baseline stereo.","image":"https://ducha-aiki.github.io/wide-baseline-stereo-blog/00_intro_files/att_00001.png","@type":"BlogPosting","url":"https://ducha-aiki.github.io/wide-baseline-stereo-blog/2020/03/25/_intro.html","headline":"The Role of Wide Baseline Stereo in the Deep Learning World","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/wide-baseline-stereo-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/feed.xml" title="fastpages" /><link rel="shortcut icon" type="image/x-icon" href="/wide-baseline-stereo-blog/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>The Role of Wide Baseline Stereo in the Deep Learning World | fastpages</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="The Role of Wide Baseline Stereo in the Deep Learning World" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="History of wide baseline stereo." />
+<meta property="og:description" content="History of wide baseline stereo." />
+<link rel="canonical" href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2020/03/25/_intro.html" />
+<meta property="og:url" content="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2020/03/25/_intro.html" />
+<meta property="og:site_name" content="fastpages" />
+<meta property="og:image" content="https://ducha-aiki.github.io/wide-baseline-stereo-blog/00_intro_files/att_00001.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-25T00:00:00-05:00" />
+<script type="application/ld+json">
+{"datePublished":"2020-03-25T00:00:00-05:00","dateModified":"2020-03-25T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://ducha-aiki.github.io/wide-baseline-stereo-blog/2020/03/25/_intro.html"},"description":"History of wide baseline stereo.","image":"https://ducha-aiki.github.io/wide-baseline-stereo-blog/00_intro_files/att_00001.png","@type":"BlogPosting","url":"https://ducha-aiki.github.io/wide-baseline-stereo-blog/2020/03/25/_intro.html","headline":"The Role of Wide Baseline Stereo in the Deep Learning World","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/feed.xml" title="fastpages" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head><body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/wide-baseline-stereo-blog/">fastpages</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/wide-baseline-stereo-blog/about/">About Me</a><a class="page-link" href="/wide-baseline-stereo-blog/search/">Search</a><a class="page-link" href="/wide-baseline-stereo-blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">The Role of Wide Baseline Stereo in the Deep Learning World</h1><p class="page-description">History of wide baseline stereo.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-03-25T00:00:00-05:00" itemprop="datePublished">
+        Mar 25, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      7 min read
+    
+</span></p>
+
+    
+
+    
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/00_intro.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Rise-of-Wide-Baseline-Stereo">Rise of Wide Baseline Stereo<a class="anchor-link" href="#Rise-of-Wide-Baseline-Stereo"> </a></h2><p>The wide baseline stereo (WBS) is a process of establishing correspondences between pixels and/or regions between
+images depicting the same object or scene and estimation geometric relationship between the cameras, which produced that images.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/match_doll.png" alt="" title="Correspondences between two views found by wide baseline stereo algorithm. Photo and doll created by Olha Mishkina" /></p>
+<!--- ![Wide baseline stereo model. "Baseline" is the distance between cameras. Image by Arne Nordmann (WikiMedia)](00_intro_files/Epipolar_geometry.svg) 
+-->
+
+<p>One of the first succesful solutions for the WBS problem was proposed by Pritchett and Zisserman \cite{Pritchett1998, Pritchett1998b} in 1998. The general pipeline remains mostly the same until now \cite{WBSTorr99, CsurkaReview2018}. The currently adopted version of the wide baseline stereo algorithm is shown below in <a href="#wbs-pipeline">Figure 1</a>.</p>
+<!--- 
+![image.png](/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00002.png)
+-->
+
+
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00000.png" alt="Commonly used wide baseline stereo pipeline" title="Commonly used wide baseline stereo pipeline" /></p>
+<p>The algorithm can be summarized as the following:</p>
+<ol>
+<li>Compute interest points/regions in all images independently</li>
+<li>For each interest point/region compute a descriptor of their neigborhood (local patch).</li>
+<li>Establish tentative corresponces between interest points based on their descriptors.</li>
+<li>Robustly estimate geometric relation between two images based on tentative correspondences with RANSAC.</li>
+</ol>
+<h2 id="Quick-expansion">Quick expansion<a class="anchor-link" href="#Quick-expansion"> </a></h2><p>This algorithm significantly changed computer vision landscape for next forteen years.</p>
+<p>Soon after introducing the algorithm, there it become clear that its quality significantly depends on quality of each component, i.e. local feature detector, descriptor, and geometry estimation. Pleora of new detectors and descriptors were proposed, with the most cited computer vision paper ever SIFT local feature\cite{Lowe99}.</p>
+<p>It is worth noting, that SIFT became popular only after Mikolajczyk benchmark paper \cite{MikoDescEval2003, Mikolajczyk05}, showed it superiority to the rest of alternatives.</p>
+<p>Robust geometry estimation was also a hot topic: a lot of improvements over vanilla RANSAC were proposed: LO-RANSAC\cite{LOransac2003}, DEGENSAC\cite{Degensac2005}, MLESAC\cite{MLESAC00}</p>
+<p>Success of wide baseline stereo with SIFT features led to aplication of its components to other computer vision tasks, which were reformulated through wide baseline stereo lens:</p>
+<ul>
+<li><strong>Scalable image search</strong>. Sivic and Zisserman in famous "Video Google" paper\cite{VideoGoogle2003} proposed to treat local features as "visual words" and use ideas from text processing for searching in image collections.  Later even more WBS elements were re-introduced to image search, most notable - <strong>spatial verification</strong>\cite{Philbin07}: simplified RANSAC procedure to verify if visual word matches were spatially consistent.</li>
+</ul>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00004.png" alt="Bag of words image search. Image credit: Filip Radenovic http://cmp.felk.cvut.cz/~radenfil/publications/Radenovic-CMPcolloq-2015.11.12.pdf" /></p>
+<ul>
+<li><strong>Image classification</strong> was performed by placing some classifier (SVM, random forest, etc) on top of some encoding of the SIFT-like descriptors, extracted sparsely\cite{Fergus03, CsurkaBoK2004} or densely\cite{Lazebnik06}. </li>
+</ul>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00005.png" alt="Bag of local features representation for classification from Fergus et.al, 2003" /></p>
+<ul>
+<li><strong>Object detection</strong> was formulated as relaxed wide baseline stereo problem\cite{Chum2007Exemplar} or as classification of SIFT-like features inside a sliding window \cite{HoG2005}</li>
+</ul>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00003.png" alt="Exemplar-representation of the classes using local features, Chum 2007" /></p>
+<!--- 
+![HoG-based pedestrian detection algorithm](/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00006.png)
+![Histogram of gradient visualization](/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00007.png)
+-->
+
+<ul>
+<li><strong>Semantic segmentation</strong> was performed by classicication of local region descriptors, typically, SIFT and color features and postprocessing afterwards\cite{Superparsing2010}. </li>
+</ul>
+<p>Of course, wide baseline stereo was also used for its direct applications:</p>
+<ul>
+<li><p><strong>3D reconstruction</strong> was based on camera poses and 3D points, estimated with help of SIFT features \cite{PhotoTourism2006, RomeInDay2009, COLMAP2016}</p>
+<p><img src="00_intro_files/att_00008.png" alt="SfM pipeline from COLMAP paper" /></p>
+</li>
+<li><p><strong>SLAM(Simultaneous localization and mapping)</strong> \cite{Se02, PTAM2007, Mur15} were based on fast version of local feature detectors and descriptors.</p>
+<!--- 
+![ORBSLAM pipeline](/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00009.png)
+--></li>
+<li><p><strong>Panorama stiching</strong> \cite{Brown07} and, more generally, <strong>feature-based image registration</strong>\cite{DualBootstrap2003} were initalized with a geometry obtained by WBS and then further optimized</p>
+</li>
+</ul>
+<h2 id="Deep-Learning-Invasion:-retreal-to-the-geometrical-fortress">Deep Learning Invasion: retreal to the geometrical fortress<a class="anchor-link" href="#Deep-Learning-Invasion:-retreal-to-the-geometrical-fortress"> </a></h2><p>In 2012 deep learning-based AlexNet\cite{AlexNet2012} approach beat all the methods in image classification. Soon after, Razavian et.al\cite{Astounding2014} have shown that convolutional neural networks pre-trained on the Imagenet outperform more complex traditional solutions in image and scene classification, object detection and image search.
+Deep learning solutions, be it pretrained or end-to-end learned networks quickly become the default solution for the most of computer vision problems.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00010.png" alt="CNN representation beats complex traditional pipelines. From Razavian et.al." /></p>
+<p>However, there was still an area, where deep learned solutions failed, sometimes spectacularly: geometry-related tasks.  Wide baseline stereo\cite{Melekhov2017relativePoseCnn}, visual localization\cite{PoseNet2015}}, SLAM are still areas, where the classical wide baseline stereo dominates\cite{sattler2019understanding, zhou2019learn}.</p>
+<h2 id="Today:-assimilation-and-merging">Today: assimilation and merging<a class="anchor-link" href="#Today:-assimilation-and-merging"> </a></h2><p>Wide baseline stereo as a task is solved today typically by using learned components as a replacement of specific blocks in WBS algorithm\cite{jin2020image} ,e.g. local descriptor like HardNet\cite{HardNet2017}, detectors like KeyNet\cite{KeyNet2019}, joint detector-descriptor\cite{SuperPoint2017} matching and filtering like SuperGlue\cite{sarlin2019superglue}, etc.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00011.png" alt="SuperGlue: separate matching module for handcrafter and learned features" /></p>
+<p>As an algorithm, wide baseline stereo is summarized into two main ideas</p>
+<ol>
+<li>Image should be represented as set of local parts, robust to occlusion, and not influencing each other.</li>
+<li>Decision should be based on spatial consensus of local feature correspondences.</li>
+</ol>
+<p>One of modern revisit of wide baseline stereo ideas is Capsule Networks\cite{CapsNet2017}. While wide baseline stereo is far from the mainstream now, it continues to play an important role in computer vision.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="References">References<a class="anchor-link" href="#References"> </a></h1><p>[<a id="cit-Pritchett1998" href="#call-Pritchett1998">Pritchett1998</a>] P. Pritchett and A. Zisserman, ``<em>Wide baseline stereo matching</em>'', ICCV,  1998.</p>
+<p>[<a id="cit-Pritchett1998b" href="#call-Pritchett1998b">Pritchett1998b</a>] P. Pritchett and A. Zisserman, ``<em>"Matching and Reconstruction from Widely Separated Views"</em>'', 3D Structure from Multiple Images of Large-Scale Environments,  1998.</p>
+<p>[<a id="cit-WBSTorr99" href="#call-WBSTorr99">WBSTorr99</a>] P. Torr and A. Zisserman, ``<em>Feature Based Methods for Structure and Motion Estimation</em>'', Workshop on Vision Algorithms,  1999.</p>
+<p>[<a id="cit-CsurkaReview2018" href="#call-CsurkaReview2018">CsurkaReview2018</a>] {Csurka} Gabriela, {Dance} Christopher R. and {Humenberger} Martin, ``<em>From handcrafted to deep local features</em>'', arXiv e-prints, vol. , number , pp. ,  2018.</p>
+<p>[<a id="cit-Lowe99" href="#call-Lowe99">Lowe99</a>] D. Lowe, ``<em>Object Recognition from Local Scale-Invariant Features</em>'', ICCV,  1999.</p>
+<p>[<a id="cit-MikoDescEval2003" href="#call-MikoDescEval2003">MikoDescEval2003</a>] K. Mikolajczyk and C. Schmid, ``<em>A Performance Evaluation of Local Descriptors</em>'', CVPR, June 2003.</p>
+<p>[<a id="cit-Mikolajczyk05" href="#call-Mikolajczyk05">Mikolajczyk05</a>] Mikolajczyk K., Tuytelaars T., Schmid C. <em>et al.</em>, ``<em>A Comparison of Affine Region Detectors</em>'', IJCV, vol. 65, number 1/2, pp. 43--72,  2005.</p>
+<p>[<a id="cit-LOransac2003" href="#call-LOransac2003">LOransac2003</a>] O. Chum, J. Matas and J. Kittler, ``<em>Locally Optimized RANSAC</em>'', Pattern Recognition,  2003.</p>
+<p>[<a id="cit-Degensac2005" href="#call-Degensac2005">Degensac2005</a>] O. Chum, T. Werner and J. Matas, ``<em>Two-View Geometry Estimation Unaffected by a Dominant Plane</em>'', CVPR,  2005.</p>
+<p>[<a id="cit-MLESAC00" href="#call-MLESAC00">MLESAC00</a>] Torr P.H.S. and Zisserman A., ``<em>MLESAC: A New Robust Estimator with Application to Estimating Image Geometry</em>'', CVIU, vol. 78, number , pp. 138--156,  2000.</p>
+<p>[<a id="cit-VideoGoogle2003" href="#call-VideoGoogle2003">VideoGoogle2003</a>] J. Sivic and A. Zisserman, ``<em>Video Google: A Text Retrieval Approach to Object Matching in Videos</em>'', ICCV,  2003.</p>
+<p>[<a id="cit-Philbin07" href="#call-Philbin07">Philbin07</a>] J. Philbin, O. Chum, M. Isard <em>et al.</em>, ``<em>Object Retrieval with Large Vocabularies and Fast Spatial Matching</em>'', CVPR,  2007.</p>
+<p>[<a id="cit-Fergus03" href="#call-Fergus03">Fergus03</a>] R. Fergus, P. Perona and A. Zisserman, ``<em>Object Class Recognition by Unsupervised Scale-Invariant Learning</em>'', CVPR,  2003.</p>
+<p>[<a id="cit-CsurkaBoK2004" href="#call-CsurkaBoK2004">CsurkaBoK2004</a>] C.D. G. Csurka, J. Willamowski, L. Fan <em>et al.</em>, ``<em>Visual Categorization with Bags of Keypoints</em>'', ECCV,  2004.</p>
+<p>[<a id="cit-Lazebnik06" href="#call-Lazebnik06">Lazebnik06</a>] S. Lazebnik, C. Schmid and J. Ponce, ``<em>Beyond Bags of Features: Spatial Pyramid Matching for Recognizing Natural Scene Categories</em>'', CVPR,  2006.</p>
+<p>[<a id="cit-Chum2007Exemplar" href="#call-Chum2007Exemplar">Chum2007Exemplar</a>] O. {Chum} and A. {Zisserman}, ``<em>An Exemplar Model for Learning Object Classes</em>'', CVPR,  2007.</p>
+<p>[<a id="cit-HoG2005" href="#call-HoG2005">HoG2005</a>] N. {Dalal} and B. {Triggs}, ``<em>Histograms of oriented gradients for human detection</em>'', CVPR,  2005.</p>
+<p>[<a id="cit-Superparsing2010" href="#call-Superparsing2010">Superparsing2010</a>] J. Tighe and S. Lazebnik, ``<em>SuperParsing: Scalable Nonparametric Image Parsing with Superpixels</em>'', ECCV,  2010.</p>
+<p>[<a id="cit-PhotoTourism2006" href="#call-PhotoTourism2006">PhotoTourism2006</a>] Snavely Noah, Seitz Steven M. and Szeliski Richard, ``<em>Photo Tourism: Exploring Photo Collections in 3D</em>'', ToG, vol. 25, number 3, pp. 835–846,  2006.</p>
+<p>[<a id="cit-RomeInDay2009" href="#call-RomeInDay2009">RomeInDay2009</a>] Agarwal Sameer, Furukawa Yasutaka, Snavely Noah <em>et al.</em>, ``<em>Building Rome in a day</em>'', Communications of the ACM, vol. 54, number , pp. 105--112,  2011.</p>
+<p>[<a id="cit-COLMAP2016" href="#call-COLMAP2016">COLMAP2016</a>] J. Sch\"{o}nberger and J. Frahm, ``<em>Structure-From-Motion Revisited</em>'', CVPR,  2016.</p>
+<p>[<a id="cit-Se02" href="#call-Se02">Se02</a>] Se S., G. D. and Little J., ``<em>Mobile Robot Localization and Mapping with Uncertainty Using Scale-Invariant Visual Landmarks</em>'', IJRR, vol. 22, number 8, pp. 735--758,  2002.</p>
+<p>[<a id="cit-PTAM2007" href="#call-PTAM2007">PTAM2007</a>] G. {Klein} and D. {Murray}, ``<em>Parallel Tracking and Mapping for Small AR Workspaces</em>'', IEEE and ACM International Symposium on Mixed and Augmented Reality,  2007.</p>
+<p>[<a id="cit-Mur15" href="#call-Mur15">Mur15</a>] Mur-Artal R., Montiel J. and Tard{\'o}s J., ``<em>ORB-Slam: A Versatile and Accurate Monocular Slam System</em>'', IEEE Transactions on Robotics, vol. 31, number 5, pp. 1147--1163,  2015.</p>
+<p>[<a id="cit-Brown07" href="#call-Brown07">Brown07</a>] Brown M. and Lowe D., ``<em>Automatic Panoramic Image Stitching Using Invariant Features</em>'', IJCV, vol. 74, number , pp. 59--73,  2007.</p>
+<p>[<a id="cit-DualBootstrap2003" href="#call-DualBootstrap2003">DualBootstrap2003</a>] V. C., Tsai} {Chia-Ling and {Roysam} B., ``<em>The dual-bootstrap iterative closest point algorithm with application to retinal image registration</em>'', IEEE Transactions on Medical Imaging, vol. 22, number 11, pp. 1379-1394,  2003.</p>
+<p>[<a id="cit-AlexNet2012" href="#call-AlexNet2012">AlexNet2012</a>] Alex Krizhevsky, Ilya Sutskever and Geoffrey E., ``<em>ImageNet Classification with Deep Convolutional Neural Networks</em>'',  2012.</p>
+<p>[<a id="cit-Astounding2014" href="#call-Astounding2014">Astounding2014</a>] A. S., H. {Azizpour}, J. {Sullivan} <em>et al.</em>, ``<em>CNN Features Off-the-Shelf: An Astounding Baseline for Recognition</em>'', CVPRW,  2014.</p>
+<p>[<a id="cit-Melekhov2017relativePoseCnn" href="#call-Melekhov2017relativePoseCnn">Melekhov2017relativePoseCnn</a>] I. Melekhov, J. Ylioinas, J. Kannala <em>et al.</em>, ``<em>Relative Camera Pose Estimation Using Convolutional Neural Networks</em>'', ,  2017.  <a href="https://arxiv.org/abs/1702.01381">online</a></p>
+<p>[<a id="cit-PoseNet2015" href="#call-PoseNet2015">PoseNet2015</a>] A. Kendall, M. Grimes and R. Cipolla, ``<em>PoseNet: A Convolutional Network for Real-Time 6-DOF Camera Relocalization</em>'', ICCV,  2015.</p>
+<p>[<a id="cit-sattler2019understanding" href="#call-sattler2019understanding">sattler2019understanding</a>] T. Sattler, Q. Zhou, M. Pollefeys <em>et al.</em>, ``<em>Understanding the limitations of cnn-based absolute camera pose regression</em>'', CVPR,  2019.</p>
+<p>[<a id="cit-zhou2019learn" href="#call-zhou2019learn">zhou2019learn</a>] Q. Zhou, T. Sattler, M. Pollefeys <em>et al.</em>, ``<em>To Learn or Not to Learn: Visual Localization from Essential Matrices</em>'', ICRA,  2020.</p>
+<p>[<a id="cit-jin2020image" href="#call-jin2020image">jin2020image</a>] Jin Yuhe, Mishkin Dmytro, Mishchuk Anastasiia <em>et al.</em>, ``<em>Image Matching across Wide Baselines: From Paper to Practice</em>'', arXiv preprint arXiv:2003.01587, vol. , number , pp. ,  2020.</p>
+<p>[<a id="cit-HardNet2017" href="#call-HardNet2017">HardNet2017</a>] A. Mishchuk, D. Mishkin, F. Radenovic <em>et al.</em>, ``<em>Working Hard to Know Your Neighbor's Margins: Local Descriptor Learning Loss</em>'', NeurIPS,  2017.</p>
+<p>[<a id="cit-KeyNet2019" href="#call-KeyNet2019">KeyNet2019</a>] A. Barroso-Laguna, E. Riba, D. Ponsa <em>et al.</em>, ``<em>Key.Net: Keypoint Detection by Handcrafted and Learned CNN Filters</em>'', ICCV,  2019.</p>
+<p>[<a id="cit-SuperPoint2017" href="#call-SuperPoint2017">SuperPoint2017</a>] Detone D., Malisiewicz T. and Rabinovich A., ``<em>Superpoint: Self-Supervised Interest Point Detection and Description</em>'', CVPRW Deep Learning for Visual SLAM, vol. , number , pp. ,  2018.</p>
+<p>[<a id="cit-sarlin2019superglue" href="#call-sarlin2019superglue">sarlin2019superglue</a>] P. Sarlin, D. DeTone, T. Malisiewicz <em>et al.</em>, ``<em>SuperGlue: Learning Feature Matching with Graph Neural Networks</em>'', CVPR,  2020.</p>
+<p>[<a id="cit-CapsNet2017" href="#call-CapsNet2017">CapsNet2017</a>] S. Sabour, N. Frosst and G.E. Hinton, ``<em>Dynamic routing between capsules</em>'', NeurIPS,  2017.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><a class="u-url" href="/wide-baseline-stereo-blog/2020/03/25/_intro.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/wide-baseline-stereo-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/wide-baseline-stereo-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>An easy to use blogging platform with support for Jupyter Notebooks.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/fastai" title="fastai"><svg class="svg-icon grey"><use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/fastdotai" title="fastdotai"><svg class="svg-icon grey"><use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
