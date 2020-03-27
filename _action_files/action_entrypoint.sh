@@ -1,8 +1,5 @@
 #!/bin/bash
 set -e
-pip install jupyter_latex_envs
-pip install git+https://github.com/ducha-aiki/nbdev@latex_envs_citations
-
 # setup ssh: allow key to be used without a prompt and start ssh agent
 export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 eval "$(ssh-agent -s)"
