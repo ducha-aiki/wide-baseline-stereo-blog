@@ -12,6 +12,8 @@ eval "$(ssh-agent -s)"
 /fastpages/word2post.sh
 # notebook converter using nbdev
 cp /fastpages/settings.ini .
+pip install jupyter_latex_envs --user
+pip install git+https://github.com/ducha-aiki/nbdev@latex_envs_citationsc --user
 python /fastpages/nb2post.py
 
 
