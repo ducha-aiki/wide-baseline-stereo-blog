@@ -13,7 +13,7 @@ eval "$(ssh-agent -s)"
 # notebook converter using nbdev
 cp /fastpages/settings.ini .
 pip install jupyter_latex_envs --user
-pip install git+https://github.com/ducha-aiki/nbdev@latex_envs_citationsc --user
+pip install git+https://github.com/ducha-aiki/nbdev@latex_envs_citations --user
 python /fastpages/nb2post.py
 
 
