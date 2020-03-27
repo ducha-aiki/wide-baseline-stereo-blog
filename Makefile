@@ -15,6 +15,7 @@ server-detached: .FORCE
 build: .FORCE
 	docker-compose stop || true; docker-compose rm || true;
 	docker build -t hamelsmu/fastpages-jekyll -f _action_files/fastpages-jekyll.Dockerfile .
+	docker build -t hamelsmu/fastpages-nbdev -f _action_files/fastpages-nbdev.Dockerfile .
 	docker-compose build --force-rm --no-cache
 
 # rebuild the services WITH cache
