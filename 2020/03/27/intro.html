@@ -138,17 +138,17 @@ window.onload = wrap_img;
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Rise-of-Wide-Baseline-Stereo">Rise of Wide Baseline Stereo<a class="anchor-link" href="#Rise-of-Wide-Baseline-Stereo"> </a></h2><p>The wide baseline stereo (WBS) is a process of establishing correspondences between pixels and/or regions between
 images depicting the same object or scene and estimation geometric relationship between the cameras, which produced that images.</p>
-<p><img src="/wide-baseline-stereo-blog/images/manual_from_nb/00_intro_files/match_doll.png" alt="" title="Correspondences between two views found by wide baseline stereo algorithm. Photo and doll created by Olha Mishkina" /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/match_doll.png" alt="" title="Correspondences between two views found by wide baseline stereo algorithm. Photo and doll created by Olha Mishkina" /></p>
 <!--- ![Wide baseline stereo model. "Baseline" is the distance between cameras. Image by Arne Nordmann (WikiMedia)](00_intro_files/Epipolar_geometry.svg) 
 -->
 
 <p>One of the first succesful solutions for the WBS problem was proposed by Pritchett and Zisserman [<a class="latex_cit" id="call-Pritchett1998" href="#cit-Pritchett1998">Pritchett1998</a>,<a class="latex_cit" id="call-Pritchett1998b" href="#cit-Pritchett1998b">Pritchett1998b</a>] in 1998. The general pipeline remains mostly the same until now [<a class="latex_cit" id="call-WBSTorr99" href="#cit-WBSTorr99">WBSTorr99</a>,<a class="latex_cit" id="call-CsurkaReview2018" href="#cit-CsurkaReview2018">CsurkaReview2018</a>]. The currently adopted version of the wide baseline stereo algorithm is shown below.</p>
 <!--- 
-![image.png](/wide-baseline-stereo-blog/images/manual_from_nb/00_intro_files/att_00002.png)
+![image.png](/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00002.png)
 -->
 
 
-<p><img src="/wide-baseline-stereo-blog/images/manual_from_nb/00_intro_files/att_00000.png" alt="" title="Commonly used wide baseline stereo pipeline" /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00000.png" alt="" title="Commonly used wide baseline stereo pipeline" /></p>
 <p>The algorithm can be summarized as the following:</p>
 <ol>
 <li>Compute interest points/regions in all images independently</li>
@@ -170,18 +170,18 @@ images depicting the same object or scene and estimation geometric relationship 
 <ul>
 <li><strong>Scalable image search</strong>. Sivic and Zisserman in famous "Video Google" paper[<a class="latex_cit" id="call-VideoGoogle2003" href="#cit-VideoGoogle2003">VideoGoogle2003</a>] proposed to treat local features as "visual words" and use ideas from text processing for searching in image collections.  Later even more WBS elements were re-introduced to image search, most notable -- <strong>spatial verification</strong>[<a class="latex_cit" id="call-Philbin07" href="#cit-Philbin07">Philbin07</a>]: simplified RANSAC procedure to verify if visual word matches were spatially consistent.</li>
 </ul>
-<p><img src="/wide-baseline-stereo-blog/images/manual_from_nb/00_intro_files/att_00004.png" alt="" title="Bag of words image search. Image credit: Filip Radenovic http://cmp.felk.cvut.cz/~radenfil/publications/Radenovic-CMPcolloq-2015.11.12.pdf" /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00004.png" alt="" title="Bag of words image search. Image credit: Filip Radenovic http://cmp.felk.cvut.cz/~radenfil/publications/Radenovic-CMPcolloq-2015.11.12.pdf" /></p>
 <ul>
 <li><strong>Image classification</strong> was performed by placing some classifier (SVM, random forest, etc) on top of some encoding of the SIFT-like descriptors, extracted sparsely[<a class="latex_cit" id="call-Fergus03" href="#cit-Fergus03">Fergus03</a>,<a class="latex_cit" id="call-CsurkaBoK2004" href="#cit-CsurkaBoK2004">CsurkaBoK2004</a>] or densely[<a class="latex_cit" id="call-Lazebnik06" href="#cit-Lazebnik06">Lazebnik06</a>]. </li>
 </ul>
-<p><img src="/wide-baseline-stereo-blog/images/manual_from_nb/00_intro_files/att_00005.png" alt="" title="Bag of local features representation for classification from Fergus03" /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00005.png" alt="" title="Bag of local features representation for classification from Fergus03" /></p>
 <ul>
 <li><strong>Object detection</strong> was formulated as relaxed wide baseline stereo problem[<a class="latex_cit" id="call-Chum2007Exemplar" href="#cit-Chum2007Exemplar">Chum2007Exemplar</a>] or as classification of SIFT-like features inside a sliding window [<a class="latex_cit" id="call-HoG2005" href="#cit-HoG2005">HoG2005</a>]</li>
 </ul>
-<p><img src="/wide-baseline-stereo-blog/images/manual_from_nb/00_intro_files/att_00003.png" alt="" title="Exemplar-representation of the classes using local features, cite{Chum2007Exemplar}" /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00003.png" alt="" title="Exemplar-representation of the classes using local features, cite{Chum2007Exemplar}" /></p>
 <!--- 
-![HoG-based pedestrian detection algorithm](/wide-baseline-stereo-blog/images/manual_from_nb/00_intro_files/att_00006.png)
-![Histogram of gradient visualization](/wide-baseline-stereo-blog/images/manual_from_nb/00_intro_files/att_00007.png)
+![HoG-based pedestrian detection algorithm](/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00006.png)
+![Histogram of gradient visualization](/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00007.png)
 -->
 
 <ul>
@@ -191,21 +191,21 @@ images depicting the same object or scene and estimation geometric relationship 
 <ul>
 <li><strong>3D reconstruction</strong> was based on camera poses and 3D points, estimated with help of SIFT features [<a class="latex_cit" id="call-PhotoTourism2006" href="#cit-PhotoTourism2006">PhotoTourism2006</a>,<a class="latex_cit" id="call-RomeInDay2009" href="#cit-RomeInDay2009">RomeInDay2009</a>,<a class="latex_cit" id="call-COLMAP2016" href="#cit-COLMAP2016">COLMAP2016</a>]</li>
 </ul>
-<p><img src="/wide-baseline-stereo-blog/images/manual_from_nb/00_intro_files/att_00008.png" alt="" title="SfM pipeline from COLMAP" /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00008.png" alt="" title="SfM pipeline from COLMAP" /></p>
 <ul>
 <li><p><strong>SLAM(Simultaneous localization and mapping)</strong> [<a class="latex_cit" id="call-Se02" href="#cit-Se02">Se02</a>,<a class="latex_cit" id="call-PTAM2007" href="#cit-PTAM2007">PTAM2007</a>,<a class="latex_cit" id="call-Mur15" href="#cit-Mur15">Mur15</a>] were based on fast version of local feature detectors and descriptors.</p>
 <!--- 
-![ORBSLAM pipeline](/wide-baseline-stereo-blog/images/manual_from_nb/00_intro_files/att_00009.png)
+![ORBSLAM pipeline](/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00009.png)
 --></li>
 <li><p><strong>Panorama stiching</strong> [<a class="latex_cit" id="call-Brown07" href="#cit-Brown07">Brown07</a>] and, more generally, <strong>feature-based image registration</strong>[<a class="latex_cit" id="call-DualBootstrap2003" href="#cit-DualBootstrap2003">DualBootstrap2003</a>] were initalized with a geometry obtained by WBS and then further optimized</p>
 </li>
 </ul>
 <h2 id="Deep-Learning-Invasion:-retreal-to-the-geometrical-fortress">Deep Learning Invasion: retreal to the geometrical fortress<a class="anchor-link" href="#Deep-Learning-Invasion:-retreal-to-the-geometrical-fortress"> </a></h2><p>In 2012 deep learning-based AlexNet[<a class="latex_cit" id="call-AlexNet2012" href="#cit-AlexNet2012">AlexNet2012</a>] approach beat all the methods in image classification. Soon after, Razavian et.al[<a class="latex_cit" id="call-Astounding2014" href="#cit-Astounding2014">Astounding2014</a>] have shown that convolutional neural networks pre-trained on the Imagenet outperform more complex traditional solutions in image and scene classification, object detection and image search.
 Deep learning solutions, be it pretrained or end-to-end learned networks quickly become the default solution for the most of computer vision problems.</p>
-<p><img src="/wide-baseline-stereo-blog/images/manual_from_nb/00_intro_files/att_00010.png" alt="" title="CNN representation beats complex traditional pipelines. From Astounding2014" /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00010.png" alt="" title="CNN representation beats complex traditional pipelines. From Astounding2014" /></p>
 <p>However, there was still an area, where deep learned solutions failed, sometimes spectacularly: geometry-related tasks.  Wide baseline stereo[<a class="latex_cit" id="call-Melekhov2017relativePoseCnn" href="#cit-Melekhov2017relativePoseCnn">Melekhov2017relativePoseCnn</a>], visual localization[<a class="latex_cit" id="call-PoseNet2015" href="#cit-PoseNet2015">PoseNet2015</a>]}, SLAM are still areas, where the classical wide baseline stereo dominates[<a class="latex_cit" id="call-sattler2019understanding" href="#cit-sattler2019understanding">sattler2019understanding</a>,<a class="latex_cit" id="call-zhou2019learn" href="#cit-zhou2019learn">zhou2019learn</a>].</p>
 <h2 id="Today:-assimilation-and-merging">Today: assimilation and merging<a class="anchor-link" href="#Today:-assimilation-and-merging"> </a></h2><p>Wide baseline stereo as a task is solved today typically by using learned components as a replacement of specific blocks in WBS algorithm[<a class="latex_cit" id="call-jin2020image" href="#cit-jin2020image">jin2020image</a>] ,e.g. local descriptor like HardNet[<a class="latex_cit" id="call-HardNet2017" href="#cit-HardNet2017">HardNet2017</a>], detectors like KeyNet[<a class="latex_cit" id="call-KeyNet2019" href="#cit-KeyNet2019">KeyNet2019</a>], joint detector-descriptor[<a class="latex_cit" id="call-SuperPoint2017" href="#cit-SuperPoint2017">SuperPoint2017</a>] matching and filtering like SuperGlue[<a class="latex_cit" id="call-sarlin2019superglue" href="#cit-sarlin2019superglue">sarlin2019superglue</a>], etc.</p>
-<p><img src="/wide-baseline-stereo-blog/images/manual_from_nb/00_intro_files/att_00011.png" alt="" title="SuperGlue: separate matching module for handcrafter and learned features" /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00011.png" alt="" title="SuperGlue: separate matching module for handcrafter and learned features" /></p>
 <p>As an algorithm, wide baseline stereo is summarized into two main ideas</p>
 <ol>
 <li>Image should be represented as set of local parts, robust to occlusion, and not influencing each other.</li>
