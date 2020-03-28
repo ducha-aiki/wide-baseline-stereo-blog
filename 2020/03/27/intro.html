@@ -89,7 +89,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      7 min read
+      10 min read
     
 </span></p>
 
@@ -166,7 +166,7 @@ images depicting the same object or scene and estimation geometric relationship 
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Quick-expansion">Quick expansion<a class="anchor-link" href="#Quick-expansion"> </a></h2><p>This algorithm significantly changed computer vision landscape for next forteen years.</p>
 <p>Soon after introducing the algorithm, there it become clear that its quality significantly depends on quality of each component, i.e. local feature detector, descriptor, and geometry estimation. Pleora of new detectors and descriptors were proposed, with the most cited computer vision paper ever SIFT local feature[<a class="latex_cit" id="call-Lowe99" href="#cit-Lowe99">Lowe99</a>].</p>
-<p>It is worth noti ng, that SIFT became popular only after Mikolajczyk benchmark paper [<a class="latex_cit" id="call-MikoDescEval2003" href="#cit-MikoDescEval2003">MikoDescEval2003</a>,<a class="latex_cit" id="call-Mikolajczyk05" href="#cit-Mikolajczyk05">Mikolajczyk05</a>], showed it superiority to the rest of alternatives.</p>
+<p>It is worth noting, that SIFT became popular only after Mikolajczyk benchmark paper [<a class="latex_cit" id="call-MikoDescEval2003" href="#cit-MikoDescEval2003">MikoDescEval2003</a>,<a class="latex_cit" id="call-Mikolajczyk05" href="#cit-Mikolajczyk05">Mikolajczyk05</a>], showed it superiority to the rest of alternatives.</p>
 <p>Robust geometry estimation was also a hot topic: a lot of improvements over vanilla RANSAC were proposed: LO-RANSAC[<a class="latex_cit" id="call-LOransac2003" href="#cit-LOransac2003">LOransac2003</a>], DEGENSAC[<a class="latex_cit" id="call-Degensac2005" href="#cit-Degensac2005">Degensac2005</a>], MLESAC[<a class="latex_cit" id="call-MLESAC00" href="#cit-MLESAC00">MLESAC00</a>]</p>
 <p>Success of wide baseline stereo with SIFT features led to aplication of its components to other computer vision tasks, which were reformulated through wide baseline stereo lens:</p>
 <ul>
@@ -202,18 +202,42 @@ images depicting the same object or scene and estimation geometric relationship 
 <li><p><strong>Panorama stiching</strong> [<a class="latex_cit" id="call-Brown07" href="#cit-Brown07">Brown07</a>] and, more generally, <strong>feature-based image registration</strong>[<a class="latex_cit" id="call-DualBootstrap2003" href="#cit-DualBootstrap2003">DualBootstrap2003</a>] were initalized with a geometry obtained by WBS and then further optimized</p>
 </li>
 </ul>
-<h2 id="Deep-Learning-Invasion:-retreal-to-the-geometrical-fortress">Deep Learning Invasion: retreal to the geometrical fortress<a class="anchor-link" href="#Deep-Learning-Invasion:-retreal-to-the-geometrical-fortress"> </a></h2><p>In 2012 deep learning-based AlexNet[<a class="latex_cit" id="call-AlexNet2012" href="#cit-AlexNet2012">AlexNet2012</a>] approach beat all the methods in image classification. Soon after, Razavian et.al[<a class="latex_cit" id="call-Astounding2014" href="#cit-Astounding2014">Astounding2014</a>] have shown that convolutional neural networks pre-trained on the Imagenet outperform more complex traditional solutions in image and scene classification, object detection and image search.
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Deep-Learning-Invasion:-retreal-to-the-geometrical-fortress">Deep Learning Invasion: retreal to the geometrical fortress<a class="anchor-link" href="#Deep-Learning-Invasion:-retreal-to-the-geometrical-fortress"> </a></h2><p>In 2012 deep learning-based AlexNet[<a class="latex_cit" id="call-AlexNet2012" href="#cit-AlexNet2012">AlexNet2012</a>] approach beat all the methods in image classification. Soon after, Razavian et.al[<a class="latex_cit" id="call-Astounding2014" href="#cit-Astounding2014">Astounding2014</a>] have shown that convolutional neural networks (CNNs) pre-trained on the Imagenet outperform more complex traditional solutions in image and scene classification, object detection and image search.
 Deep learning solutions, be it pretrained or end-to-end learned networks quickly become the default solution for the most of computer vision problems.</p>
-<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00010.png" alt="" title="CNN representation beats complex traditional pipelines. From Astounding2014" /></p>
-<p>However, there was still an area, where deep learned solutions failed, sometimes spectacularly: geometry-related tasks.  Wide baseline stereo[<a class="latex_cit" id="call-Melekhov2017relativePoseCnn" href="#cit-Melekhov2017relativePoseCnn">Melekhov2017relativePoseCnn</a>], visual localization[<a class="latex_cit" id="call-PoseNet2015" href="#cit-PoseNet2015">PoseNet2015</a>]}, SLAM are still areas, where the classical wide baseline stereo dominates[<a class="latex_cit" id="call-sattler2019understanding" href="#cit-sattler2019understanding">sattler2019understanding</a>,<a class="latex_cit" id="call-zhou2019learn" href="#cit-zhou2019learn">zhou2019learn</a>].</p>
-<h2 id="Today:-assimilation-and-merging">Today: assimilation and merging<a class="anchor-link" href="#Today:-assimilation-and-merging"> </a></h2><p>Wide baseline stereo as a task is solved today typically by using learned components as a replacement of specific blocks in WBS algorithm[<a class="latex_cit" id="call-jin2020image" href="#cit-jin2020image">jin2020image</a>] ,e.g. local descriptor like HardNet[<a class="latex_cit" id="call-HardNet2017" href="#cit-HardNet2017">HardNet2017</a>], detectors like KeyNet[<a class="latex_cit" id="call-KeyNet2019" href="#cit-KeyNet2019">KeyNet2019</a>], joint detector-descriptor[<a class="latex_cit" id="call-SuperPoint2017" href="#cit-SuperPoint2017">SuperPoint2017</a>] matching and filtering like SuperGlue[<a class="latex_cit" id="call-sarlin2019superglue" href="#cit-sarlin2019superglue">sarlin2019superglue</a>], etc.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00010.png" alt="" title="CNN representation beats complex traditional pipelines. Reds are CNN-based and greens are the handcrafted. From Astounding2014" /></p>
+<p>However, there was still an area, where deep learned solutions failed, sometimes spectacularly: geometry-related tasks. Wide baseline stereo[<a class="latex_cit" id="call-Melekhov2017relativePoseCnn" href="#cit-Melekhov2017relativePoseCnn">Melekhov2017relativePoseCnn</a>], visual localization[<a class="latex_cit" id="call-PoseNet2015" href="#cit-PoseNet2015">PoseNet2015</a>]}, SLAM are still areas, where the classical wide baseline stereo dominates[<a class="latex_cit" id="call-sattler2019understanding" href="#cit-sattler2019understanding">sattler2019understanding</a>,<a class="latex_cit" id="call-zhou2019learn" href="#cit-zhou2019learn">zhou2019learn</a>].</p>
+<p>The full reasons why convolution pipelines are failing for geometrical tasks are yet to understand, but the current hypothesis are the following:</p>
+<ul>
+<li>CNN-based pose predictions predictions are roughly equivalent to retrieval of most similar image from the training set and outputing its pose.[<a class="latex_cit" id="call-sattler2019understanding" href="#cit-sattler2019understanding">sattler2019understanding</a>] This phenomenum is also observed in related area: single-view 3D reconstruction[<a class="latex_cit" id="call-Tatarchenko2019" href="#cit-Tatarchenko2019">Tatarchenko2019</a>].</li>
+<li>Geometric and arithmetic operations are hard to represent via vanilla neural networks (i.e. matrix multiplication with non-linearity) and they may require specialized building blocks, resembling operations of algorithmic or geometric methods, e.g. spatial transformers[<a class="latex_cit" id="call-STN2015" href="#cit-STN2015">STN2015</a>] and arithmetic units[<a class="latex_cit" id="call-NALU2018" href="#cit-NALU2018">NALU2018</a>,<a class="latex_cit" id="call-NAU2020" href="#cit-NAU2020">NAU2020</a>]. Even with special structure such networks require "careful initialization, restricting parameter space, and regularizing for sparsity"[<a class="latex_cit" id="call-NAU2020" href="#cit-NAU2020">NAU2020</a>].</li>
+<li>Vanilla CNNs are not covariant to even simple geometric transformation like translation [<a class="latex_cit" id="call-MakeCNNShiftInvariant2019" href="#cit-MakeCNNShiftInvariant2019">MakeCNNShiftInvariant2019</a>], scaling and especially rotation [<a class="latex_cit" id="call-GroupEqCNN2016" href="#cit-GroupEqCNN2016">GroupEqCNN2016</a>]. Unlike them, WBS baseline is grounded on scale-space theory [<a class="latex_cit" id="call-lindeberg2013scale" href="#cit-lindeberg2013scale">lindeberg2013scale</a>] and local patches are geometrically normalilzed before description. </li>
+<li>Predictions of the CNNs can be altered by change in a small localized area [<a class="latex_cit" id="call-AdvPatch2017" href="#cit-AdvPatch2017">AdvPatch2017</a>] or even single pixel [<a class="latex_cit" id="call-OnePixelAttack2019" href="#cit-OnePixelAttack2019">OnePixelAttack2019</a>], while the wide baseline stereo methods require the consensus of different independent regions. </li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Today:-assimilation-and-merging">Today: assimilation and merging<a class="anchor-link" href="#Today:-assimilation-and-merging"> </a></h2><h3 id="Wide-baseline-stereo-as-a-task:-formulate-differentiably-and-learn-modules">Wide baseline stereo as a task: formulate differentiably and learn modules<a class="anchor-link" href="#Wide-baseline-stereo-as-a-task:-formulate-differentiably-and-learn-modules"> </a></h3><p>Wide baseline stereo as a task is solved today typically by using learned components as a replacement of specific blocks in WBS algorithm[<a class="latex_cit" id="call-jin2020image" href="#cit-jin2020image">jin2020image</a>] ,e.g. local descriptor like HardNet[<a class="latex_cit" id="call-HardNet2017" href="#cit-HardNet2017">HardNet2017</a>], detectors like KeyNet[<a class="latex_cit" id="call-KeyNet2019" href="#cit-KeyNet2019">KeyNet2019</a>], joint detector-descriptor[<a class="latex_cit" id="call-SuperPoint2017" href="#cit-SuperPoint2017">SuperPoint2017</a>] matching and filtering like SuperGlue[<a class="latex_cit" id="call-sarlin2019superglue" href="#cit-sarlin2019superglue">sarlin2019superglue</a>], etc. 
+There are also attempts to formulate the whole downstream task pipeline like SLAM[<a class="latex_cit" id="call-gradslam2020" href="#cit-gradslam2020">gradslam2020</a>] in a differentiable way, combining advantages of structured and learning-based approaches.</p>
 <p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00011.png" alt="" title="SuperGlue: separate matching module for handcrafter and learned features" /></p>
-<p>As an algorithm, wide baseline stereo is summarized into two main ideas</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/gradslam.png" alt="" title="gradSLAM: differentiable formulation of SLAM pipeline" /></p>
+<h3 id="Wide-baseline-stereo-as-a-idea:-consensus-of-local-independent-predictions">Wide baseline stereo as a idea: consensus of local independent predictions<a class="anchor-link" href="#Wide-baseline-stereo-as-a-idea:-consensus-of-local-independent-predictions"> </a></h3><p>On the other hand, as an algorithm, wide baseline stereo is summarized into two main ideas</p>
 <ol>
 <li>Image should be represented as set of local parts, robust to occlusion, and not influencing each other.</li>
 <li>Decision should be based on spatial consensus of local feature correspondences.</li>
 </ol>
-<p>One of modern revisit of wide baseline stereo ideas is Capsule Networks[<a class="latex_cit" id="call-CapsNet2017" href="#cit-CapsNet2017">CapsNet2017</a>]. While wide baseline stereo is far from the mainstream now, it continues to play an important role in computer vision.</p>
+<p>One of modern revisit of wide baseline stereo ideas is Capsule Networks[<a class="latex_cit" id="call-CapsNet2011" href="#cit-CapsNet2011">CapsNet2011</a>,<a class="latex_cit" id="call-CapsNet2017" href="#cit-CapsNet2017">CapsNet2017</a>]. Unlike CNNs, they encode not only intensity of feature responce, but also its location and require a geometric agreement between object parts for outputing a confident prediction.</p>
+<p>Similar ideas are now explored for ensuring adversarial robustness of CNNs[<a class="latex_cit" id="call-li2020extreme" href="#cit-li2020extreme">li2020extreme</a>].</p>
+<p>While wide baseline stereo is far from the mainstream now, it continues to play an important role in computer vision.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/capsules.png" alt="" title="Capsule networks: revisiting the WBS idea. Each feature response is accompanied with its pose. Poses should be in agreement, otherwise object would not be recognized. Image by Aurélien Géron https://www.oreilly.com/content/introducing-capsule-networks/" /></p>
 
 </div>
 </div>
@@ -252,12 +276,24 @@ Deep learning solutions, be it pretrained or end-to-end learned networks quickly
 <p>[<a id="cit-PoseNet2015" href="#call-PoseNet2015">PoseNet2015</a>] A. Kendall, M. Grimes and R. Cipolla, ``<em>PoseNet: A Convolutional Network for Real-Time 6-DOF Camera Relocalization</em>'', ICCV,  2015.</p>
 <p>[<a id="cit-sattler2019understanding" href="#call-sattler2019understanding">sattler2019understanding</a>] T. Sattler, Q. Zhou, M. Pollefeys <em>et al.</em>, ``<em>Understanding the limitations of cnn-based absolute camera pose regression</em>'', CVPR,  2019.</p>
 <p>[<a id="cit-zhou2019learn" href="#call-zhou2019learn">zhou2019learn</a>] Q. Zhou, T. Sattler, M. Pollefeys <em>et al.</em>, ``<em>To Learn or Not to Learn: Visual Localization from Essential Matrices</em>'', ICRA,  2020.</p>
+<p>[<a id="cit-Tatarchenko2019" href="#call-Tatarchenko2019">Tatarchenko2019</a>] M. Tatarchenko, S.R. Richter, R. Ranftl <em>et al.</em>, ``<em>What Do Single-View 3D Reconstruction Networks Learn?</em>'', CVPR,  2019.</p>
+<p>[<a id="cit-STN2015" href="#call-STN2015">STN2015</a>] M. Jaderberg, K. Simonyan and A. Zisserman, ``<em>Spatial transformer networks</em>'', NeurIPS,  2015.</p>
+<p>[<a id="cit-NALU2018" href="#call-NALU2018">NALU2018</a>] A. Trask, F. Hill, S.E. Reed <em>et al.</em>, ``<em>Neural arithmetic logic units</em>'', NeurIPS,  2018.</p>
+<p>[<a id="cit-NAU2020" href="#call-NAU2020">NAU2020</a>] A. Madsen and A. Rosenberg, ``<em>Neural Arithmetic Units</em>'', ICLR,  2020.</p>
+<p>[<a id="cit-MakeCNNShiftInvariant2019" href="#call-MakeCNNShiftInvariant2019">MakeCNNShiftInvariant2019</a>] R. Zhang, ``<em>Making convolutional networks shift-invariant again</em>'', ICML,  2019.</p>
+<p>[<a id="cit-GroupEqCNN2016" href="#call-GroupEqCNN2016">GroupEqCNN2016</a>] T. Cohen and M. Welling, ``<em>Group equivariant convolutional networks</em>'', ICML,  2016.</p>
+<p>[<a id="cit-lindeberg2013scale" href="#call-lindeberg2013scale">lindeberg2013scale</a>] Lindeberg Tony, ``<em>Scale-space theory in computer vision</em>'', , vol. 256, number , pp. ,  2013.</p>
+<p>[<a id="cit-AdvPatch2017" href="#call-AdvPatch2017">AdvPatch2017</a>] T. Brown, D. Mane, A. Roy <em>et al.</em>, ``<em>Adversarial patch</em>'', NeurIPSW,  2017.</p>
+<p>[<a id="cit-OnePixelAttack2019" href="#call-OnePixelAttack2019">OnePixelAttack2019</a>] Su Jiawei, Vargas Danilo Vasconcellos and Sakurai Kouichi, ``<em>One pixel attack for fooling deep neural networks</em>'', IEEE Transactions on Evolutionary Computation, vol. 23, number 5, pp. 828--841,  2019.</p>
 <p>[<a id="cit-jin2020image" href="#call-jin2020image">jin2020image</a>] Jin Yuhe, Mishkin Dmytro, Mishchuk Anastasiia <em>et al.</em>, ``<em>Image Matching across Wide Baselines: From Paper to Practice</em>'', arXiv preprint arXiv:2003.01587, vol. , number , pp. ,  2020.</p>
 <p>[<a id="cit-HardNet2017" href="#call-HardNet2017">HardNet2017</a>] A. Mishchuk, D. Mishkin, F. Radenovic <em>et al.</em>, ``<em>Working Hard to Know Your Neighbor's Margins: Local Descriptor Learning Loss</em>'', NeurIPS,  2017.</p>
 <p>[<a id="cit-KeyNet2019" href="#call-KeyNet2019">KeyNet2019</a>] A. Barroso-Laguna, E. Riba, D. Ponsa <em>et al.</em>, ``<em>Key.Net: Keypoint Detection by Handcrafted and Learned CNN Filters</em>'', ICCV,  2019.</p>
 <p>[<a id="cit-SuperPoint2017" href="#call-SuperPoint2017">SuperPoint2017</a>] Detone D., Malisiewicz T. and Rabinovich A., ``<em>Superpoint: Self-Supervised Interest Point Detection and Description</em>'', CVPRW Deep Learning for Visual SLAM, vol. , number , pp. ,  2018.</p>
 <p>[<a id="cit-sarlin2019superglue" href="#call-sarlin2019superglue">sarlin2019superglue</a>] P. Sarlin, D. DeTone, T. Malisiewicz <em>et al.</em>, ``<em>SuperGlue: Learning Feature Matching with Graph Neural Networks</em>'', CVPR,  2020.</p>
+<p>[<a id="cit-CapsNet2011" href="#call-CapsNet2011">CapsNet2011</a>] G.E. Hinton, A. Krizhevsky and S.D. Wang, ``<em>Transforming auto-encoders</em>'', ICANN,  2011.</p>
 <p>[<a id="cit-CapsNet2017" href="#call-CapsNet2017">CapsNet2017</a>] S. Sabour, N. Frosst and G.E. Hinton, ``<em>Dynamic routing between capsules</em>'', NeurIPS,  2017.</p>
+<p>[<a id="cit-gradslam2020" href="#call-gradslam2020">gradslam2020</a>] J. Krishna Murthy, G. Iyer and L. Paull, ``<em>gradSLAM: Dense SLAM meets Automatic Differentiation </em>'', ICRA,  2020 .</p>
+<p>[<a id="cit-li2020extreme" href="#call-li2020extreme">li2020extreme</a>] Li Jianguo, Sun Mingjie and Zhang Changshui, ``<em>Extreme Values are Accurate and Robust in Deep Networks</em>'', , vol. , number , pp. ,  2020.  <a href="https://openreview.net/forum?id=H1gHb1rFwr">online</a></p>
 
 </div>
 </div>
