@@ -89,7 +89,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      10 min read
+      11 min read
     
 </span></p>
 
@@ -144,13 +144,14 @@ images depicting the same object or scene and estimation geometric relationship 
 <!--- ![Wide baseline stereo model. "Baseline" is the distance between cameras. Image by Arne Nordmann (WikiMedia)](00_intro_files/Epipolar_geometry.svg) 
 -->
 
-<p>One of the first succesful solutions for the WBS problem was proposed by Pritchett and Zisserman [<a class="latex_cit" id="call-Pritchett1998" href="#cit-Pritchett1998">Pritchett1998</a>,<a class="latex_cit" id="call-Pritchett1998b" href="#cit-Pritchett1998b">Pritchett1998b</a>] in 1998. The general pipeline remains mostly the same until now [<a class="latex_cit" id="call-WBSTorr99" href="#cit-WBSTorr99">WBSTorr99</a>,<a class="latex_cit" id="call-CsurkaReview2018" href="#cit-CsurkaReview2018">CsurkaReview2018</a>]. The currently adopted version of the wide baseline stereo algorithm is shown below.</p>
+<p>One of the first succesful solutions for the WBS problem was proposed by Schmid and Mohr [<a class="latex_cit" id="call-Schmid1995" href="#cit-Schmid1995">Schmid1995</a>] in 1995.
+It was later extended by Beardsley, Torr and Zisserman[<a class="latex_cit" id="call-Beardsley96" href="#cit-Beardsley96">Beardsley96</a>] by adding RANSAC robust geometry estimation and later refined by Pritchett and Zisserman [<a class="latex_cit" id="call-Pritchett1998" href="#cit-Pritchett1998">Pritchett1998</a>,<a class="latex_cit" id="call-Pritchett1998b" href="#cit-Pritchett1998b">Pritchett1998b</a>] in 1998. The general pipeline remains mostly the same until now [<a class="latex_cit" id="call-WBSTorr99" href="#cit-WBSTorr99">WBSTorr99</a>,<a class="latex_cit" id="call-CsurkaReview2018" href="#cit-CsurkaReview2018">CsurkaReview2018</a>]. The currently adopted version of the wide baseline stereo algorithm is shown below.</p>
 <!--- 
 ![image.png](/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00002.png)
 -->
 
 
-<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/att_00000.png" alt="" title="Commonly used wide baseline stereo pipeline" /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/matching-filtering.png" alt="" title="Commonly used wide baseline stereo pipeline" /></p>
 <p>The algorithm can be summarized as the following:</p>
 <ol>
 <li>Compute interest points/regions in all images independently</li>
@@ -158,6 +159,7 @@ images depicting the same object or scene and estimation geometric relationship 
 <li>Establish tentative corresponces between interest points based on their descriptors.</li>
 <li>Robustly estimate geometric relation between two images based on tentative correspondences with RANSAC.</li>
 </ol>
+<p>The reason of steps 1 and 2 done on the both images separately is that in general wide baseline stereo is not limited to pairs of images, but rather to a collections of them. If all the steps are done pairwise, then the computational complexity is $O(n^2)$. The more steps done seperately - the more efficient algorithm is.</p>
 
 </div>
 </div>
@@ -290,10 +292,11 @@ There are also attempts to formulate the whole downstream task pipeline like SLA
 <p>[<a id="cit-KeyNet2019" href="#call-KeyNet2019">KeyNet2019</a>] A. Barroso-Laguna, E. Riba, D. Ponsa <em>et al.</em>, ``<em>Key.Net: Keypoint Detection by Handcrafted and Learned CNN Filters</em>'', ICCV,  2019.</p>
 <p>[<a id="cit-SuperPoint2017" href="#call-SuperPoint2017">SuperPoint2017</a>] Detone D., Malisiewicz T. and Rabinovich A., ``<em>Superpoint: Self-Supervised Interest Point Detection and Description</em>'', CVPRW Deep Learning for Visual SLAM, vol. , number , pp. ,  2018.</p>
 <p>[<a id="cit-sarlin2019superglue" href="#call-sarlin2019superglue">sarlin2019superglue</a>] P. Sarlin, D. DeTone, T. Malisiewicz <em>et al.</em>, ``<em>SuperGlue: Learning Feature Matching with Graph Neural Networks</em>'', CVPR,  2020.</p>
+<p>[<a id="cit-gradslam2020" href="#call-gradslam2020">gradslam2020</a>] J. Krishna Murthy, G. Iyer and L. Paull, ``<em>gradSLAM: Dense SLAM meets Automatic Differentiation </em>'', ICRA,  2020 .</p>
 <p>[<a id="cit-CapsNet2011" href="#call-CapsNet2011">CapsNet2011</a>] G.E. Hinton, A. Krizhevsky and S.D. Wang, ``<em>Transforming auto-encoders</em>'', ICANN,  2011.</p>
 <p>[<a id="cit-CapsNet2017" href="#call-CapsNet2017">CapsNet2017</a>] S. Sabour, N. Frosst and G.E. Hinton, ``<em>Dynamic routing between capsules</em>'', NeurIPS,  2017.</p>
-<p>[<a id="cit-gradslam2020" href="#call-gradslam2020">gradslam2020</a>] J. Krishna Murthy, G. Iyer and L. Paull, ``<em>gradSLAM: Dense SLAM meets Automatic Differentiation </em>'', ICRA,  2020 .</p>
 <p>[<a id="cit-li2020extreme" href="#call-li2020extreme">li2020extreme</a>] Li Jianguo, Sun Mingjie and Zhang Changshui, ``<em>Extreme Values are Accurate and Robust in Deep Networks</em>'', , vol. , number , pp. ,  2020.  <a href="https://openreview.net/forum?id=H1gHb1rFwr">online</a></p>
+<p>[<a id="cit-Schmid1995" href="#call-Schmid1995">Schmid1995</a>] Schmid Cordelia and Mohr Roger, ``<em>Matching by local invariants</em>'', , vol. , number , pp. ,  1995.  <a href="https://hal.inria.fr/file/index/docid/74046/filename/RR-2644.pdf">online</a></p>
 
 </div>
 </div>
