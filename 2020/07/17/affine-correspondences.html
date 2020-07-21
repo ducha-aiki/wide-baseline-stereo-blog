@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Local affine features: useful side product | Wide baseline stereo meets deep learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Local affine features: useful side product" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Why to throw away an important information?" />
+<meta property="og:description" content="Why to throw away an important information?" />
+<meta property="og:site_name" content="Wide baseline stereo meets deep learning" />
+<meta property="og:image" content="/wide-baseline-stereo-blog/images/affine_matches.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-07-17T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"Why to throw away an important information?","headline":"Local affine features: useful side product","dateModified":"2020-07-17T00:00:00-05:00","datePublished":"2020-07-17T00:00:00-05:00","@type":"BlogPosting","image":"/wide-baseline-stereo-blog/images/affine_matches.png","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2020/07/17/affine-correspondences.html"},"url":"/wide-baseline-stereo-blog/2020/07/17/affine-correspondences.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/wide-baseline-stereo-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="/wide-baseline-stereo-blog/feed.xml" title="Wide baseline stereo meets deep learning" /><link rel="shortcut icon" type="image/x-icon" href="/wide-baseline-stereo-blog/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Local affine features: useful side product | Wide baseline stereo meets deep learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Local affine features: useful side product" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Why to throw away an important information?" />
+<meta property="og:description" content="Why to throw away an important information?" />
+<meta property="og:site_name" content="Wide baseline stereo meets deep learning" />
+<meta property="og:image" content="/wide-baseline-stereo-blog/images/affine_matches.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-07-17T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"Why to throw away an important information?","headline":"Local affine features: useful side product","dateModified":"2020-07-17T00:00:00-05:00","datePublished":"2020-07-17T00:00:00-05:00","@type":"BlogPosting","image":"/wide-baseline-stereo-blog/images/affine_matches.png","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2020/07/17/affine-correspondences.html"},"url":"/wide-baseline-stereo-blog/2020/07/17/affine-correspondences.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="/wide-baseline-stereo-blog/feed.xml" title="Wide baseline stereo meets deep learning" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head><body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/wide-baseline-stereo-blog/">Wide baseline stereo meets deep learning</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/wide-baseline-stereo-blog/about/">About Me</a><a class="page-link" href="/wide-baseline-stereo-blog/search/">Search</a><a class="page-link" href="/wide-baseline-stereo-blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Local affine features: useful side product</h1><p class="page-description">Why to throw away an important information?</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-07-17T00:00:00-05:00" itemprop="datePublished">
+        Jul 17, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      8 min read
+    
+</span></p>
+
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/ducha-aiki/wide-baseline-stereo-blog/tree/master/_notebooks/2020-07-17-affine-correspondences.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/ducha-aiki/wide-baseline-stereo-blog/master?filepath=_notebooks%2F2020-07-17-affine-correspondences.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/ducha-aiki/wide-baseline-stereo-blog/blob/master/_notebooks/2020-07-17-affine-correspondences.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2020-07-17-affine-correspondences.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Keypoints-are-not-just-points">Keypoints are not just points<a class="anchor-link" href="#Keypoints-are-not-just-points"> </a></h2><p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-07-17-affine-correspondences_files/att_00000.png" alt="image.png" /></p>
+<p>Wide baseline stereo matching often as perceived as establishing (key-)point correspondences between images. While this might be true for the some local features like SuperPoint [<a class="latex_cit" id="call-SuperPoint2017" href="#cit-SuperPoint2017">SuperPoint2017</a>], typically it is more than that.</p>
+<p>Specifically, detectors like DoG[<a class="latex_cit" id="call-Lowe99" href="#cit-Lowe99">Lowe99</a>], Harris[<a class="latex_cit" id="call-Harris88" href="#cit-Harris88">Harris88</a>], Hessian[<a class="latex_cit" id="call-Hessian78" href="#cit-Hessian78">Hessian78</a>], KeyNet[<a class="latex_cit" id="call-KeyNet2019" href="#cit-KeyNet2019">KeyNet2019</a>], ORB[<a class="latex_cit" id="call-ORB2011" href="#cit-ORB2011">ORB2011</a>], and many others rate on scale-space provide at least 3 parameters: x, y, and scale.</p>
+<p>The most of the local descriptors  -- SIFT[<a class="latex_cit" id="call-Lowe99" href="#cit-Lowe99">Lowe99</a>], HardNet[<a class="latex_cit" id="call-HardNet2017" href="#cit-HardNet2017">HardNet2017</a>] and so on -- are not rotation invariant and those which are - mostly require complex matching function[<a class="latex_cit" id="call-RIFT2005" href="#cit-RIFT2005">RIFT2005</a>], [<a class="latex_cit" id="call-sGLOH2" href="#cit-sGLOH2">sGLOH2</a>], so we have to estimamate a patch orientation in order to match reliably. This can be done by various methods:
+corners center of mass (ORB[<a class="latex_cit" id="call-ORB2011" href="#cit-ORB2011">ORB2011</a>], dominant gradient orientation (SIFT)[<a class="latex_cit" id="call-Lowe99" href="#cit-Lowe99">Lowe99</a>] or by some learned estimator (OriNets[<a class="latex_cit" id="call-OriNet2016" href="#cit-OriNet2016">OriNet2016</a>],[<a class="latex_cit" id="call-AffNet2018" href="#cit-AffNet2018">AffNet2018</a>]). Another way is to rely on smartphone camera IMU or photographer and assume that images are upright[<a class="latex_cit" id="call-PerdochRetrieval2009" href="#cit-PerdochRetrieval2009">PerdochRetrieval2009</a>].</p>
+<p>Thus, we can assume that if local descriptors match, this means that local feature scale and orientation also match, at least approximately -- see Figure below. Possible exceptions are cases, when the patch is symmetrical and orientation is ambiguous up to some symmetry group.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-07-17-affine-correspondences_files/matches_patches.png" alt="" title="Selected matching SIFT keypoints and corresponding patches. One can see that not only patch centers correspond to each other, but also other pixels, although less precise. Image pair from Sacre Coeur IMW dataset." /></p>
+<p>In addition, one could assume that we observe the patch not from the fronto-parallel position and try to estimate local normal, or, more precisely, affine shape of the feature point, modeling it as an ellipse instead of circle. One could also think of affine shape estimation as finding the camera position, from where the patch is seen in some "canonical", fronto-parallel view.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-07-17-affine-correspondences_files/affinematches_patches.png" alt="" title="Selected matching SIFT-AffNet keypoints and corresponding patches. One can see that not only patch centers correspond to each other, but also other pixels, although less precise. Image pair from Sacre Coeur IMW dataset." /></p>
+<p>This gives us 3 points correspondences from a single local feature match, see an example in Figure below.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-07-17-affine-correspondences_files/laf-check-illustration.png" alt="" title="Local affine correspondences. While centers of both regions A and B are correct point matches, only A is a correct affine correspondence." /></p>
+<p>Why is it important and how to use it -- see in current post. How to esimate local affine features robustly -- in the next post.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Benefits-of-local-affine-features">Benefits of local affine features<a class="anchor-link" href="#Benefits-of-local-affine-features"> </a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Making-descriptor-job-easier">Making descriptor job easier<a class="anchor-link" href="#Making-descriptor-job-easier"> </a></h2><p>The most straightforward benefit of using local affine features is that they increase the repeatability of the detector and potentially cancel out the most of viewpoint difference local patches. This makes possible matching more challenging image pairs.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-07-17-affine-correspondences_files/test.png" alt="" title="Hessian features + HardNet matches + RANSAC inliers, Right: HessAffNet features + HardNet matches + RANSAC inliers. Image pair from Tanks &amp; Temples. Epipolar lines are shown in cyan." /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-07-17-affine-correspondences_files/att_00009.png" alt="" title="Repeatability and the number of correspondences. AffNet compared with the de facto standard Baumberg iteration according to the Mikolajczyk protocol. Left – images with illumination differences, right – with viewpoint and scale changes. SS – patch from the scale-space pyramid at the level of the detection, image – from the original image; 19 and 33 are patch sizes." /></p>
+<p>The practice is a little bit more complicated. Our recent benchmark[<a class="latex_cit" id="call-IMW2020" href="#cit-IMW2020">IMW2020</a>], which measure the accuracy of the outputed fundamental matrix, shows that the difference in using affine and similarity-covariant features is quite minor. Specifically, the relative difference between SIFT vs SIFT-Affine features is 0.5% and between Hessian-SIFT and Hessian-AffNet SIFT is 5.1%, see Table below.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-07-17-affine-correspondences_files/att_00011.png" alt="" title="Test – Stereo results with 8k features. We report: NF --  Number of Features; NI -- Number of Inliers produced by RANSAC; and mAA@10°." /></p>
+<p>Therefore, if the only benefit of local features would be to only improve descriptor extraction stage, it would be arguably not worth it. Luckily, there are more benefit, which are more pronounced.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Making-RANSAC-job-easier">Making RANSAC job easier<a class="anchor-link" href="#Making-RANSAC-job-easier"> </a></h2><p>Let's recall how RANSAC works.</p>
+<ol>
+<li>Randomly sample a minimally required number of tentative correspondences to fit the geometrical model of the scene: 4 for homography, 7 for epipolar geometry and estimate the model.</li>
+<li>Calculate "support": other correspondeces, which are consistent with the model. </li>
+<li>Repeat steps (1), (2) and outputs the model, supported with the most of correspondences. If you were lucky and have sampled all-inlier sample, meaning that all correspondences used to estimate the model were correct, you would have a correct model.</li>
+</ol>
+<p>Reality is more complicated than I have just described, but the principle is the same. 
+The most important part is the sampling and it is sensitive to inlier ratio $\nu$ - the percentage of the correct correspondences in the set. Lets denote the minimal number of correspondences required to estimate the model as <strong>m</strong>.
+To recover the correct model with the confidence <strong>p</strong> one needs to sample the number of correspondences, which is described by formula:</p>
+\begin{equation}
+N = \frac{\log{(1 - p)}}{\log{(1 - \nu^{m})}}
+\end{equation}<p>Lets plot the how the number of required samples changes with inlier ratio for confidence equal 99%. Note the log scale on Y axis.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-07-17-affine-correspondences_files/att_00016.png" alt="" title="Number of samples to find correct model as a function of inlier ratio." /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As you can see from the plot above, reducing the minimal sample size required for the model estimation even by 1 saves and order of magnitude of computation. 
+In reality the benefit is a smaller, as modern RANSACs like GC-RANSAC and MAGSAC could estimate the correct model from the sample containing outliers, but it is still huge, especially for low inlier rate cases.</p>
+<h3 id="Image-retrieval">Image retrieval<a class="anchor-link" href="#Image-retrieval"> </a></h3><p>The ideal case would be to estimate model from just a single sample and that is exactly what is done in spatial reranking paper "<strong>Object retrieval with large vocabularies and fast spatial matching</strong>"  by Philbin et.al [<a class="latex_cit" id="call-Philbin07" href="#cit-Philbin07">Philbin07</a>].</p>
+<p>Specifically, they are solving an particular object retrieval problem: given an image containing some object, return all the images from the database, which also containg the same object.</p>
+<p>The inital list of images is formed by the descriptor distance and then is reranked.
+Authors propose to approximate a perspective change between two images as an affine image transformation, and count number of feature points, which are reprojected inside the second image. This number produces better ranking that the original short-list.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-07-17-affine-correspondences_files/att_00012.png" alt="" title="Figure from  Philbin et.al" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Back-to-wide-baseline-stereo">Back to wide baseline stereo<a class="anchor-link" href="#Back-to-wide-baseline-stereo"> </a></h3><p>While working for spatial re-ranking, 3-degrees of freedom camera model is too rough for the wide baseline stereo.
+Yet, going from 4 point correspondences (PC) to 2 affine correspondences (AC) for homogaphy and from 7 PC to 3 AC would be huge benefit anyway for the robust model estimation.</p>
+<p>Various variant of RANSAC working for local features were proposed in the last 15 years: Perdoch et.al[<a class="latex_cit" id="call-perd2006epipolar" href="#cit-perd2006epipolar">perd2006epipolar</a>], Pritts et.al.[<a class="latex_cit" id="call-PrittsRANSAC2013" href="#cit-PrittsRANSAC2013">PrittsRANSAC2013</a>], Barath and Kukelova [<a class="latex_cit" id="call-Barath2019ICCV" href="#cit-Barath2019ICCV">Barath2019ICCV</a>], Rodríguez et.al[<a class="latex_cit" id="call-RANSACAffine2020" href="#cit-RANSACAffine2020">RANSACAffine2020</a>].</p>
+<p>Finally, the systematic study of using is presented by Barath et.al[<a class="latex_cit" id="call-barath2020making" href="#cit-barath2020making">barath2020making</a>]. They that if use naively, affine correspondence lead to worse results, because they are more noisy than point correspondences. 
+However, there is a bag of tricks presented in the paper, which allow to solve the noise issue and make the affine RANSAC working in practice, resulting in orders of magnitude faster computation.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-07-17-affine-correspondences_files/att_00013.png" alt="" title="Figure from Making Affine Correspondences Work in Camera Geometry Computation" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Application-specific-benefits">Application-specific benefits<a class="anchor-link" href="#Application-specific-benefits"> </a></h2><p>Beside the wide baseline stereo, local affine features and correspondences have other applications. I will briefly describe some of them here (to be updated).</p>
+<h3 id="Image-rectification">Image rectification<a class="anchor-link" href="#Image-rectification"> </a></h3><p>Instead of matching local features between two images one might match them within a single image. Why would someone do it? This allows finding repeated pattern: think about windows, doors and so on. Typically they have the same physical size, therefore the diffrence in local features around them could tell us about the geometry of the scene and lens distortion.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-07-17-affine-correspondences_files/att_00008.png" alt="" title="Repeated patterns detection with MSER andRootSIFT local features. Figure from the Minimal Solvers for Rectifying from Radially-Distorted Conjugate Translations, PAMI 2020 paper." /></p>
+<p>This is the idea of the series of works by Pritts and Chum.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-07-17-affine-correspondences_files/att_00007.png" alt="" title="Figure from the &#39;Minimal Solvers for Rectifying from Radially-Distorted Conjugate Translations&#39;, PAMI 2020 paper." /></p>
+<h3 id="Surface-normals-estimation">Surface normals estimation<a class="anchor-link" href="#Surface-normals-estimation"> </a></h3><p>Ivan Eichhardt and Levente Hajder have a series of works, exploiting the local affine correspondences for surface normals estimation[<a class="latex_cit" id="call-SurfaceNormals2019" href="#cit-SurfaceNormals2019">SurfaceNormals2019</a>]</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-07-17-affine-correspondences_files/att_00015.png" alt="" title="Estimated surface normals. Figure from Optimal Multi-View Surface Normal Estimation Using Affine Correspondences" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Summary">Summary<a class="anchor-link" href="#Summary"> </a></h1><p>Despite not being popular right now, treating keypoints as local affine features has a lot of advantages over the traditional treatment the local correspondence as the point correspondences. In the next post I will describe a way of estimating the local feature affine shape and orientation.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="References">References<a class="anchor-link" href="#References"> </a></h1><p>[<a id="cit-SuperPoint2017" href="#call-SuperPoint2017">SuperPoint2017</a>] Detone D., Malisiewicz T. and Rabinovich A., ``<em>Superpoint: Self-Supervised Interest Point Detection and Description</em>'', CVPRW Deep Learning for Visual SLAM, vol. , number , pp. ,  2018.</p>
+<p>[<a id="cit-Lowe99" href="#call-Lowe99">Lowe99</a>] D. Lowe, ``<em>Object Recognition from Local Scale-Invariant Features</em>'', ICCV,  1999.</p>
+<p>[<a id="cit-Harris88" href="#call-Harris88">Harris88</a>] C. Harris and M. Stephens, ``<em>A Combined Corner and Edge Detector</em>'', Fourth Alvey Vision Conference,  1988.</p>
+<p>[<a id="cit-Hessian78" href="#call-Hessian78">Hessian78</a>] P.R. Beaudet, ``<em>Rotationally invariant image operators</em>'', Proceedings of the 4th International Joint Conference on Pattern Recognition,  1978.</p>
+<p>[<a id="cit-KeyNet2019" href="#call-KeyNet2019">KeyNet2019</a>] A. Barroso-Laguna, E. Riba, D. Ponsa <em>et al.</em>, ``<em>Key.Net: Keypoint Detection by Handcrafted and Learned CNN Filters</em>'', ICCV,  2019.</p>
+<p>[<a id="cit-ORB2011" href="#call-ORB2011">ORB2011</a>] E. Rublee, V. Rabaud, K. Konolidge <em>et al.</em>, ``<em>ORB: An Efficient Alternative to SIFT or SURF</em>'', ICCV,  2011.</p>
+<p>[<a id="cit-HardNet2017" href="#call-HardNet2017">HardNet2017</a>] A. Mishchuk, D. Mishkin, F. Radenovic <em>et al.</em>, ``<em>Working Hard to Know Your Neighbor's Margins: Local Descriptor Learning Loss</em>'', NeurIPS,  2017.</p>
+<p>[<a id="cit-RIFT2005" href="#call-RIFT2005">RIFT2005</a>] {Lazebnik} S., {Schmid} C. and {Ponce} J., ``<em>A sparse texture representation using local affine regions</em>'', IEEE Transactions on Pattern Analysis and Machine Intelligence, vol. 27, number 8, pp. 1265-1278,  2005.</p>
+<p>[<a id="cit-sGLOH2" href="#call-sGLOH2">sGLOH2</a>] {Bellavia} F. and {Colombo} C., ``<em>Rethinking the sGLOH Descriptor</em>'', IEEE Transactions on Pattern Analysis and Machine Intelligence, vol. 40, number 4, pp. 931-944,  2018.</p>
+<p>[<a id="cit-OriNet2016" href="#call-OriNet2016">OriNet2016</a>] K. M., Y. Verdie, P. Fua <em>et al.</em>, ``<em>Learning to Assign Orientations to Feature Points</em>'', CVPR,  2016.</p>
+<p>[<a id="cit-AffNet2018" href="#call-AffNet2018">AffNet2018</a>] D. Mishkin, F. Radenovic and J. Matas, ``<em>Repeatability is Not Enough: Learning Affine Regions via Discriminability</em>'', ECCV,  2018.</p>
+<p>[<a id="cit-PerdochRetrieval2009" href="#call-PerdochRetrieval2009">PerdochRetrieval2009</a>] M. {Perd'och}, O. {Chum} and J. {Matas}, ``<em>Efficient representation of local geometry for large scale object retrieval</em>'', CVPR,  2009.</p>
+<p>[<a id="cit-IMW2020" href="#call-IMW2020">IMW2020</a>] Jin Yuhe, Mishkin Dmytro, Mishchuk Anastasiia <em>et al.</em>, ``<em>Image Matching across Wide Baselines: From Paper to Practice</em>'', arXiv preprint arXiv:2003.01587, vol. , number , pp. ,  2020.</p>
+<p>[<a id="cit-Philbin07" href="#call-Philbin07">Philbin07</a>] J. Philbin, O. Chum, M. Isard <em>et al.</em>, ``<em>Object Retrieval with Large Vocabularies and Fast Spatial Matching</em>'', CVPR,  2007.</p>
+<p>[<a id="cit-perd2006epipolar" href="#call-perd2006epipolar">perd2006epipolar</a>] M. Perd'och, J. Matas and O. Chum, ``<em>Epipolar geometry from two correspondences</em>'', ICPR,  2006.</p>
+<p>[<a id="cit-PrittsRANSAC2013" href="#call-PrittsRANSAC2013">PrittsRANSAC2013</a>] J. {Pritts}, O. {Chum} and J. {Matas}, ``<em>Approximate models for fast and accurate epipolar geometry estimation</em>'', 2013 28th International Conference on Image and Vision Computing New Zealand (IVCNZ 2013),  2013.</p>
+<p>[<a id="cit-Barath2019ICCV" href="#call-Barath2019ICCV">Barath2019ICCV</a>] D. Barath and Z. Kukelova, ``<em>Homography From Two Orientation- and Scale-Covariant Features</em>'', ICCV,  2019.</p>
+<p>[<a id="cit-RANSACAffine2020" href="#call-RANSACAffine2020">RANSACAffine2020</a>] M. {Rodríguez}, G. {Facciolo}, R. G. <em>et al.</em>, ``<em>Robust estimation of local affine maps and its applications to image matching</em>'', 2020 IEEE Winter Conference on Applications of Computer Vision (WACV),  2020.</p>
+<p>[<a id="cit-barath2020making" href="#call-barath2020making">barath2020making</a>] Barath Daniel, Polic Michal, Förstner Wolfgang <em>et al.</em>, ``<em>Making Affine Correspondences Work in Camera Geometry Computation</em>'', arXiv preprint arXiv:2007.10032, vol. , number , pp. ,  2020.</p>
+<p>[<a id="cit-SurfaceNormals2019" href="#call-SurfaceNormals2019">SurfaceNormals2019</a>] {Baráth} D., {Eichhardt} I. and {Hajder} L., ``<em>Optimal Multi-View Surface Normal Estimation Using Affine Correspondences</em>'', IEEE Transactions on Image Processing, vol. 28, number 7, pp. 3301-3311,  2019.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="ducha-aiki/wide-baseline-stereo-blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/wide-baseline-stereo-blog/2020/07/17/affine-correspondences.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/wide-baseline-stereo-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/wide-baseline-stereo-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Everything you (didn&#39;t) want to know about image matching</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/ducha-aiki" title="ducha-aiki"><svg class="svg-icon grey"><use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/ducha_aiki" title="ducha_aiki"><svg class="svg-icon grey"><use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
