@@ -183,7 +183,7 @@ corners center of mass (ORB[<a class="latex_cit" id="call-ORB2011" href="#cit-OR
 <p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-07-17-affine-correspondences_files/att_00009.png" alt="" title="Repeatability and the number of correspondences. AffNet compared with the de facto standard Baumberg iteration according to the Mikolajczyk protocol. Left – images with illumination differences, right – with viewpoint and scale changes. SS – patch from the scale-space pyramid at the level of the detection, image – from the original image; 19 and 33 are patch sizes." /></p>
 <p>The practice is a little bit more complicated. Our recent benchmark[<a class="latex_cit" id="call-IMW2020" href="#cit-IMW2020">IMW2020</a>], which measure the accuracy of the outputed fundamental matrix, shows that the difference in using affine and similarity-covariant features is quite minor. Specifically, the relative difference between SIFT vs SIFT-Affine features is 0.5% and between Hessian-SIFT and Hessian-AffNet SIFT is 5.1%, see Table below.</p>
 <p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-07-17-affine-correspondences_files/att_00011.png" alt="" title="Test – Stereo results with 8k features. We report: NF --  Number of Features; NI -- Number of Inliers produced by RANSAC; and mAA@10°." /></p>
-<p>Therefore, if the only benefit of local features would be to only improve descriptor extraction stage, it would be arguably not worth it. Luckily, there are more benefit, which are more pronounced.</p>
+<p>Therefore, if the only benefit of local features would be to only improve descriptor extraction stage, it would be arguably not worth it. Luckily, there are more benefits, which are more pronounced.</p>
 
 </div>
 </div>
@@ -194,14 +194,14 @@ corners center of mass (ORB[<a class="latex_cit" id="call-ORB2011" href="#cit-OR
 <ol>
 <li>Randomly sample a minimally required number of tentative correspondences to fit the geometrical model of the scene: 4 for homography, 7 for epipolar geometry and estimate the model.</li>
 <li>Calculate "support": other correspondeces, which are consistent with the model. </li>
-<li>Repeat steps (1), (2) and outputs the model, supported with the most of correspondences. If you were lucky and have sampled all-inlier sample, meaning that all correspondences used to estimate the model were correct, you would have a correct model.</li>
+<li>Repeat steps (1), (2) and output the model which is supported with the most of correspondences. If you were lucky and have sampled all-inlier sample, meaning that all correspondences used to estimate the model were correct, you would have a correct model.</li>
 </ol>
 <p>Reality is more complicated than I have just described, but the principle is the same. 
 The most important part is the sampling and it is sensitive to inlier ratio $\nu$ - the percentage of the correct correspondences in the set. Lets denote the minimal number of correspondences required to estimate the model as <strong>m</strong>.
 To recover the correct model with the confidence <strong>p</strong> one needs to sample the number of correspondences, which is described by formula:</p>
 \begin{equation}
 N = \frac{\log{(1 - p)}}{\log{(1 - \nu^{m})}}
-\end{equation}<p>Lets plot the how the number of required samples changes with inlier ratio for confidence equal 99%. Note the log scale on Y axis.</p>
+\end{equation}<p>Lets plot the how the number of required samples changes with inlier ratio for confidence equal 99%. Note the log scale on Y axis. Different lines are for different minimal sample size <strong>m</strong>.</p>
 
 </div>
 </div>
@@ -216,7 +216,7 @@ N = \frac{\log{(1 - p)}}{\log{(1 - \nu^{m})}}
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>As you can see from the plot above, reducing the minimal sample size required for the model estimation even by 1 saves and order of magnitude of computation. 
-In reality the benefit is a smaller, as modern RANSACs like GC-RANSAC and MAGSAC could estimate the correct model from the sample containing outliers, but it is still huge, especially for low inlier rate cases.</p>
+In reality the benefit is a smaller, as modern RANSACs like GC-RANSAC[<a class="latex_cit" id="call-gcransac2018" href="#cit-gcransac2018">gcransac2018</a>] and MAGSAC[<a class="latex_cit" id="call-magsac2019" href="#cit-magsac2019">magsac2019</a>] could estimate the correct model from the sample containing outliers, but it is still huge, especially for low inlier rate cases.</p>
 <h3 id="Image-retrieval">Image retrieval<a class="anchor-link" href="#Image-retrieval"> </a></h3><p>The ideal case would be to estimate model from just a single sample and that is exactly what is done in spatial reranking paper "<strong>Object retrieval with large vocabularies and fast spatial matching</strong>"  by Philbin et.al [<a class="latex_cit" id="call-Philbin07" href="#cit-Philbin07">Philbin07</a>].</p>
 <p>Specifically, they are solving an particular object retrieval problem: given an image containing some object, return all the images from the database, which also containg the same object.</p>
 <p>The inital list of images is formed by the descriptor distance and then is reranked.
@@ -229,9 +229,9 @@ Authors propose to approximate a perspective change between two images as an aff
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Back-to-wide-baseline-stereo">Back to wide baseline stereo<a class="anchor-link" href="#Back-to-wide-baseline-stereo"> </a></h3><p>While working for spatial re-ranking, 3-degrees of freedom camera model is too rough for the wide baseline stereo.
-Yet, going from 4 point correspondences (PC) to 2 affine correspondences (AC) for homogaphy and from 7 PC to 3 AC would be huge benefit anyway for the robust model estimation.</p>
+Yet, going from 4 point correspondences (PC) to 2 affine correspondences (AC) for homogaphy and from 7 PC to 3 AC for the fundamental matrix would be huge benefit anyway for the robust model estimation.</p>
 <p>Various variant of RANSAC working for local features were proposed in the last 15 years: Perdoch et.al[<a class="latex_cit" id="call-perd2006epipolar" href="#cit-perd2006epipolar">perd2006epipolar</a>], Pritts et.al.[<a class="latex_cit" id="call-PrittsRANSAC2013" href="#cit-PrittsRANSAC2013">PrittsRANSAC2013</a>], Barath and Kukelova [<a class="latex_cit" id="call-Barath2019ICCV" href="#cit-Barath2019ICCV">Barath2019ICCV</a>], Rodríguez et.al[<a class="latex_cit" id="call-RANSACAffine2020" href="#cit-RANSACAffine2020">RANSACAffine2020</a>].</p>
-<p>Finally, the systematic study of using is presented by Barath et.al[<a class="latex_cit" id="call-barath2020making" href="#cit-barath2020making">barath2020making</a>]. They that if use naively, affine correspondence lead to worse results, because they are more noisy than point correspondences. 
+<p>Finally, the systematic study of using is presented by Barath et.al[<a class="latex_cit" id="call-barath2020making" href="#cit-barath2020making">barath2020making</a>] in "Making Affine Correspondences Work in Camera Geometry Computation" paper. Authors show that if used naively, affine correspondence lead to worse results, because they are more noisy than point correspondences. 
 However, there is a bag of tricks presented in the paper, which allow to solve the noise issue and make the affine RANSAC working in practice, resulting in orders of magnitude faster computation.</p>
 <p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-07-17-affine-correspondences_files/att_00013.png" alt="" title="Figure from Making Affine Correspondences Work in Camera Geometry Computation" /></p>
 
@@ -240,7 +240,7 @@ However, there is a bag of tricks presented in the paper, which allow to solve t
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Application-specific-benefits">Application-specific benefits<a class="anchor-link" href="#Application-specific-benefits"> </a></h2><p>Beside the wide baseline stereo, local affine features and correspondences have other applications. I will briefly describe some of them here (to be updated).</p>
+<h2 id="Application-specific-benefits">Application-specific benefits<a class="anchor-link" href="#Application-specific-benefits"> </a></h2><p>Besides the wide baseline stereo, local affine features and correspondences have other applications. I will briefly describe some of them here (to be updated).</p>
 <h3 id="Image-rectification">Image rectification<a class="anchor-link" href="#Image-rectification"> </a></h3><p>Instead of matching local features between two images one might match them within a single image. Why would someone do it? This allows finding repeated pattern: think about windows, doors and so on. Typically they have the same physical size, therefore the diffrence in local features around them could tell us about the geometry of the scene and lens distortion.</p>
 <p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-07-17-affine-correspondences_files/att_00008.png" alt="" title="Repeated patterns detection with MSER andRootSIFT local features. Figure from the Minimal Solvers for Rectifying from Radially-Distorted Conjugate Translations, PAMI 2020 paper." /></p>
 <p>This is the idea of the series of works by Pritts and Chum.</p>
@@ -273,6 +273,8 @@ However, there is a bag of tricks presented in the paper, which allow to solve t
 <p>[<a id="cit-AffNet2018" href="#call-AffNet2018">AffNet2018</a>] D. Mishkin, F. Radenovic and J. Matas, ``<em>Repeatability is Not Enough: Learning Affine Regions via Discriminability</em>'', ECCV,  2018.</p>
 <p>[<a id="cit-PerdochRetrieval2009" href="#call-PerdochRetrieval2009">PerdochRetrieval2009</a>] M. {Perd'och}, O. {Chum} and J. {Matas}, ``<em>Efficient representation of local geometry for large scale object retrieval</em>'', CVPR,  2009.</p>
 <p>[<a id="cit-IMW2020" href="#call-IMW2020">IMW2020</a>] Jin Yuhe, Mishkin Dmytro, Mishchuk Anastasiia <em>et al.</em>, ``<em>Image Matching across Wide Baselines: From Paper to Practice</em>'', arXiv preprint arXiv:2003.01587, vol. , number , pp. ,  2020.</p>
+<p>[<a id="cit-gcransac2018" href="#call-gcransac2018">gcransac2018</a>] D. Barath and J. Matas, ``<em>Graph-Cut RANSAC</em>'', The IEEE Conference on Computer Vision and Pattern Recognition (CVPR),  2018.</p>
+<p>[<a id="cit-magsac2019" href="#call-magsac2019">magsac2019</a>] J.N. Daniel Barath, ``<em>MAGSAC: marginalizing sample consensus</em>'', CVPR,  2019.</p>
 <p>[<a id="cit-Philbin07" href="#call-Philbin07">Philbin07</a>] J. Philbin, O. Chum, M. Isard <em>et al.</em>, ``<em>Object Retrieval with Large Vocabularies and Fast Spatial Matching</em>'', CVPR,  2007.</p>
 <p>[<a id="cit-perd2006epipolar" href="#call-perd2006epipolar">perd2006epipolar</a>] M. Perd'och, J. Matas and O. Chum, ``<em>Epipolar geometry from two correspondences</em>'', ICPR,  2006.</p>
 <p>[<a id="cit-PrittsRANSAC2013" href="#call-PrittsRANSAC2013">PrittsRANSAC2013</a>] J. {Pritts}, O. {Chum} and J. {Matas}, ``<em>Approximate models for fast and accurate epipolar geometry estimation</em>'', 2013 28th International Conference on Image and Vision Computing New Zealand (IVCNZ 2013),  2013.</p>
