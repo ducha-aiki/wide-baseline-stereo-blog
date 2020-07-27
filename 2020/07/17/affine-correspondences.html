@@ -105,7 +105,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      8 min read
+      9 min read
     
 </span></p>
 
@@ -234,6 +234,11 @@ Yet, going from 4 point correspondences (PC) to 2 affine correspondences (AC) fo
 <p>Finally, the systematic study of using is presented by Barath et.al[<a class="latex_cit" id="call-barath2020making" href="#cit-barath2020making">barath2020making</a>] in "Making Affine Correspondences Work in Camera Geometry Computation" paper. Authors show that if used naively, affine correspondence lead to worse results, because they are more noisy than point correspondences. 
 However, there is a bag of tricks presented in the paper, which allow to solve the noise issue and make the affine RANSAC working in practice, resulting in orders of magnitude faster computation.</p>
 <p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-07-17-affine-correspondences_files/att_00013.png" alt="" title="Figure from Making Affine Correspondences Work in Camera Geometry Computation" /></p>
+<p>Moreover, for a special cases like autonomous driving, where the motion is mostly horizonal, one could even use 2 affine correspondes for both motion estimation and consistency check, significantly improving the efficiency of the outliers removal compared to the standard RANSAC loop[<a class="latex_cit" id="call-guan2020relative" href="#cit-guan2020relative">guan2020relative</a>].</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-07-17-affine-correspondences_files/att_00001.png" alt="" title="Empirical cumulative error distributions for KITTI sequence 00. Figure from Relative Pose Estimation for Multi-Camera Systems from Affine Correspondences." /></p>
+<p>Besides the special case considerations, additional contraints can also come from running other algorithms, like monocular depth estimation. Such a constraint could reduce the required number of matches from two affine correspondences to a single one for calibrated camera case[<a class="latex_cit" id="call-OneACMonoDepth2020" href="#cit-OneACMonoDepth2020">OneACMonoDepth2020</a>].</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-07-17-affine-correspondences_files/att_00002.png" alt="" title="Figure from Relative Pose from Deep Learned Depth and a Single Affine Correspondence" /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-07-17-affine-correspondences_files/att_00003.png" alt="" title="Figure from Relative Pose from Deep Learned Depth and a Single Affine Correspondence" /></p>
 
 </div>
 </div>
@@ -281,6 +286,8 @@ However, there is a bag of tricks presented in the paper, which allow to solve t
 <p>[<a id="cit-Barath2019ICCV" href="#call-Barath2019ICCV">Barath2019ICCV</a>] D. Barath and Z. Kukelova, ``<em>Homography From Two Orientation- and Scale-Covariant Features</em>'', ICCV,  2019.</p>
 <p>[<a id="cit-RANSACAffine2020" href="#call-RANSACAffine2020">RANSACAffine2020</a>] M. {Rodríguez}, G. {Facciolo}, R. G. <em>et al.</em>, ``<em>Robust estimation of local affine maps and its applications to image matching</em>'', 2020 IEEE Winter Conference on Applications of Computer Vision (WACV),  2020.</p>
 <p>[<a id="cit-barath2020making" href="#call-barath2020making">barath2020making</a>] Barath Daniel, Polic Michal, Förstner Wolfgang <em>et al.</em>, ``<em>Making Affine Correspondences Work in Camera Geometry Computation</em>'', arXiv preprint arXiv:2007.10032, vol. , number , pp. ,  2020.</p>
+<p>[<a id="cit-guan2020relative" href="#call-guan2020relative">guan2020relative</a>] Guan Banglei, Zhao Ji, Barath Daniel <em>et al.</em>, ``<em>Relative Pose Estimation for Multi-Camera Systems from Affine Correspondences</em>'', arXiv preprint arXiv:2007.10700, vol. , number , pp. ,  2020.</p>
+<p>[<a id="cit-OneACMonoDepth2020" href="#call-OneACMonoDepth2020">OneACMonoDepth2020</a>] D.B. Ivan Eichhardt, ``<em>Relative Pose from Deep Learned Depth and a Single Affine Correspondence</em>'', ECCV,  2020.</p>
 <p>[<a id="cit-SurfaceNormals2019" href="#call-SurfaceNormals2019">SurfaceNormals2019</a>] {Baráth} D., {Eichhardt} I. and {Hajder} L., ``<em>Optimal Multi-View Surface Normal Estimation Using Affine Correspondences</em>'', IEEE Transactions on Image Processing, vol. 28, number 7, pp. 3301-3311,  2019.</p>
 
 </div>
