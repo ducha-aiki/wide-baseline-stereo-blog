@@ -4,7 +4,7 @@ title: About Me
 permalink: /about/
 ---
 
-Hi! My name is Dmytro Mishkin, I am computer vision researcher. This is blog series based on my on-going PhD thesis.
+This is where you put the contents of your *About* page. Like all your pages, it's in [Markdown](https://guides.github.com/features/mastering-markdown/) format.
 
 This website is powered by **[fastpages](https://github.com/fastai/fastpages)** [^1].
 
