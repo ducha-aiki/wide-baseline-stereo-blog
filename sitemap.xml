@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+<loc>/wide-baseline-stereo-blog/2020/03/27/intro.html</loc>
+<lastmod>2020-03-27T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>/wide-baseline-stereo-blog/2020/07/09/wxbs.html</loc>
+<lastmod>2020-07-09T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>/wide-baseline-stereo-blog/2020/07/17/affine-correspondences.html</loc>
+<lastmod>2020-07-17T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>/wide-baseline-stereo-blog/2020/07/22/patch-extraction.html</loc>
+<lastmod>2020-07-22T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>/wide-baseline-stereo-blog/2020/08/06/affine-view-synthesis.html</loc>
+<lastmod>2020-08-06T00:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>/wide-baseline-stereo-blog/about/</loc>
+</url>
+<url>
+<loc>/wide-baseline-stereo-blog/</loc>
+</url>
+<url>
+<loc>/wide-baseline-stereo-blog/search/</loc>
+</url>
+<url>
+<loc>/wide-baseline-stereo-blog/categories/</loc>
+</url>
+</urlset>
