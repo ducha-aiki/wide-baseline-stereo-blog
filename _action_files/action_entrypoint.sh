@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+
 # setup ssh: allow key to be used without a prompt and start ssh agent
 export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 eval "$(ssh-agent -s)"
@@ -9,7 +10,8 @@ eval "$(ssh-agent -s)"
 /fastpages/word2post.sh
 # notebook converter using nbdev
 cp /fastpages/settings.ini .
-#pip install jupyter_latex_envs --user
+
+pip install jupyter_latex_envs --user
 #pip install git+https://github.com/ducha-aiki/nbdev@latex_envs_citations --user
 #pip install git+https://github.com/fastai/nbdev --user
 python /fastpages/nb2post.py
