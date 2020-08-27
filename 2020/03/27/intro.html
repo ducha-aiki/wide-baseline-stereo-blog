@@ -186,7 +186,7 @@ It was later extended by Beardsley, Torr and Zisserman[<a class="latex_cit" id="
 <ol>
 <li>Compute interest points/regions in all images independently</li>
 <li>For each interest point/region compute a descriptor of their neigborhood (local patch).</li>
-<li>Establish tentative corresponces between interest points based on their descriptors.</li>
+<li>Establish tentative correspondences between interest points based on their descriptors.</li>
 <li>Robustly estimate geometric relation between two images based on tentative correspondences with RANSAC.</li>
 </ol>
 <p>The reason of steps 1 and 2 done on the both images separately is that in general wide baseline stereo is not limited to pairs of images, but rather to a collections of them. If all the steps are done pairwise, then the computational complexity is $O(n^2)$. The more steps done seperately - the more efficient algorithm is.</p>
