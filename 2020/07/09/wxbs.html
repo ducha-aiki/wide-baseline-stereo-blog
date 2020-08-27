@@ -170,22 +170,23 @@ window.onload = wrap_img;
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Definition-of-WxBS">Definition of WxBS<a class="anchor-link" href="#Definition-of-WxBS"> </a></h3><p>Let us denote observations $O_{i}, i=1..n$, each of which belongs to one of the views $V_{j}, i=1..m$, $m \leq n$. 
 Observations can be, for example, pixels and views are images, respectfully. Observations and views can be of different nature and dimentionality. E.g. $V_1$, $V_2$  - RGB images, $V_3$ - point cloud from a laser scaner, $V_4$ - image from a thermal camera, and so on.</p>
-<p>We will call two of observations $(O_{i},O_{k})$, a correspondence $c_{ik}$ if they are belong to different views $V_{j}$. The group of observations is called correspondence set $C_o$, when there is exactly one observation $O_i$ per view $V_j$ inside, some of observations $O_i$ can be empty $\varnothing$, i.e. not observed in the specific view $V_j$. Multiple correspondences are called consistent if they form a correspondence set.</p>
+<p>We will call two of observations $(O_{i},O_{k})$, a correspondence $c_{ik}$ if they are belong to different views $V_{j}$. The group of observations is called correspondence set $C_o$, when there is exactly one observation $O_i$ per view $V_j$. Some of observations $O_i$ can be empty $\varnothing$, i.e. not observed in the specific view $V_j$. Multiple correspondences are called <strong>consistent</strong> if they form a correspondence set.</p>
 <p>We can now define a wide baseline stereo.</p>
-<p>By <strong>wide baseline stereo</strong> we understand the process of establishing correspondence sets (C_o) from observations (O<em>i) and images $V</em>{j}$ under the following constraints:</p>
+<p>By <strong>wide baseline stereo</strong> we understand the process of establishing correspondence sets $C_o$ from observations $O_i$ and images $V_{j}$ under the following constraints:</p>
 <ul>
-<li>images (V_j) belong to camera planes taken by cameras (K_j) of the same static rigid scene (S). </li>
+<li>images $V_j$ belong to camera planes taken by cameras $K_j$ of the same static rigid scene $S$. </li>
 </ul>
-<p>In addition to recovering the correspondence sets wide baseline stereo process also recovers (unknown) camera poses (K_i), (K_j), (K_k).</p>
-<p>By "rigid" we mean that the only "motion" possible is the pose difference of the cameras, which is called "baseline" for the case where there are only two cameras. 
-We could also assume some scene structure or model, consisting of latent objects $X_i$, which we are could only observe.</p>
+<p>In addition to recovering the correspondence sets wide baseline stereo process also recovers (unknown) camera poses $K_j$.</p>
+<p>By "rigid" we mean that the only "motion" possible is the pose difference of the cameras, which is called "baseline" for the case where there are only two cameras.</p>
+<p>We could also assume some scene structure or model, consisting of latent objects $X_i$, which we are could only inderectly observe by observations $O_i$.</p>
 <p>For example, on image below, observations $O_i$ are blue circles and the correspondences $c_{jk}$ are shown as lines. The assumed object $X_i$ is a red circle.</p>
 <p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/imgs/WxBS_house.jpeg" alt="" title="Example of multimodal wide baseline stereo" /></p>
 <p>We will call "<strong>wide multiple baseline stereo</strong>" or <strong>WxBS</strong> [<a class="latex_cit" id="call-Mishkin2015WXBS" href="#cit-Mishkin2015WXBS">Mishkin2015WXBS</a>] if the observations have different nature or the conditions under which observation were made are different.</p>
-<p>The different between <strong>wide baseline stereo</strong> and <strong>short baseline stereo</strong>, or, simply <strong>stereo</strong> is the follwong. In <strong>stereo</strong> the baseline is small -- less then 1 meter -- and typically known and fixed. The task is to establish correspondences, which can be done by 1D search along the known epipolar lines.</p>
+<p>The different between <strong>wide baseline stereo</strong> and <strong>short baseline stereo</strong>, or, simply <strong>stereo</strong> is the follwing. In <strong>stereo</strong> the baseline is small -- less then 1 meter -- and typically known and fixed. The task is to establish correspondences, which can be done by 1D search along the known epipolar lines.</p>
 <p>In contrast, in  <strong>wide baseline stereo</strong> the baseline is unknown, mostly unconstrained and the viewpoints of the cameras can vary drastically.</p>
 <p>The wide baseline stereo, which also outputs the estimation of the latent objects, e.g. in form of 3d point world coordinates we would call <strong>rigid structure-from-motion</strong> (rigid SfM) or <strong>3D reconstruction</strong>. We do not consider object shape approximation with voxels, meshes, etc in the current thesis. Nor we consider the recovery of scene albedo, illumination, and other appearance properties.</p>
 <p>While the difference between <strong>SfM</strong> and <strong>WBS</strong> is often blurred and the terms are used interchangeably, we would  consider WBS as a part of SfM pipeline prior to recovering 3d point cloud.</p>
+<p>Other correspondence problems, as tracking, optical flow or establishing semantic correspondences could be defined using the terminilogy we established.</p>
 <p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/imgs/wxbs_problems.png" alt="" title="Example of  WxBS problems" /></p>
 
 </div>
