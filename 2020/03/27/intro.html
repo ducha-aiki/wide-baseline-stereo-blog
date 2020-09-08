@@ -268,7 +268,9 @@ There are also attempts to formulate the whole downstream task pipeline like SLA
 </ol>
 <p>One of modern revisit of wide baseline stereo ideas is Capsule Networks[<a class="latex_cit" id="call-CapsNet2011" href="#cit-CapsNet2011">CapsNet2011</a>,<a class="latex_cit" id="call-CapsNet2017" href="#cit-CapsNet2017">CapsNet2017</a>]. Unlike CNNs, they encode not only intensity of feature responce, but also its location and require a geometric agreement between object parts for outputing a confident prediction.</p>
 <p>Similar ideas are now explored for ensuring adversarial robustness of CNNs[<a class="latex_cit" id="call-li2020extreme" href="#cit-li2020extreme">li2020extreme</a>].</p>
+<p>Another way of using "consensus of local independent predictions" is used in <a href="https://arxiv.org/abs/2007.11498">Cross-transformers</a> paper: spatial attention helps to select relevant feature for few-shot learning, see Figure below.</p>
 <p>While wide baseline stereo is far from the mainstream now, it continues to play an important role in computer vision.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-03-27-intro_files/att_00000.png" alt="" title="Cross-transformers: spatial attention helps to select relevant feature for few-shot learning" /></p>
 <p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/00_intro_files/capsules.png" alt="" title="Capsule networks: revisiting the WBS idea. Each feature response is accompanied with its pose. Poses should be in agreement, otherwise object would not be recognized. Image by Aurélien Géron https://www.oreilly.com/content/introducing-capsule-networks/" /></p>
 
 </div>
