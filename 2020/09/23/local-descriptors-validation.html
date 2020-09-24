@@ -119,7 +119,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      9 min read
+      10 min read
     
 </span></p>
 
@@ -232,6 +232,8 @@ Advantages:</p>
 <p>It was constructed in a different way than a Phototourism. First, local features were detected in the "reference" image and then reprojected to other images in sequences. Reprojection is prossible, because all the images are photographies of the planes  -- graffity, drawing, print, etc, or are all taken from the same position.
 After the reprojection, some amount of geometrical noise -- rotation, translation, scaling, was added to the local features and the patches were extracted.</p>
 <p>This process is illustration on the picture below (both taken from the <a href="https://github.com/hpatches/hpatches-dataset">HPatches website</a>).</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-09-16-local-descriptors-validation_files/images_hard.png" alt="" title="Visualization of the hard patches locations in the target images." />
+<img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-09-16-local-descriptors-validation_files/patches_hard.png" alt="" title="Extracted hard patches from the example sequence." /></p>
 <p>HPAtches also provide 3 testing protocol, evaluating mean average precision (mAP) for 3 different tasks: patch verification  -- similar to Brown Phototourism, image matching and patch retrieval. The variable, used to build mAP is descriptor distance between two patches.</p>
 <p>Advantages:</p>
 <ul>
@@ -244,8 +246,7 @@ After the reprojection, some amount of geometrical noise -- rotation, translatio
 <li>no non-planar structure</li>
 <li>performance in HPaptches does not really correlate with the downstream performance [<a class="latex_cit" id="call-IMW2020" href="#cit-IMW2020">IMW2020</a>]</li>
 </ul>
-<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-09-16-local-descriptors-validation_files/images_hard.png" alt="" title="Visualization of the hard patches locations in the target images." />
-<img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-09-16-local-descriptors-validation_files/patches_hard.png" alt="" title="Extracted hard patches from the example sequence." /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-09-16-local-descriptors-validation_files/hpatches_vs_IMC.png" alt="image.png" title="Performance in HPaptches does not really correlate with the downstream performance on the Image Matching Benchmark" /></p>
 
 </div>
 </div>
@@ -293,7 +294,8 @@ I have wrote a <a href="https://medium.com/@ducha.aiki/how-to-match-to-learn-or-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Brown-PhotoTour-Revisied:-implementation-details">Brown PhotoTour Revisied: implementation details<a class="anchor-link" href="#Brown-PhotoTour-Revisied:-implementation-details"> </a></h2><p>We have designed the protocol, now time for data. We could spend several month collecting and cleaning it...or we can just re-use great Brown PhotoTourism dataset.</p>
+<h2 id="Brown-PhotoTour-Revisied:-implementation-details">Brown PhotoTour Revisied: implementation details<a class="anchor-link" href="#Brown-PhotoTour-Revisied:-implementation-details"> </a></h2><p>We have designed the protocol, now time for data. We could spend several month collecting and cleaning it...or we can just re-use great Brown PhotoTourism dataset. Re-visiting labeling and/or evaluation protocol of the time-tested dataset is a great idea.</p>
+<p>Just couple of examples: <a href="https://github.com/fastai/imagenette">ImageNette</a> created by <a href="https://twitter.com/jeremyphoward">Jeremy Howard</a> from ImageNet, <a href="http://cmp.felk.cvut.cz/revisitop/">Revisited Oxford 5k</a> by <a href="https://filipradenovic.github.io/">Filip Radenovic</a> and so on.</p>
 <p>For the protocol we designed above we need the information about the image id, where the patch was extracted from. Unfortunately, there is no such information in the Brown PhotoTourism, but there is suitable alternative -- the image id, where the reference patch was detected. What does it mean?</p>
 <p>Suppose, we have 4 images and 5 keypoints. All the keypoints present in all images, which gives us 20 patches.
 3 keypoints were first detected in Image 1 and 2 in image 2.<br />
@@ -307,6 +309,58 @@ That means that we will have 12 patches labeled image 1 and 8 patches labeled im
 </ul>
 <p>Repeat the same for the image 2. 
 That mimics the two-view matching process as close, as possible, given the data available to us.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Installation">Installation<a class="anchor-link" href="#Installation"> </a></h2><p><code>pip install brown_phototour_revisited</code></p>
+<h2 id="How-to-use">How to use<a class="anchor-link" href="#How-to-use"> </a></h2><p>There is a single function, which does everything for you: <code>full_evaluation</code>. The original Brown benchmark consider evaluation, similar to cross-validation: train descriptor on one subset, evaluate on two others, repeat for all, so 6 evaluations are required. For the handcrafted descriptors, or those, that are trained on 3rd party datasets, only 3 evaluations are necessary.  We are following it here as well.</p>
+<p>However, if you need to run some tests separately, or reuse some functions -- we will cover the usage below.
+In the following example we will show how to use <code>full_evaluation</code> to evaluate SIFT descriptor as implemented in kornia.</p>
+
+<pre><code># !pip install kornia</code></pre>
+
+<pre><code>import torch
+import kornia
+from IPython.display import clear_output
+from brown_phototour_revisited.benchmarking import *
+patch_size = 65 
+
+model = kornia.feature.SIFTDescriptor(patch_size, rootsift=True).eval()
+
+descs_out_dir = 'data/descriptors'
+download_dataset_to = 'data/dataset'
+results_dir = 'data/mAP'
+
+results_dict = {}
+results_dict['Kornia RootSIFT'] = full_evaluation(model,
+                                'Kornia RootSIFT',
+                                path_to_save_dataset = download_dataset_to,
+                                path_to_save_descriptors = descs_out_dir,
+                                path_to_save_mAP = results_dir,
+                                patch_size = patch_size, 
+                                device = torch.device('cuda:0'), 
+                           distance='euclidean',
+                           backend='pytorch-cuda')
+clear_output()
+print_results_table(results_dict)</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+<pre><code>------------------------------------------------------------------------------
+Mean Average Precision wrt Lowe SNN ratio criterion on UBC Phototour Revisited
+------------------------------------------------------------------------------
+trained on       liberty notredame  liberty yosemite  notredame yosemite
+tested  on           yosemite           notredame            liberty
+------------------------------------------------------------------------------
+Kornia RootSIFT        56.70              47.71               48.09 
+------------------------------------------------------------------------------</code></pre>
 
 </div>
 </div>
@@ -342,17 +396,15 @@ Mean Average Precision wrt Lowe SNN ratio criterion on UBC Phototour Revisited
 trained on       liberty notredame  liberty yosemite  notredame yosemite
 tested  on           yosemite           notredame            liberty
 ------------------------------------------------------------------------------
-Kornia RootSIFT 32px   58.24              49.07               49.65 
-Kornia RootSIFT 41px   57.83              48.48               49.01 
 Kornia SIFT 32px       58.47              47.76               48.70 
-Kornia SIFT 41px       58.14              47.30               48.30 
 OpenCV_SIFT 32px       53.16              45.93               46.00 
-OpenCV_SIFT 41px       54.10              46.09               46.29 
+Kornia RootSIFT 32px   58.24              49.07               49.65 
 OpenCV_RootSIFT 32px   53.50              47.16               47.37 
-OpenCV_RootSIFT 41px   54.19              47.20               47.37 
 OpenCV_LATCH 65px  -----  -----        -----  37.26        -----  39.08
 OpenCV_LUCID 32px      20.37              23.08               27.24 
 skimage_BRIEF 65px     52.68              44.82               46.56 
+Kornia RootSIFTPCA 3 60.73  60.64        50.80  50.24        52.46  52.02
+MKD-concat-lw-32 32p 72.27  71.95        60.88  58.78        60.68  59.10
 ------------------------------------------------------------------------------
 
 </code></pre>
@@ -360,6 +412,15 @@ skimage_BRIEF 65px     52.68              44.82               46.56
 <p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-09-16-local-descriptors-validation_files/att_00005.png" alt="" title="Image Matching Benchmark results, from https://arxiv.org/abs/2003.01587" /></p>
 <h3 id="Disclaimer-1:-don't-trust-this-tables-fully">Disclaimer 1: don't trust this tables fully<a class="anchor-link" href="#Disclaimer-1:-don't-trust-this-tables-fully"> </a></h3><p>I haven't (yet!) checked if all the deep descriptors models, trained on Brown, were trained with flip-rotation 90 degrees augmentation. In the code below I assume that they were, however, it might not be true -- and the comparison might not be completely fair. I will do my best to check it, but if you know that I have used wrong weights - please <a href="https://github.com/ducha-aiki/brown_phototour_revisited/issues">open an issue</a>. Thank you.</p>
 <h3 id="Disclaimer-2:-it-is-not-&quot;benchmark&quot;.">Disclaimer 2: it is not "benchmark".<a class="anchor-link" href="#Disclaimer-2:-it-is-not-&quot;benchmark&quot;."> </a></h3><p>The intended usage of the package is not to test and report the numbers in the paper. Instead think about is as cross-validation tool, helping the development. Thus, one CAN tune hyperparameters based on the benchmark results  instead of doing so on <a href="https://github.com/hpatches/hpatches-benchmark">HPatches</a>. After you have finished tuning, please, evaluate your local descriptors on some downstream task like <a href="https://github.com/vcg-uvic/image-matching-benchmark">IMC image matching benchmark</a> or <a href="https://www.visuallocalization.net/">visual localization</a>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Summary">Summary<a class="anchor-link" href="#Summary"> </a></h2><p>It really pays off, to spend time designing a proper evaluation pipeline and gathering the data for it. If you can re-use existing work - great. 
+But don't blindly trust anything, even super-popular and widely adopted benchmarks. You need always check if the the protocol and data makes sense for your use-case personally.</p>
+<p>Thanks for the reading, see you soon!</p>
 
 </div>
 </div>
