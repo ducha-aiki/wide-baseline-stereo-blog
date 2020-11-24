@@ -119,7 +119,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      2 min read
+      3 min read
     
 </span></p>
 
@@ -168,17 +168,17 @@ window.onload = wrap_img;
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Definition-of-WxBS">Definition of WxBS<a class="anchor-link" href="#Definition-of-WxBS"> </a></h3><p>Let us denote observations $O_{i}, i=1..n$, each of which belongs to one of the views $V_{j}, i=1..m$, $m \leq n$. 
-Observations can be, for example, pixels and views are images, respectfully. Observations and views can be of different nature and dimentionality. E.g. $V_1$, $V_2$  - RGB images, $V_3$ - point cloud from a laser scaner, $V_4$ - image from a thermal camera, and so on.</p>
-<p>We will call two of observations $(O_{i},O_{k})$, a correspondence $c_{ik}$ if they are belong to different views $V_{j}$. The group of observations is called correspondence set $C_o$, when there is exactly one observation $O_i$ per view $V_j$. Some of observations $O_i$ can be empty $\varnothing$, i.e. not observed in the specific view $V_j$. Multiple correspondences are called <strong>consistent</strong> if they form a correspondence set.</p>
+<h3 id="Definition-of-WxBS">Definition of WxBS<a class="anchor-link" href="#Definition-of-WxBS"> </a></h3><p>Let us denote <strong>observations</strong> $O_{i}, i=1..n$, each of which belongs to one of the <strong>views</strong> $V_{j}, j=1..m$, $m \leq n$.</p>
+<p>Observation consist of spatial information and the "descriptor". View contains the information, which is shared and the same for a group of observations.</p>
+<p>For example, a single observation can be an RGB pixel. Its spatial information is the pixel coordinates and the "descriptor" is RGB value. The view then is the image, with information about the camera pose, camera intrinsics, sensor and the time of the photo. Some of this information can be unknown to the user, i.e. hidden variable.</p>
+<p>Another example could an event camera[<a class="latex_cit" id="call-EventCameraSurvey2020" href="#cit-EventCameraSurvey2020">EventCameraSurvey2020</a>]. In that case the observation contains  the pixel coordinates and the descriptor is the sign of the intensity change. The view will contain the information about the sensor, camera pose and the single observation inside it, because every event has an unique timestamp.</p>
+<p>Observations and views can be of different nature and dimentionality. E.g. $V_1$, $V_2$  -- RGB images, $V_3$ -- point cloud from a laser scaner, $V_4$ -- image from a thermal camera, and so on.</p>
+<p>An unordered pair of observations $(O_{i},O_{k})$ forms a <strong>correspondence</strong> $c_{ik}$ if they are belong to different views $V_{j}$. The group of observations is called multivew correspondence $C_o$, when there is exactly one observation $O_i$ per view $V_j$. Some of observations $O_i$ can be empty $\varnothing$, i.e. not observed in the specific view $V_j$.</p>
+<p>The <strong>world model</strong> is the set of contraints on views, observations and correspondences. For example, one the popular models are epipolar geometry and ridid motion assumption.</p>
+<p>The correspondence is called ground truth or veridical if it satisfy the constraints posed be the world model.</p>
 <p>We can now define a wide baseline stereo.</p>
-<p>By <strong>wide baseline stereo</strong> we understand the process of establishing correspondence sets $C_o$ from observations $O_i$ and images $V_{j}$ under the following constraints:</p>
-<ul>
-<li>images $V_j$ belong to camera planes taken by cameras $K_j$ of the same static rigid scene $S$. </li>
-</ul>
-<p>In addition to recovering the correspondence sets wide baseline stereo process also recovers (unknown) camera poses $K_j$.</p>
-<p>By "rigid" we mean that the only "motion" possible is the pose difference of the cameras, which is called "baseline" for the case where there are only two cameras.</p>
-<p>We could also assume some scene structure or model, consisting of latent objects $X_i$, which we are could only inderectly observe by observations $O_i$.</p>
+<p>By \textbf{wide baseline stereo} we understand the process of establishing two or multi-view correspondences  (C_o) from observations (O<em>i) and images $V</em>{j}$ and recovering the missing information about the views and estimatting the unknown parameters of the world model.</p>
+<p>Most often in the current thesis we will be using the the following world model. The scene consists of 3 dimentional elements, and is rigid and static. The observations are the 2D projections to the camera plane by the projectice pinhole camera. The relationship between observations in different views is either epipolar geometry, or projective transform[<a class="latex_cit" id="call-Hartley2004" href="#cit-Hartley2004">Hartley2004</a>]. Any moving object does not satisty the world model and therefore is considered an occlusion. We will call the "baseline" the distance between the camera centers.</p>
 <p>For example, on image below, observations $O_i$ are blue circles and the correspondences $c_{jk}$ are shown as lines. The assumed object $X_i$ is a red circle.</p>
 <p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/imgs/WxBS_house.jpeg" alt="" title="Example of multimodal wide baseline stereo" /></p>
 <p>We will call "<strong>wide multiple baseline stereo</strong>" or <strong>WxBS</strong> [<a class="latex_cit" id="call-Mishkin2015WXBS" href="#cit-Mishkin2015WXBS">Mishkin2015WXBS</a>] if the observations have different nature or the conditions under which observation were made are different.</p>
@@ -194,7 +194,9 @@ Observations can be, for example, pixels and views are images, respectfully. Obs
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="References">References<a class="anchor-link" href="#References"> </a></h1><p>(<a id="cit-Mishkin2015WXBS" href="#call-Mishkin2015WXBS">Mishkin, Matas <em>et al.</em>, 2015</a>) D. Mishkin, J. Matas, M. Perdoch <em>et al.</em>, ``<em>WxBS: Wide Baseline Stereo Generalizations</em>'', BMVC,  2015.</p>
+<h1 id="References">References<a class="anchor-link" href="#References"> </a></h1><p>(<a id="cit-EventCameraSurvey2020" href="#call-EventCameraSurvey2020">Gallego, Delbruck <em>et al.</em>, 2020</a>) Gallego Guillermo, Delbruck Tobi, Orchard Garrick Michael <em>et al.</em>, ``<em>Event-based Vision: A Survey</em>'', IEEE Transactions on Pattern Analysis and Machine Intelligence, vol. , number , pp. ,  2020.</p>
+<p>(<a id="cit-Hartley2004" href="#call-Hartley2004">Hartley and Zisserman, 2004</a>) R.~I. Hartley and A. Zisserman, ``<em>Multiple View Geometry in Computer Vision</em>'',  2004.</p>
+<p>(<a id="cit-Mishkin2015WXBS" href="#call-Mishkin2015WXBS">Mishkin, Matas <em>et al.</em>, 2015</a>) D. Mishkin, J. Matas, M. Perdoch <em>et al.</em>, ``<em>WxBS: Wide Baseline Stereo Generalizations</em>'', BMVC,  2015.</p>
 
 </div>
 </div>
