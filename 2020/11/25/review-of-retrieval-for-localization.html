@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Benchmarking Image Retrieval for Visual Localization | Wide baseline stereo meets deep learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Benchmarking Image Retrieval for Visual Localization" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Short review" />
+<meta property="og:description" content="Short review" />
+<meta property="og:site_name" content="Wide baseline stereo meets deep learning" />
+<meta property="og:image" content="/wide-baseline-stereo-blog/images/retrieval-for-loc.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-11-25T00:00:00-06:00" />
+<script type="application/ld+json">
+{"description":"Short review","headline":"Benchmarking Image Retrieval for Visual Localization","dateModified":"2020-11-25T00:00:00-06:00","datePublished":"2020-11-25T00:00:00-06:00","@type":"BlogPosting","image":"/wide-baseline-stereo-blog/images/retrieval-for-loc.png","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2020/11/25/review-of-retrieval-for-localization.html"},"url":"/wide-baseline-stereo-blog/2020/11/25/review-of-retrieval-for-localization.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/wide-baseline-stereo-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="/wide-baseline-stereo-blog/feed.xml" title="Wide baseline stereo meets deep learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-174193910-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+<link rel="shortcut icon" type="image/x-icon" href="/wide-baseline-stereo-blog/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Benchmarking Image Retrieval for Visual Localization | Wide baseline stereo meets deep learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Benchmarking Image Retrieval for Visual Localization" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Short review" />
+<meta property="og:description" content="Short review" />
+<meta property="og:site_name" content="Wide baseline stereo meets deep learning" />
+<meta property="og:image" content="/wide-baseline-stereo-blog/images/retrieval-for-loc.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-11-25T00:00:00-06:00" />
+<script type="application/ld+json">
+{"description":"Short review","headline":"Benchmarking Image Retrieval for Visual Localization","dateModified":"2020-11-25T00:00:00-06:00","datePublished":"2020-11-25T00:00:00-06:00","@type":"BlogPosting","image":"/wide-baseline-stereo-blog/images/retrieval-for-loc.png","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2020/11/25/review-of-retrieval-for-localization.html"},"url":"/wide-baseline-stereo-blog/2020/11/25/review-of-retrieval-for-localization.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="/wide-baseline-stereo-blog/feed.xml" title="Wide baseline stereo meets deep learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-174193910-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/wide-baseline-stereo-blog/">Wide baseline stereo meets deep learning</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/wide-baseline-stereo-blog/about/">About Me</a><a class="page-link" href="/wide-baseline-stereo-blog/search/">Search</a><a class="page-link" href="/wide-baseline-stereo-blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Benchmarking Image Retrieval for Visual Localization</h1><p class="page-description">Short review</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-11-25T00:00:00-06:00" itemprop="datePublished">
+        Nov 25, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      4 min read
+    
+</span></p>
+
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/ducha-aiki/wide-baseline-stereo-blog/tree/master/_notebooks/2020-11-25-review-of-retrieval-for-localization.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/ducha-aiki/wide-baseline-stereo-blog/master?filepath=_notebooks%2F2020-11-25-review-of-retrieval-for-localization.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/ducha-aiki/wide-baseline-stereo-blog/blob/master/_notebooks/2020-11-25-review-of-retrieval-for-localization.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2020-11-25-review-of-retrieval-for-localization.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I would like to share my thoughts on 3DV 2020 paper "<a href="https://arxiv.org/pdf/2011.11946.pdf">Benchmarking Image Retrieval for Visual Localization</a>" by Pion et.al.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-11-25-review-of-retrieval-for-localization_files/att_00000.png" alt="" title="Overview of the benchmark pipeline" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="What-is-the-paper-about?">What is the paper about?<a class="anchor-link" href="#What-is-the-paper-about?"> </a></h1><p>How one would approach visual localization? The most viable way to do it is hierarchical approach, similar to image retrieval with spatial verification.</p>
+<p>You get the query image, retrieve the most similar images to it from some database by some efficient method, e.g. global descriptor search. Then given the top-k images you estimate the pose of the query image by doing two-view matching, or some other method.</p>
+<p>The question is -- how much influence the quality of the image retrieval has? Should you spend more or less time improving it? That is the questions, paper trying to answer.</p>
+<p>Authors design 3 re-localization systems.</p>
+<ol>
+<li><p>"Task 1" system estimates the query image pose as average of the short-list images pose, weighted by the similarity to the query image.</p>
+</li>
+<li><p>"Task 2a" system performs pairwise two-view matching between short-list images and query triangulates the query image pose using 3d map built from the successully matches images.</p>
+</li>
+<li><p>"Task 2b" pre-builds the 3D map from the database images offline. At the inference time, local feature 2d-3d matching is done on the shortlist images.</p>
+</li>
+</ol>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="What-is-benchmarked?">What is benchmarked?<a class="anchor-link" href="#What-is-benchmarked?"> </a></h1><p>The paper compares</p>
+<ul>
+<li>SIFT-based DenseVLAD</li>
+</ul>
+<p>and CNN-based</p>
+<ul>
+<li><a href="https://arxiv.org/abs/1511.07247">NetVLAD</a></li>
+<li><a href="https://arxiv.org/pdf/1906.07589.pdf">APGeM</a></li>
+<li><a href="https://arxiv.org/abs/2001.05027">DELG</a></li>
+</ul>
+<p>What is important (and adequately mentioned in the paper, although I would prefer the disclamer in the each figure) is that <strong>all CNN-based methods have different architectures AND training data</strong>. Basically, the paper uses author-released models. Thus one cannot say if APGeM is better or worse than NetVLAD as method, because they were trained on the very different data. However, I also understand that one cannot easily afford to re-implement and re-train everything.</p>
+<p>As the sanity check paper provides the results on the <a href="http://cmp.felk.cvut.cz/revisitop/">Revisited Oxford and Paris</a> image retrieval benchmark.
+<img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-11-25-review-of-retrieval-for-localization_files/att_00001.png" alt="" title="Retrieval metrics on Revised Oxford and Paris" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Summary-of-results">Summary of results<a class="anchor-link" href="#Summary-of-results"> </a></h1><p>Paper contains a lot of information and I definitely recommend you to read it. Nevertheless, let me try to summarize paper messages and then my take on it.</p>
+<ol>
+<li>For the task1 (similarity-weighted pose) there is no clear winner. (SIFT)-DenseVLAD works the best for the daytime datasets. Probably DenseVLAD is godd because it is not invariant and if it can match images, they are really close -&gt; high pose accuracy.  For the night both DeLG and AP-GeM are good. As paper guesses, that it because they are only ones, which were trained on night images as well.
+<img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-11-25-review-of-retrieval-for-localization_files/att_00002.png" alt="image.png" /></li>
+</ol>
+<ol>
+<li>There is almost no difference between CNN-based methods for the task2a and task2b (retrieval -&gt; local features matching). This indicates that the limit is the mostly </li>
+</ol>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-11-25-review-of-retrieval-for-localization_files/att_00003.png" alt="image.png" /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-11-25-review-of-retrieval-for-localization_files/att_00004.png" alt="image.png" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="My-take-away-messages">My take-away messages<a class="anchor-link" href="#My-take-away-messages"> </a></h1><h3 id="Image-Relocalization-seems-to-be-is-more-real-world-and-engineering-task,-than-image-retrieval.">Image Relocalization seems to be is more real-world and engineering task, than image retrieval.<a class="anchor-link" href="#Image-Relocalization-seems-to-be-is-more-real-world-and-engineering-task,-than-image-retrieval."> </a></h3><p>And that it why it actually ALREADY WORKS, because if there some weak spot, it is compensated by the system design.  Thhe same conclusion from our <a href="https://arxiv.org/abs/2003.01587">IMC paper</a>, experiment with ground truth -- if you have 1k images for the 3d model, you can use as bad features, as you want. The COLMAP will recover anyway</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-11-25-review-of-retrieval-for-localization_files/att_00009.png" alt="image.png" /></p>
+<p>The retrieval, on the other hand is more interesting to work on, because it is kind of deliberately hard and you can do some fancy stuff, which do not matter in the real world.</p>
+<h3 id="Task1-(global-descriptor-only)-system-are-quite-useless-now">Task1 (global descriptor-only) system are quite useless now<a class="anchor-link" href="#Task1-(global-descriptor-only)-system-are-quite-useless-now"> </a></h3><p>Unless we are speaking about the quite dense image representation. I mean, top-accuracy is 35% vs almost 100% for those, which include local features.</p>
+<p>Good news: it has a LOT of space for the improvement to work on.</p>
+<h3 id="For-the-task-2a-and-2b,-robust-global-descriptors-are-a-way-to-do-the-retrieval,-sorry-VLAD.">For the task 2a and 2b, robust global descriptors are a way to do the retrieval, sorry VLAD.<a class="anchor-link" href="#For-the-task-2a-and-2b,-robust-global-descriptors-are-a-way-to-do-the-retrieval,-sorry-VLAD."> </a></h3><p>The precision will come from the local features. Which I like a lot, because VLAD is more complex to train and initalize, I never liked it (nothing personal).</p>
+<h3 id="For-the-task2a-and-2b-we-need-new-metrics,-e.g.-precisition-@-X-Mb-memory-footprint">For the task2a and 2b we need new metrics, e.g. precisition @ X Mb memory footprint<a class="anchor-link" href="#For-the-task2a-and-2b-we-need-new-metrics,-e.g.-precisition-@-X-Mb-memory-footprint"> </a></h3><p>Because otherwise, the task is easily solved by the brute force -- either by photo taking, or, at least with image syntesis, see <a href="https://hal.inria.fr/hal-01616660/document">24/7 place recognition by view synthesis</a>.</p>
+<p>Such steps are already taken in the paper <a href="https://arxiv.org/abs/2007.13172">Learning and aggregating deep local descriptors for instance-level recognition</a>  -- see the table with memory footprint.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-11-25-review-of-retrieval-for-localization_files/att_00006.png" alt="image.png" /></p>
+<p>That is how one could have an interesting research challenge, also having some grounds in the real-world -- to work in mobile phones. Otherwise, any method would work, if the database is dense enough.</p>
+<h3 id="Robust-local-features-matter-for-illumination-changes">Robust local features matter for illumination changes<a class="anchor-link" href="#Robust-local-features-matter-for-illumination-changes"> </a></h3><p>It is a bit hidden in the Appendix, so go directly to the Figure 9. It clearly shows that localization performance is bounded by SIFT, if it is used for two view matching, making retrieval improvements irrelevant. When R2D2 or D2Net are used for matching instead, the overall results for night-time are much better.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-11-25-review-of-retrieval-for-localization_files/att_00007.png" alt="image.png" /></p>
+<p>That is in line with my small visual benchmark I did recently.</p>
+<p><a href="https://twitter.com/ducha_aiki/status/1330495426865344515">https://twitter.com/ducha_aiki/status/1330495426865344515</a></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-11-25-review-of-retrieval-for-localization_files/att_00008.png" alt="image.png" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>That's all, folks! Now please, check the <a href="https://arxiv.org/abs/2011.11946.pdf">paper</a> and the <a href="https://github.com/naver/kapture-localization">code</a> they provided.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="ducha-aiki/wide-baseline-stereo-blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/wide-baseline-stereo-blog/2020/11/25/review-of-retrieval-for-localization.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/wide-baseline-stereo-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/wide-baseline-stereo-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Everything you (didn&#39;t) want to know about image matching</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/ducha-aiki" title="ducha-aiki"><svg class="svg-icon grey"><use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/ducha_aiki" title="ducha_aiki"><svg class="svg-icon grey"><use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
