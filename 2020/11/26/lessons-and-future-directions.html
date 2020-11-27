@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Lessons learned and future directions | Wide baseline stereo meets deep learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Lessons learned and future directions" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="What I think is worthy to work on in wide baseline stereo" />
+<meta property="og:description" content="What I think is worthy to work on in wide baseline stereo" />
+<meta property="og:site_name" content="Wide baseline stereo meets deep learning" />
+<meta property="og:image" content="/wide-baseline-stereo-blog/images/yoy_cat.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-11-26T00:00:00-06:00" />
+<script type="application/ld+json">
+{"description":"What I think is worthy to work on in wide baseline stereo","headline":"Lessons learned and future directions","dateModified":"2020-11-26T00:00:00-06:00","datePublished":"2020-11-26T00:00:00-06:00","@type":"BlogPosting","image":"/wide-baseline-stereo-blog/images/yoy_cat.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2020/11/26/lessons-and-future-directions.html"},"url":"/wide-baseline-stereo-blog/2020/11/26/lessons-and-future-directions.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/wide-baseline-stereo-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="/wide-baseline-stereo-blog/feed.xml" title="Wide baseline stereo meets deep learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-174193910-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+<link rel="shortcut icon" type="image/x-icon" href="/wide-baseline-stereo-blog/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Lessons learned and future directions | Wide baseline stereo meets deep learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Lessons learned and future directions" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="What I think is worthy to work on in wide baseline stereo" />
+<meta property="og:description" content="What I think is worthy to work on in wide baseline stereo" />
+<meta property="og:site_name" content="Wide baseline stereo meets deep learning" />
+<meta property="og:image" content="/wide-baseline-stereo-blog/images/yoy_cat.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-11-26T00:00:00-06:00" />
+<script type="application/ld+json">
+{"description":"What I think is worthy to work on in wide baseline stereo","headline":"Lessons learned and future directions","dateModified":"2020-11-26T00:00:00-06:00","datePublished":"2020-11-26T00:00:00-06:00","@type":"BlogPosting","image":"/wide-baseline-stereo-blog/images/yoy_cat.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2020/11/26/lessons-and-future-directions.html"},"url":"/wide-baseline-stereo-blog/2020/11/26/lessons-and-future-directions.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="/wide-baseline-stereo-blog/feed.xml" title="Wide baseline stereo meets deep learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-174193910-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/wide-baseline-stereo-blog/">Wide baseline stereo meets deep learning</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/wide-baseline-stereo-blog/about/">About Me</a><a class="page-link" href="/wide-baseline-stereo-blog/search/">Search</a><a class="page-link" href="/wide-baseline-stereo-blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Lessons learned and future directions</h1><p class="page-description">What I think is worthy to work on in wide baseline stereo</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-11-26T00:00:00-06:00" itemprop="datePublished">
+        Nov 26, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      6 min read
+    
+</span></p>
+
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/ducha-aiki/wide-baseline-stereo-blog/tree/master/_notebooks/2020-11-26-lessons-and-future-directions.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/ducha-aiki/wide-baseline-stereo-blog/master?filepath=_notebooks%2F2020-11-26-lessons-and-future-directions.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/ducha-aiki/wide-baseline-stereo-blog/blob/master/_notebooks/2020-11-26-lessons-and-future-directions.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2020-11-26-lessons-and-future-directions.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I would like to share some lessons I have learned about wide baseline stereo and propose some research directions, which are worth exploring in the short and longer term.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Lessons-learned">Lessons learned<a class="anchor-link" href="#Lessons-learned"> </a></h1><h2 id="1.-Benchmark-=-metrics-+-implementation-+-dataset">1. Benchmark = metrics + implementation + dataset<a class="anchor-link" href="#1.-Benchmark-=-metrics-+-implementation-+-dataset"> </a></h2><p>In our paper "<a href="https://arxiv.org/abs/2003.01587">Image Matching across Wide Baselines: From Paper to Practice</a>" we focused on the first two parts. Specifically, metrics -- if they are not "downstream" metrics, the improvements in the single component might not translate to the overall system improvements. 
+And implementation -- implementing the simplest possible setup is, of course, a valuable tool, but one have to also incorporate the best known practices, e.g. matching, RANSAC tuning as so on.</p>
+<p>I hope, that we have delivered that message to the community. But the last component -- the dataset -- we have, perhaps, overlooked a bit ourself. The problem with dataset limitations, e.g. lack of illumination or seasonal changes is not that one does not properly address. Usually benchmark papers are adressing their limitations quite clearly.
+The problem is that researchers (including myself) have tendency to work on improving results, which are easily measurable, therefore the implicitly designing the methods, which solve only some specific problem, encoded in the form of the dataset.</p>
+<h2 id="2.-Trying-to-work-for-the-&quot;most-general&quot;-case-might-be-detrimental-for-the-practical-applications.">2. Trying to work for the "most general" case might be detrimental for the practical applications.<a class="anchor-link" href="#2.-Trying-to-work-for-the-&quot;most-general&quot;-case-might-be-detrimental-for-the-practical-applications."> </a></h2><p>This is kind of opposite side of the lesson 1. For example, the classical SIFT matching is rotation-invariant, because that was assumed to be the requirement to work in the "real world". However, the practice of image retrieval and then most of learned local features like R2D2, SuperPoint, DELF and so on, showed that "up-is-up" is a reasonable assumption to built on. The rotational invariance in lots of scenarios hurt more than helps.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="3.-When-borrow-idea-from-classical-paper,-adapt-it">3. When borrow idea from classical paper, adapt it<a class="anchor-link" href="#3.-When-borrow-idea-from-classical-paper,-adapt-it"> </a></h2><p><a href="https://proceedings.neurips.cc/paper/2017/hash/831caa1b600f852b7844499430ecac17-Abstract.html">HardNet</a> borrows the idea of the using <a href="https://medium.com/@ducha.aiki/how-to-match-to-learn-or-not-to-learn-part-2-1ab52ede2022">second nearest neighbor</a>(SNN) descriptor from the SIFT. However, using SNN ratio for descriptor learning leads to inferior results. We had to modify it to the triplet margin loss.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="4.-Classic-handcrafted-algorithms-are-not-dead-and-can-be-improved-a-lot">4. Classic handcrafted algorithms are not dead and can be improved a lot<a class="anchor-link" href="#4.-Classic-handcrafted-algorithms-are-not-dead-and-can-be-improved-a-lot"> </a></h2><p>Modern versions of RANSAC are still necessary for two view matching even when so complex methods as SuperGlue as used. Moreover, they still have quite a lot things for improvement, as proved by my colleague, <a href="https://scholar.google.hu/citations?user=U9-D8DYAAAAJ&amp;hl=en">Daniel Barath</a></p>
+<p>They also have a benefit, that once you have an idea, you can make a paper out it faster, as you don't need gathering data and training the model.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Future-research-directions">Future research directions<a class="anchor-link" href="#Future-research-directions"> </a></h1><h2 id="1.-Application-specific-local-features">1. Application-specific local features<a class="anchor-link" href="#1.-Application-specific-local-features"> </a></h2><p>One thing about the current local features is that they are kind of universal. SIFT works reasonably well for lots of applications: 3d reconstruction, SLAM, image retrieval, etc. The learned features, like SuperPoint or R2D2, although are biased towards the data they are trained on, still don't have anything domain specific.</p>
+<p>Let me explain. There are different qualities about the local feature (detectors). It can be more or less robust to nuisance factors like the illumination and camera position. It can be more or less precisely localized. It can be more or less dense and/or evenly distributed over the image.</p>
+<p>For example, in image retrieval, one does not really care about precise localization, the robustness is much more important. For the 3d reconstruction one would like to have a lot of 3d points to get the reasonable reconstruction.
+On the other hand, for the SLAM/relocalization application, sparse features would be more advantageous because of smaller memory footprint and computational cost.</p>
+<p>There are, actually, some steps in that direction. Let me name a few.</p>
+<ol>
+<li><p><a href="https://arxiv.org/pdf/2007.13172.pdf">HOW local features</a> designed for the image retrieval
+<img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-11-26-lessons-and-future-directions_files/att_00000.png" alt="" title="Robust, but poorly localized HOW local features for imare retrieval, from &#39;Learning and aggregating deep local descriptors for instance-level recognition&#39; paper" /></p>
+</li>
+<li><p><a href="http://rpg.ifi.uzh.ch/docs/3DV19_Cieslewski.pdf">SIPs: Succinct Interest Points from Unsupervised Inlierness Probability Learning</a> sparse local features for the SLAM.</p>
+<!--![](2020-11-26-lessons-and-future-directions_files/att_00001.png "A small number of keypoints might be enough for estimating the camera pose. Figure from SIPs paper") --></li>
+<li><p><a href="https://arxiv.org/abs/1912.00623">Reinforced Feature Points: Optimizing Feature Detection and Description for a High-Level Task</a>
+<img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-11-26-lessons-and-future-directions_files/att_00002.png" alt="" title="Optimizing local features for non-differentiable high-level task, Figure from Reinforced Feature Points" /></p>
+</li>
+</ol>
+<p>I believe, that it is only beginning and we are yet to experience AlphaZero moment for the local features.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="2.-Rethinking-overall-wide-baseline-stereo-pipeline,-optimized-for-the-specific-application">2. Rethinking overall wide baseline stereo pipeline, optimized for the specific application<a class="anchor-link" href="#2.-Rethinking-overall-wide-baseline-stereo-pipeline,-optimized-for-the-specific-application"> </a></h2><p>It is often perceived, that image matching across the unordered collection of the images is a task with quadratic complexity w.r.t. number of images. Some operations can be done separately, e.g. feature detection, but others, like feature matching and RANSAC cannot. Right?</p>
+<p>Not necessarily. It turns out, that one can avoid running feature matching and RANSAC for more than 90% of image pairs with clever preprocessing, ordering and re-using results from the previous matching.
+Moreover, in order to do the whole task faster (matching image collections), one may need to introduce additional steps, which are not necessary, or slowing things down for the two images case.</p>
+<p>That's what we done for the <a href="https://arxiv.org/abs/2011.11986">intial pose estimation for the global SfM</a> in our paper, which reduced the matching runtime from 200 hours to 29.</p>
+<!-- ![](2020-11-26-lessons-and-future-directions_files/att_00003.png "Table from the Efficient Initial Pose-graph Generation for Global SfM") -->
+
+<p>Another example would be "<a href="https://arxiv.org/abs/1911.11763">SuperGlue: Learning Feature Matching with Graph Neural Networks</a>", where authors abandoned traditional descriptor matching and instead leveraged all the information for keypoint and descriptors from both images altogether.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="3.-Rethinking-and-improving-the-process-of-training-data-generation-for-the-WBS">3. Rethinking and improving the process of training data generation for the WBS<a class="anchor-link" href="#3.-Rethinking-and-improving-the-process-of-training-data-generation-for-the-WBS"> </a></h2><p>So far, all the local feature papers I have seen rely on one of the ground truth source.</p>
+<ol>
+<li>SfM data, obtained with COLMAP with, possibly, a cleaned depth information.</li>
+<li>Affine and color augmentation.</li>
+<li>Synthetic images (e.g. corners for SuperPoint).</li>
+</ol>
+<p>There are several problems with them.</p>
+<p><strong>SfM data</strong> assumes that the data is matchable by the existing methods, at least for a some extent. That might not always be true for cross-seasonal, medical and other kind of data. It is also not applicable for historical photographies and other types of data. Moreover, SfM data takes quite a time for compute and space to store. I believe that we may do better.</p>
+<p><strong>Affine and color augmentation</strong> can take us only this far -- we actually want our detectors and descriptors to be robust to the changes, which we don't know how to simulate/augment.</p>
+<p><strong>Synthetic images</strong> as they are in, say, <a href="https://carla.org/">CARLA</a> simulator lack fine details and photorealism. However, I am optimistic about using neural renderers and learned wide baseline stereo is a GAN-like self-improving loop.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="4.-Matching-with-On-Demand-View-Synthesis-revisited">4. Matching with On-Demand View Synthesis revisited<a class="anchor-link" href="#4.-Matching-with-On-Demand-View-Synthesis-revisited"> </a></h2><p>I like the "on-demand" principle a lot and I think we can explore it much more that we are now. 
+So far we have either <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2020/08/06/affine-view-synthesis.html">affine view synthesis (ASIFT, MODS)</a>, or <a href="https://people.ee.ethz.ch/~timofter/publications/Anoosheh-ICRA-2019.pdf">GAN-based stylizations</a> for the day-night matching.</p>
+<p>That is why I am glad to see papers like <a href="https://arxiv.org/abs/2008.09497">Single-Image Depth Prediction Makes Feature Matching Easier</a>, which generate normalized views based on depth in order to help the matching.</p>
+<p>Why not go further? Combine viewpoint, illumination, season, sensor synthesis?</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="5.-Moar-inputs!">5. Moar inputs!<a class="anchor-link" href="#5.-Moar-inputs!"> </a></h2><p>I have mentioned above that monocular depth may help the feature matching or <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2020/07/17/affine-correspondences.html#Back-to-wide-baseline-stereo">camera pose estimation</a>. However, why stop here?</p>
+<p>Let's use other networks as well, especially given that we will need them on robot or vehicle anyway. Semantic segmentation? Yes, please. Surface normals? Why not? Intrinsic images? Йой, най буде! <sup id="fnref-1" class="footnote-ref"><a href="#fn-1">1</a></sup></p>
+<p><div class="footnotes"><p id="fn-1">1. Ukrainian, means let is be<a href="#fnref-1" class="footnote footnotes">↩</a></p></div>
+<img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-11-26-lessons-and-future-directions_files/att_00004.png" alt="image.png" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="What-do-you-think-would-be-good-idea-for-the-WBS--research?">What do you think would be good idea for the WBS  research?<a class="anchor-link" href="#What-do-you-think-would-be-good-idea-for-the-WBS--research?"> </a></h2><p>Let me know in comments/twitter. I am also going to update this page from time to time</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="ducha-aiki/wide-baseline-stereo-blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/wide-baseline-stereo-blog/2020/11/26/lessons-and-future-directions.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/wide-baseline-stereo-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/wide-baseline-stereo-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Everything you (didn&#39;t) want to know about image matching</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/ducha-aiki" title="ducha-aiki"><svg class="svg-icon grey"><use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/ducha_aiki" title="ducha_aiki"><svg class="svg-icon grey"><use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
