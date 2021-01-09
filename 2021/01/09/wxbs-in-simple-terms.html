@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Wide multiple baseline stereo in simple terms | Wide baseline stereo meets deep learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Wide multiple baseline stereo in simple terms" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Or how to explain it to everyone" />
+<meta property="og:description" content="Or how to explain it to everyone" />
+<meta property="og:site_name" content="Wide baseline stereo meets deep learning" />
+<meta property="og:image" content="/wide-baseline-stereo-blog/images/doll_wbs_300.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-01-09T00:00:00-06:00" />
+<script type="application/ld+json">
+{"headline":"Wide multiple baseline stereo in simple terms","dateModified":"2021-01-09T00:00:00-06:00","datePublished":"2021-01-09T00:00:00-06:00","description":"Or how to explain it to everyone","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2021/01/09/wxbs-in-simple-terms.html"},"@type":"BlogPosting","image":"/wide-baseline-stereo-blog/images/doll_wbs_300.png","url":"/wide-baseline-stereo-blog/2021/01/09/wxbs-in-simple-terms.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/wide-baseline-stereo-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="/wide-baseline-stereo-blog/feed.xml" title="Wide baseline stereo meets deep learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-174193910-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+<link rel="shortcut icon" type="image/x-icon" href="/wide-baseline-stereo-blog/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Wide multiple baseline stereo in simple terms | Wide baseline stereo meets deep learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Wide multiple baseline stereo in simple terms" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Or how to explain it to everyone" />
+<meta property="og:description" content="Or how to explain it to everyone" />
+<meta property="og:site_name" content="Wide baseline stereo meets deep learning" />
+<meta property="og:image" content="/wide-baseline-stereo-blog/images/doll_wbs_300.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-01-09T00:00:00-06:00" />
+<script type="application/ld+json">
+{"headline":"Wide multiple baseline stereo in simple terms","dateModified":"2021-01-09T00:00:00-06:00","datePublished":"2021-01-09T00:00:00-06:00","description":"Or how to explain it to everyone","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2021/01/09/wxbs-in-simple-terms.html"},"@type":"BlogPosting","image":"/wide-baseline-stereo-blog/images/doll_wbs_300.png","url":"/wide-baseline-stereo-blog/2021/01/09/wxbs-in-simple-terms.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="/wide-baseline-stereo-blog/feed.xml" title="Wide baseline stereo meets deep learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-174193910-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/wide-baseline-stereo-blog/">Wide baseline stereo meets deep learning</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/wide-baseline-stereo-blog/about/">About Me</a><a class="page-link" href="/wide-baseline-stereo-blog/search/">Search</a><a class="page-link" href="/wide-baseline-stereo-blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Wide multiple baseline stereo in simple terms</h1><p class="page-description">Or how to explain it to everyone</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-01-09T00:00:00-06:00" itemprop="datePublished">
+        Jan 9, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      2 min read
+    
+</span></p>
+
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/ducha-aiki/wide-baseline-stereo-blog/tree/master/_notebooks/2021-01-09-wxbs-in-simple-terms.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/ducha-aiki/wide-baseline-stereo-blog/master?filepath=_notebooks%2F2021-01-09-wxbs-in-simple-terms.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/ducha-aiki/wide-baseline-stereo-blog/blob/master/_notebooks/2021-01-09-wxbs-in-simple-terms.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2021-01-09-wxbs-in-simple-terms.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="What-is-the-wide-baseline-stereo?">What is the wide baseline stereo?<a class="anchor-link" href="#What-is-the-wide-baseline-stereo?"> </a></h2><p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2020-03-27-intro_files/att_00001.png" alt="" title="Two images of the same place, taken from different viewpoint and in different times. The building: Kyiv doll theater." /></p>
+<p>Imagine you have a nice photo you took in autumn and would like to take one in summer, from exactly the same spot. How would you achieve that? You come to the place and start to compare what you see on the camera screen and on the printed photo. Specifically, you would probably try to locate the same objects, e.g. "that high lamppost" or "this wall clock". Then one would estimate how differently they are arranged on the old photo and camera screen. For example, by checking whether the lamppost is occluding the clock on the tower, or not. That would give an idea of how you should move your camera, i.e. relative camera pose.</p>
+<p>Now, what if you do not have that photo as is, but can have only a description of it instead? In that case, it is likely that you would try to list features and objects in the photo. This can be together with descriptions, which are distinguishable. For example, "long staircase on the left side”, "The nice building with a dark roof and two towers" or “top of the lampost”. It would be useful to also describe where these objects and features are pictured in the photo, "The lamp posts are on the left, the closest to the viewer is in front of the left tower with a clock. The clock tower is not the part of the building and stands on its own".</p>
+<p>Then, when arriving on the spot, you would try to find those objects, match them to the description you have, and try to estimate where you should go. You repeat the procedure until the camera screen shows a similar enough picture to what you have in mind.</p>
+<p>Congratulations! You just have successfully registered two images, which have a significant difference in viewpoint, appearance, and illumination. In the process of doing so, you have solved multiple times the wide multiple-baseline stereo problem (WxBS) -- estimating the relative camera pose from a pair of images, different in the many aspects, yet depicting the same scene.</p>
+<p>Let us write down the steps, which we took.</p>
+<ol>
+<li><p>Identify salient objects and features in the images -- "trees", "statues", “tip of the tower”, etc in images.</p>
+</li>
+<li><p>Describe the objects and features, taking into account their neighborhood: “statue with a blue left ear".</p>
+</li>
+<li><p>Establish potential correspondences between features in the different images, based on their descriptors.</p>
+</li>
+<li><p>Estimate, which direction one should move the camera to align the objects and features.</p>
+</li>
+</ol>
+<p>That is it! If you are interested in the formal definition, <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2020/07/09/wxbs.html">check here</a>, and the <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2020/03/27/intro.html">history of the WxBS is here</a>.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="ducha-aiki/wide-baseline-stereo-blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/wide-baseline-stereo-blog/2021/01/09/wxbs-in-simple-terms.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/wide-baseline-stereo-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/wide-baseline-stereo-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Everything you (didn&#39;t) want to know about image matching</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/ducha-aiki" title="ducha-aiki"><svg class="svg-icon grey"><use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/ducha_aiki" title="ducha_aiki"><svg class="svg-icon grey"><use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
