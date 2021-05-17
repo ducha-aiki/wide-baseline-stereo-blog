@@ -197,11 +197,11 @@ You can check details in the paper "<a href="https://arxiv.org/abs/2003.01587">I
 <h2 id="Results">Results<a class="anchor-link" href="#Results"> </a></h2><p>Here are results for all 3 datasets. The lefter and upper is curve, the better. Dashed vertical line marks 0.5 sec time budget. Legend shows the method name and the optimal inlier threshold for the datasets: Phototourism, GoogleUrban and PragueParks respectively.</p>
 <p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-05-17-OpenCV-New-RANSACs_files/att_00000.png" alt="image.png" /></p>
 <ol>
-<li><p>The first and main message -- <strong>all new flags are much better than the old OpenCV implementation (green curve), which still a default option</strong>.</p>
+<li><p>The first and main message -- <strong>all new flags are much better than the old OpenCV implementation (green curve, worst results), which still a default option</strong>.</p>
 </li>
-<li><p>10k iterations and USAC_ACCURATE gives you great results within 0.01 sec</p>
+<li><p>10k iterations and USAC_ACCURATE (red curve) gives you great results within 0.01 sec</p>
 </li>
-<li><p>All OpenCV advanced USACs are better than for the small/medium time budget (&lt; 0.1 sec per image) than pydegensac.</p>
+<li><p>All OpenCV advanced USACs are better than for the small/medium time budget (&lt; 0.1 sec per image) than pydegensac (blue curve).</p>
 </li>
 <li><p>The best methods for the higher budget are OpenCV USAC_MAGSAC and DEGENSAC from the pydegensac package.</p>
 </li>
@@ -214,7 +214,7 @@ You can check details in the paper "<a href="https://arxiv.org/abs/2003.01587">I
 <h3 id="PragueParks">PragueParks<a class="anchor-link" href="#PragueParks"> </a></h3><p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-05-17-OpenCV-New-RANSACs_files/att_00003.png" alt="" title="Time-accuracy trade-off on the PragueParks dataset" /></p>
 <h2 id="Why-do-I-tune-and-evaluate-on-the-same-set?">Why do I tune and evaluate on the same set?<a class="anchor-link" href="#Why-do-I-tune-and-evaluate-on-the-same-set?"> </a></h2><p>It is true, that tuning and evaluation of the method on the same dataset does not make any sense. However, let me defend my choice. Here are the arguments:</p>
 <ol>
-<li><p>I do not want to compromise an integrity of the test set, which is the basis of the on-going competition <a href="https://www.cs.ubc.ca/research/image-matching-challenge/current/">Image Matching Challenge 2021</a> with prize money. That is why I do not want to lead an information from the abovementioned test set and this is my primarly optimization objective. I also cannot tune the threshold on the "training subset", as both GoogleUrban and PragueParks do not have such.</p>
+<li><p>I do not want to compromise an integrity of the test set, which is the basis of the on-going competition <a href="https://www.cs.ubc.ca/research/image-matching-challenge/current/">Image Matching Challenge 2021</a> with prize money. That is why I do not want to leak information from the abovementioned test set and this is my primarly optimization objective. I also cannot tune the threshold on the "training subset", as both GoogleUrban and PragueParks do not have such.</p>
 </li>
 <li><p>I am interested more in the rough speed-accuracy trade-off than the precise rankings of the methods. It is quite likely, that those methods, which have an small acuracy gap on the validation set, would switch on the test set -- as it happened with DEGENSAC and MAGSAC in our original paper. However, it is very unlikely, that method, which performs poorly on the validation set would magically outperform everyone on the test set. Again, see PyRANSAC vs DEGENSAC in the original paper.</p>
 </li>
