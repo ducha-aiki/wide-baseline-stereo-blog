@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Evaluating OpenCV new RANSACs | Wide baseline stereo meets deep learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Evaluating OpenCV new RANSACs" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="They become much better now" />
+<meta property="og:description" content="They become much better now" />
+<meta property="og:site_name" content="Wide baseline stereo meets deep learning" />
+<meta property="og:image" content="/wide-baseline-stereo-blog/images/ransac_small.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-05-17T00:00:00-05:00" />
+<script type="application/ld+json">
+{"headline":"Evaluating OpenCV new RANSACs","dateModified":"2021-05-17T00:00:00-05:00","datePublished":"2021-05-17T00:00:00-05:00","description":"They become much better now","image":"/wide-baseline-stereo-blog/images/ransac_small.png","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2021/05/17/OpenCV-New-RANSACs.html"},"@type":"BlogPosting","url":"/wide-baseline-stereo-blog/2021/05/17/OpenCV-New-RANSACs.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/wide-baseline-stereo-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="/wide-baseline-stereo-blog/feed.xml" title="Wide baseline stereo meets deep learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-174193910-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+<link rel="shortcut icon" type="image/x-icon" href="/wide-baseline-stereo-blog/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Evaluating OpenCV new RANSACs | Wide baseline stereo meets deep learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Evaluating OpenCV new RANSACs" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="They become much better now" />
+<meta property="og:description" content="They become much better now" />
+<meta property="og:site_name" content="Wide baseline stereo meets deep learning" />
+<meta property="og:image" content="/wide-baseline-stereo-blog/images/ransac_small.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-05-17T00:00:00-05:00" />
+<script type="application/ld+json">
+{"headline":"Evaluating OpenCV new RANSACs","dateModified":"2021-05-17T00:00:00-05:00","datePublished":"2021-05-17T00:00:00-05:00","description":"They become much better now","image":"/wide-baseline-stereo-blog/images/ransac_small.png","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2021/05/17/OpenCV-New-RANSACs.html"},"@type":"BlogPosting","url":"/wide-baseline-stereo-blog/2021/05/17/OpenCV-New-RANSACs.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="/wide-baseline-stereo-blog/feed.xml" title="Wide baseline stereo meets deep learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-174193910-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/wide-baseline-stereo-blog/">Wide baseline stereo meets deep learning</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/wide-baseline-stereo-blog/about/">About Me</a><a class="page-link" href="/wide-baseline-stereo-blog/search/">Search</a><a class="page-link" href="/wide-baseline-stereo-blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Evaluating OpenCV new RANSACs</h1><p class="page-description">They become much better now</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-05-17T00:00:00-05:00" itemprop="datePublished">
+        May 17, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      4 min read
+    
+</span></p>
+
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/ducha-aiki/wide-baseline-stereo-blog/tree/master/_notebooks/2021-05-17-OpenCV-New-RANSACs.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/ducha-aiki/wide-baseline-stereo-blog/master?filepath=_notebooks%2F2021-05-17-OpenCV-New-RANSACs.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/ducha-aiki/wide-baseline-stereo-blog/blob/master/_notebooks/2021-05-17-OpenCV-New-RANSACs.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2021-05-17-OpenCV-New-RANSACs.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="OpenCV-RANSAC-is-dead.-Long-live-the-OpenCV-USAC!">OpenCV RANSAC is dead. Long live the OpenCV USAC!<a class="anchor-link" href="#OpenCV-RANSAC-is-dead.-Long-live-the-OpenCV-USAC!"> </a></h2><p>Year ago we published a paper "<a href="https://arxiv.org/abs/2003.01587">Image Matching across Wide Baselines: From Paper to Practice</a>", which, among other messages, has shown that OpenCV RANSAC for fundamental matrix estimation is terrible: it was super inaccurate and slow. 
+Since then my colleague <a href="https://www.linkedin.com/in/maksym-ivashechkin-770186185">Maksym Ivashechkin</a> has spent a summer 2020 improving OpenCV RANSACs. His work was released as a part of <a href="https://docs.opencv.org/4.5.0/d1/df1/md__build_master-contrib_docs-lin64_opencv_doc_tutorials_calib3d_usac.html">OpenCV 4.5.0 release</a>.</p>
+<p>Now it is time to benchmark them. Let's go!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Evaluation-methodology">Evaluation methodology<a class="anchor-link" href="#Evaluation-methodology"> </a></h2><p>The benchmark is done on the validation subset of the <a href="https://www.cs.ubc.ca/research/image-matching-challenge/2021/data/">Image Matching Challenge 2021</a> datasets. We have detected RootSIFT features, matched them with optimal mutual SNN ratio test and feed into the tested RANSACs. The resulting fundamental matrixes were transformed into relative poses and compared to the ground truth poses. 
+You can check details in the paper "<a href="https://arxiv.org/abs/2003.01587">Image Matching across Wide Baselines: From Paper to Practice</a>".</p>
+<p>For all RANSACs we first determine the optimal inlier threshold by the grid search, whereas number of iterations (<code>max_iter</code>) was set to a reasonable 100k. Then, after fixing this optimal threshold, we vary number of iterations from 10 to 10M. This gives us an accuracy-time curve.</p>
+<h2 id="Methods-evaluated">Methods evaluated<a class="anchor-link" href="#Methods-evaluated"> </a></h2><p>Non-OpenCV methods:</p>
+<ul>
+<li><a href="https://pypi.org/project/pydegensac/">DEGENSAC</a> - from <code>pydegensac</code> package, based on the original implementation of the method, proposed in CVPR 2005 paper "Two-View Geometry Estimation Unaffected by a Dominant Plane". It is the default choise for the Image Matching Challenge 2020 and 2021.</li>
+<li><a href="https://pypi.org/project/pydegensac/">PyRANSAC</a> - also from <code>pydegensac</code> package, with flag <code>enable_degeneracy_check=False</code>, which is equivalent to a vanilla LO-RANSAC implementation.</li>
+</ul>
+<p>OpenCV methods, named after the flag, one needs to pass into <code>cv2.findFundamentalMatrix</code> function:</p>
+<ul>
+<li>USAC_DEFAULT – <a href="https://cmp.felk.cvut.cz/~chum/papers/chum-DAGM03.pdf">LO-RANSAC</a> + degeneracy tests</li>
+<li>USAC_FAST – <a href="https://cmp.felk.cvut.cz/~chum/papers/chum-DAGM03.pdf">LO-RANSAC</a> + degeneracy tests. Fewer iterations in local optimization step than USAC_DEFAULT. Uses RANSAC score to maximize number of inliers and terminate earlier.</li>
+<li>USAC_ACCURATE. Implements <a href="https://cmp.felk.cvut.cz/~matas/papers/barath-2018-gc_ransac-cvpr.pdf">Graph-Cut RANSAC</a> +  degeneracy tests.</li>
+<li>USAC_MAGSAC – <a href="https://arxiv.org/abs/1912.05909">MAGSAC++</a> implementation.</li>
+<li>RANSAC -- OpenCV RANSAC implementation from the previous versions of the library, no  degeneracy tests</li>
+</ul>
+<p>If you are interesting in results for an individual datasets, here they are.</p>
+<h2 id="Results">Results<a class="anchor-link" href="#Results"> </a></h2><p>Here are results for all 3 datasets. The lefter and upper is curve, the better. Dashed vertical line marks 0.5 sec time budget. Legend shows the method name and the optimal inlier threshold for the datasets: Phototourism, GoogleUrban and PragueParks respectively.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-05-17-OpenCV-New-RANSACs_files/att_00000.png" alt="image.png" /></p>
+<ol>
+<li><p>The first and main message -- <strong>all new flags are much better than the old OpenCV implementation (green curve), which still a default option</strong>.</p>
+</li>
+<li><p>10k iterations and USAC_ACCURATE gives you great results within 0.01 sec</p>
+</li>
+<li><p>All OpenCV advanced USACs are better than for the small/medium time budget (&lt; 0.1 sec per image) than pydegensac.</p>
+</li>
+<li><p>The best methods for the higher budget are OpenCV USAC_MAGSAC and DEGENSAC from the pydegensac package.</p>
+</li>
+<li><p>There is no point is using flag "USAC_FAST" it is always better to use USAC_DEFAULT, USAC_ACCURATE or USAC_MAGSAC.</p>
+</li>
+</ol>
+<p>The graphs for the individual datasets are below.</p>
+<h3 id="Phototourism">Phototourism<a class="anchor-link" href="#Phototourism"> </a></h3><p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-05-17-OpenCV-New-RANSACs_files/att_00001.png" alt="" title="Time-accuracy trade-off on the Phototourism dataset" /></p>
+<h3 id="GoogleUrban">GoogleUrban<a class="anchor-link" href="#GoogleUrban"> </a></h3><p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-05-17-OpenCV-New-RANSACs_files/att_00002.png" alt="" title="Time-accuracy trade-off on the GoogleUrban dataset" /></p>
+<h3 id="PragueParks">PragueParks<a class="anchor-link" href="#PragueParks"> </a></h3><p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-05-17-OpenCV-New-RANSACs_files/att_00003.png" alt="" title="Time-accuracy trade-off on the PragueParks dataset" /></p>
+<h2 id="Why-do-I-tune-and-evaluate-on-the-same-set?">Why do I tune and evaluate on the same set?<a class="anchor-link" href="#Why-do-I-tune-and-evaluate-on-the-same-set?"> </a></h2><p>It is true, that tuning and evaluation of the method on the same dataset does not make any sense. However, let me defend my choice. Here are the arguments:</p>
+<ol>
+<li><p>I do not want to compromise an integrity of the test set, which is the basis of the on-going competition <a href="https://www.cs.ubc.ca/research/image-matching-challenge/current/">Image Matching Challenge 2021</a> with prize money. That is why I do not want to lead an information from the abovementioned test set and this is my primarly optimization objective. I also cannot tune the threshold on the "training subset", as both GoogleUrban and PragueParks do not have such.</p>
+</li>
+<li><p>I am interested more in the rough speed-accuracy trade-off than the precise rankings of the methods. It is quite likely, that those methods, which have an small acuracy gap on the validation set, would switch on the test set -- as it happened with DEGENSAC and MAGSAC in our original paper. However, it is very unlikely, that method, which performs poorly on the validation set would magically outperform everyone on the test set. Again, see PyRANSAC vs DEGENSAC in the original paper.</p>
+</li>
+<li><p>I clearly state this fact as a limitation and do not publish a paper ;)</p>
+</li>
+</ol>
+<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion"> </a></h2><p>New OpenCV RANSACs are fast and have comparable accuracy, you can safely pick one of them. However, if you are using pydegensac and have &gt; 0.1 sec time budget, there is no need to switch.</p>
+<p>Use proper RANSACs and be happy :)</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="ducha-aiki/wide-baseline-stereo-blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/wide-baseline-stereo-blog/2021/05/17/OpenCV-New-RANSACs.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/wide-baseline-stereo-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/wide-baseline-stereo-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Everything you (didn&#39;t) want to know about image matching</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/ducha-aiki" title="ducha-aiki"><svg class="svg-icon grey"><use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/ducha_aiki" title="ducha_aiki"><svg class="svg-icon grey"><use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
