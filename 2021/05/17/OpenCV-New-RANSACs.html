@@ -189,13 +189,13 @@ You can check details in the paper "<a href="https://arxiv.org/abs/2003.01587">I
 <ul>
 <li>USAC_DEFAULT – <a href="https://cmp.felk.cvut.cz/~chum/papers/chum-DAGM03.pdf">LO-RANSAC</a> + degeneracy tests</li>
 <li>USAC_FAST – <a href="https://cmp.felk.cvut.cz/~chum/papers/chum-DAGM03.pdf">LO-RANSAC</a> + degeneracy tests. Fewer iterations in local optimization step than USAC_DEFAULT. Uses RANSAC score to maximize number of inliers and terminate earlier.</li>
-<li>USAC_ACCURATE. Implements <a href="https://cmp.felk.cvut.cz/~matas/papers/barath-2018-gc_ransac-cvpr.pdf">Graph-Cut RANSAC</a> +  degeneracy tests.</li>
-<li>USAC_MAGSAC – <a href="https://arxiv.org/abs/1912.05909">MAGSAC++</a> implementation.</li>
-<li>RANSAC -- OpenCV RANSAC implementation from the previous versions of the library, no  degeneracy tests</li>
+<li>USAC_ACCURATE. Implements <a href="https://cmp.felk.cvut.cz/~matas/papers/barath-2018-gc_ransac-cvpr.pdf">Graph-Cut RANSAC</a> + degeneracy tests.</li>
+<li>USAC_MAGSAC – <a href="https://arxiv.org/abs/1912.05909">MAGSAC++</a> implementation +  degeneracy tests.</li>
+<li>RANSAC -- OpenCV RANSAC implementation from the previous versions of the library, <em>no</em> degeneracy tests</li>
 </ul>
-<p>If you are interesting in results for an individual datasets, here they are.</p>
-<h2 id="Results">Results<a class="anchor-link" href="#Results"> </a></h2><p>Here are results for all 3 datasets. The lefter and upper is curve, the better. Dashed vertical line marks 0.5 sec time budget. Legend shows the method name and the optimal inlier threshold for the datasets: Phototourism, GoogleUrban and PragueParks respectively.</p>
-<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-05-17-OpenCV-New-RANSACs_files/att_00000.png" alt="image.png" /></p>
+<p>All OpenCV USAC methods also use SPRT-test for speeding-up the evaluation.</p>
+<h2 id="Results">Results<a class="anchor-link" href="#Results"> </a></h2><p>Here are results for all 3 datasets. The lefter and upper is curve, the better. Dashed vertical line marks 1/25 sec ("realtime") and 0.5 sec (challenge limit) time budget. Legend shows the method name and the optimal inlier threshold for the datasets: Phototourism, GoogleUrban and PragueParks respectively.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-05-17-OpenCV-New-RANSACs_files/att_00004.png" alt="" title="Time-accuracy trade-off on all 3 datasets" /></p>
 <ol>
 <li><p>The first and main message -- <strong>all new flags are much better than the old OpenCV implementation (green curve, worst results), which still a default option</strong>.</p>
 </li>
@@ -207,11 +207,13 @@ You can check details in the paper "<a href="https://arxiv.org/abs/2003.01587">I
 </li>
 <li><p>There is no point is using flag "USAC_FAST" it is always better to use USAC_DEFAULT, USAC_ACCURATE or USAC_MAGSAC.</p>
 </li>
+<li><p>USAC_MAGSAC is the only method, which optimal threshold is <em>the same across all datasets</em>. This is a valuable property for practice, as it requires the least tuning.</p>
+</li>
 </ol>
-<p>The graphs for the individual datasets are below.</p>
-<h3 id="Phototourism">Phototourism<a class="anchor-link" href="#Phototourism"> </a></h3><p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-05-17-OpenCV-New-RANSACs_files/att_00001.png" alt="" title="Time-accuracy trade-off on the Phototourism dataset" /></p>
-<h3 id="GoogleUrban">GoogleUrban<a class="anchor-link" href="#GoogleUrban"> </a></h3><p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-05-17-OpenCV-New-RANSACs_files/att_00002.png" alt="" title="Time-accuracy trade-off on the GoogleUrban dataset" /></p>
-<h3 id="PragueParks">PragueParks<a class="anchor-link" href="#PragueParks"> </a></h3><p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-05-17-OpenCV-New-RANSACs_files/att_00003.png" alt="" title="Time-accuracy trade-off on the PragueParks dataset" /></p>
+<p>If you are interesting in results for an individual datasets, here they are.</p>
+<h3 id="Phototourism">Phototourism<a class="anchor-link" href="#Phototourism"> </a></h3><p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-05-17-OpenCV-New-RANSACs_files/att_00005.png" alt="image.png" title="Time-accuracy trade-off on the Phototourism dataset" /></p>
+<h3 id="GoogleUrban">GoogleUrban<a class="anchor-link" href="#GoogleUrban"> </a></h3><p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-05-17-OpenCV-New-RANSACs_files/att_00007.png" alt="" title="Time-accuracy trade-off on the GoogleUrban dataset" /></p>
+<h3 id="PragueParks">PragueParks<a class="anchor-link" href="#PragueParks"> </a></h3><p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-05-17-OpenCV-New-RANSACs_files/att_00008.png" alt="" title="Time-accuracy trade-off on the PragueParks dataset" /></p>
 <h2 id="Why-do-I-tune-and-evaluate-on-the-same-set?">Why do I tune and evaluate on the same set?<a class="anchor-link" href="#Why-do-I-tune-and-evaluate-on-the-same-set?"> </a></h2><p>It is true, that tuning and evaluation of the method on the same dataset does not make any sense. However, let me defend my choice. Here are the arguments:</p>
 <ol>
 <li><p>I do not want to compromise an integrity of the test set, which is the basis of the on-going competition <a href="https://www.cs.ubc.ca/research/image-matching-challenge/current/">Image Matching Challenge 2021</a> with prize money. That is why I do not want to leak information from the abovementioned test set and this is my primarly optimization objective. I also cannot tune the threshold on the "training subset", as both GoogleUrban and PragueParks do not have such.</p>
