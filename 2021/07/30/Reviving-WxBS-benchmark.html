@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>WxBS: Relaunching challenging benchmark for Image Matching | Wide baseline stereo meets deep learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="WxBS: Relaunching challenging benchmark for Image Matching" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="And I mean really challenging" />
+<meta property="og:description" content="And I mean really challenging" />
+<meta property="og:site_name" content="Wide baseline stereo meets deep learning" />
+<meta property="og:image" content="/wide-baseline-stereo-blog/images/2loftr_match.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-07-30T00:00:00-05:00" />
+<script type="application/ld+json">
+{"dateModified":"2021-07-30T00:00:00-05:00","datePublished":"2021-07-30T00:00:00-05:00","description":"And I mean really challenging","image":"/wide-baseline-stereo-blog/images/2loftr_match.png","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2021/07/30/Reviving-WxBS-benchmark.html"},"url":"/wide-baseline-stereo-blog/2021/07/30/Reviving-WxBS-benchmark.html","headline":"WxBS: Relaunching challenging benchmark for Image Matching","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/wide-baseline-stereo-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="/wide-baseline-stereo-blog/feed.xml" title="Wide baseline stereo meets deep learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-174193910-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+<link rel="shortcut icon" type="image/x-icon" href="/wide-baseline-stereo-blog/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>WxBS: Relaunching challenging benchmark for Image Matching | Wide baseline stereo meets deep learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="WxBS: Relaunching challenging benchmark for Image Matching" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="And I mean really challenging" />
+<meta property="og:description" content="And I mean really challenging" />
+<meta property="og:site_name" content="Wide baseline stereo meets deep learning" />
+<meta property="og:image" content="/wide-baseline-stereo-blog/images/2loftr_match.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-07-30T00:00:00-05:00" />
+<script type="application/ld+json">
+{"dateModified":"2021-07-30T00:00:00-05:00","datePublished":"2021-07-30T00:00:00-05:00","description":"And I mean really challenging","image":"/wide-baseline-stereo-blog/images/2loftr_match.png","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2021/07/30/Reviving-WxBS-benchmark.html"},"url":"/wide-baseline-stereo-blog/2021/07/30/Reviving-WxBS-benchmark.html","headline":"WxBS: Relaunching challenging benchmark for Image Matching","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="/wide-baseline-stereo-blog/feed.xml" title="Wide baseline stereo meets deep learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-174193910-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/wide-baseline-stereo-blog/">Wide baseline stereo meets deep learning</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/wide-baseline-stereo-blog/about/">About Me</a><a class="page-link" href="/wide-baseline-stereo-blog/search/">Search</a><a class="page-link" href="/wide-baseline-stereo-blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">WxBS: Relaunching challenging benchmark for Image Matching</h1><p class="page-description">And I mean really challenging</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-07-30T00:00:00-05:00" itemprop="datePublished">
+        Jul 30, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      8 min read
+    
+</span></p>
+
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/ducha-aiki/wide-baseline-stereo-blog/tree/master/_notebooks/2021-07-30-Reviving-WxBS-benchmark.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/ducha-aiki/wide-baseline-stereo-blog/master?filepath=_notebooks%2F2021-07-30-Reviving-WxBS-benchmark.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/ducha-aiki/wide-baseline-stereo-blog/blob/master/_notebooks/2021-07-30-Reviving-WxBS-benchmark.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2021-07-30-Reviving-WxBS-benchmark.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="The-hardest-image-matching-benchmark">The hardest image matching benchmark<a class="anchor-link" href="#The-hardest-image-matching-benchmark"> </a></h2><p>Previously we have discussed <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/01/09/wxbs-in-simple-terms.html">what is WxBS in general</a>, <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2020/08/06/affine-view-synthesis.html">how to match images from a really different viewpoints</a> and also took a look into <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/14/IMC2020-competition-recap.html">Image Matching Challenge 2020</a>. Let's now speak about how to measure progress on images, which are really hard to match even to human?</p>
+<p>For example, which have been taked in day-vs-night, years apart AND from different camera positions? One cannot register them to some 3d model, because they are too hard. And there is no 3D model either.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-07-28-Reviving-WxBS-benchmark_files/att_00001.png" alt="" title="Kyiv, Ukraine. Image pair from WxBS dataset" /></p>
+<p>Well, in that case one could go back to basics and <em>handlabel</em> the correspondences between the images. Such annotation is unlikely to be very precise, but it is going to be quite robust, if the labeler is careful.</p>
+<p>That is what I have done 6 years ago and published such a dataset at <a href="http://www.bmva.org/bmvc/2015/papers/paper012/index.html">BMVC 2015</a> together with a benchmark of popular image matchers of that time. None of them was able to successfully match even a fraction of the WxBS dataset.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-07-28-Reviving-WxBS-benchmark_files/att_00002.png" alt="" title="Handlabeled correspondences in pixelstitch. The image in the bottom shows the correspondences and epipolar lines induced by them." /></p>
+<p>However, as I was quite inexpereinced in product packaging, as well as in software engineering, the benchmark existed as dataset + bunch of bash and Matlab scripts. It is needless to say, that nobody evaluated their algorithms on it. 
+That made me sad, however, I never found time to make this benchmark easy to use.
+Well, now I did it and want to share the evaluation of the recent agorithms on such a hard data.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Not-that-fast!-Problem-with-a-fundamental-matrix-and-how-to-solve-them">Not that fast! Problem with a fundamental matrix and how to solve them<a class="anchor-link" href="#Not-that-fast!-Problem-with-a-fundamental-matrix-and-how-to-solve-them"> </a></h2><p>OK, we have ground truth correspondences. Now what? Ideally one can estimate epipolar geometry from as little, as 7 correspondences, but in practice? No. The problem is that there could be many relative camera poses, which are consistent with the correspondences, especially when correspondences lie in plane and the camera calibration is unknown.</p>
+<p>Let's consider a simple example: we have 13 correspondences and they seems to be correct. Are they enough for finding good epipolar geometry? This question can be answered via leave-one-out validation procedure, described in <a href="https://arxiv.org/abs/2106.10240">VSAC paper</a>. We remove a single correspondence, estimate a fundamental matrix via DLT algorithm on the rest of the correspondences and see how the estimated epipolar geometry is changed (or not).</p>
+<p>As you can see on the animation below, the epipolar geometry estimation from our 13 correspondences is not stable and removing any of them results in noticable change.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-07-28-Reviving-WxBS-benchmark_files/epi1.gif" alt="" /></p>
+<p>So, if even manually labeled corresposndences are not good enough, what can be done?</p>
+<p>First, simply add more correspondences, which are spread across image AND depth levels as even as possible. That is what I did recently, in order to make WxBS labeling better. However, it is not always possible -- sometimes you have lots of correspondence on "faraway background plane" and very little somewhere on foreground, see next picture.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-07-28-Reviving-WxBS-benchmark_files/epi_harder.gif" alt="" /></p>
+<p>What else can be done? We can go other way round and <em>not provide any ground truth fundamental matrix at all</em>. 
+Instead, we ask methods, which we evaluate, to give us such matrix <em>F_est</em>, then check, how many ground truth correspondences are consident with it.</p>
+<p>The bad thing about it, is that unless all 100% GT correspondences are consistent with <em>F_est</em>, <em>F_est</em> is completely wrong in terms of camera pose accuracy. So, such a binary signal on a very challenging pairs is not that useful. 
+The good thing about it, is that if, say, 50% GT correspondences are consistent with <em>F_est</em>, it means that detected (not GT) correspondences <em>on the part of the image</em> are correct (e.g. on some dominant plane) and at least there we are OK.</p>
+<p>If you are interested in more mathematical definition, here it is:</p>
+<p>The recall on ground truth correspondences $C_i$ of image pair $i$ and for geometry model $\mathbf{M}_i$ is computed as a function of a threshold $\theta$</p>
+\begin{equation}
+ \mathrm{r}_{i,\mathbf{M}_i}(\theta) = \frac{| \{(\mathbf{u},\mathbf{v}) : (\mathbf{u},\mathbf{v}) \in C_i,  e(\mathbf{M}_i,\mathbf{u},\mathbf{v}) &lt; \theta\}|}{| C_i |}
+% \mathrm{r}_{i,\mathbf{M}_i}(\theta) = \frac{| \{(\mathbf{u}_i,\mathbf{v}_i) : (\mathbf{u}_i,\mathbf{v}_i) \in C_i,  e(\mathbf{M}_i,\mathbf{u},\mathbf{v}) &lt; \theta\}|}{| C_i |}
+\end{equation}<p>using <a href="https://kornia.readthedocs.io/en/latest/geometry.epipolar.html#kornia.geometry.epipolar.symmetrical_epipolar_distance">symmetric epipolar distance</a>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Let's-evaluate!">Let's evaluate!<a class="anchor-link" href="#Let's-evaluate!"> </a></h2><p>First I will show you how to run the WxBS benchmark yourself and then present the results I got.  Benchmark is available from pip:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>pip install wxbs_benchmark
+<span class="o">!</span>pip install kornia_moons
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we will write a simple function using OpenCV RootSIFT and <a href="https://arxiv.org/abs/1912.05909">MAGSAC++</a>. RootSIFT is a gold standard handcrafted local feature and MAGSAC++ is a state-of-the-art RANSAC, which is not sensitive to an inlier threshold, as <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/17/OpenCV-New-RANSACs.html">my recent benchmark</a> shows. We will match then using mutual second nearest ratio, as implemented in <a href="https://github.com/kornia/kornia">kornia</a></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">kornia.feature</span> <span class="k">as</span> <span class="nn">KF</span>
+<span class="kn">from</span> <span class="nn">kornia_moons.feature</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">wxbs_benchmark.dataset</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">wxbs_benchmark.evaluation</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span> 
+
+<span class="k">def</span> <span class="nf">sift2rootsift</span><span class="p">(</span><span class="n">desc</span><span class="p">):</span>
+    <span class="n">desc</span> <span class="o">/=</span> <span class="n">desc</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1e-8</span>
+    <span class="n">desc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">desc</span>
+
+<span class="k">def</span> <span class="nf">estimate_F_WithRootSIFT</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="n">img2</span><span class="p">):</span>
+    <span class="n">det</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">SIFT_create</span><span class="p">(</span><span class="mi">8000</span><span class="p">,</span> <span class="n">contrastThreshold</span><span class="o">=-</span><span class="mi">10000</span><span class="p">,</span> <span class="n">edgeThreshold</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+    <span class="n">kps1</span><span class="p">,</span> <span class="n">descs1</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectAndCompute</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">kps2</span><span class="p">,</span> <span class="n">descs2</span> <span class="o">=</span> <span class="n">det</span><span class="o">.</span><span class="n">detectAndCompute</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">descs1</span> <span class="o">=</span> <span class="n">sift2rootsift</span><span class="p">(</span><span class="n">descs1</span><span class="p">)</span>
+    <span class="n">descs2</span> <span class="o">=</span> <span class="n">sift2rootsift</span><span class="p">(</span><span class="n">descs2</span><span class="p">)</span>
+    <span class="n">snn_ratio</span><span class="p">,</span> <span class="n">idxs</span> <span class="o">=</span> <span class="n">KF</span><span class="o">.</span><span class="n">match_smnn</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">descs1</span><span class="p">),</span>
+                                    <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">descs2</span><span class="p">),</span> <span class="mf">0.95</span><span class="p">)</span>
+    <span class="n">tentatives</span> <span class="o">=</span> <span class="n">cv2_matches_from_kornia</span><span class="p">(</span><span class="n">snn_ratio</span><span class="p">,</span> <span class="n">idxs</span><span class="p">)</span>
+    <span class="n">src_pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">([</span> <span class="n">kps1</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">queryIdx</span><span class="p">]</span><span class="o">.</span><span class="n">pt</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">tentatives</span> <span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">dst_pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">([</span> <span class="n">kps2</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">trainIdx</span><span class="p">]</span><span class="o">.</span><span class="n">pt</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">tentatives</span> <span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">F</span><span class="p">,</span> <span class="n">inlier_mask</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findFundamentalMat</span><span class="p">(</span><span class="n">src_pts</span><span class="p">,</span> <span class="n">dst_pts</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">USAC_MAGSAC</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">,</span> <span class="mi">100000</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">F</span>
+
+
+<span class="n">subset</span> <span class="o">=</span> <span class="s1">&#39;test&#39;</span>
+<span class="n">dset</span> <span class="o">=</span> <span class="n">WxBSDataset</span><span class="p">(</span><span class="s1">&#39;.WxBS&#39;</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="n">subset</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+
+<span class="n">F_results_RootSIFT</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">pair_dict</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">dset</span><span class="p">):</span>
+    <span class="n">current_F</span> <span class="o">=</span> <span class="n">estimate_F_WithRootSIFT</span><span class="p">(</span><span class="n">pair_dict</span><span class="p">[</span><span class="s1">&#39;img1&#39;</span><span class="p">],</span> <span class="n">pair_dict</span><span class="p">[</span><span class="s1">&#39;img2&#39;</span><span class="p">])</span>
+    <span class="n">F_results_RootSIFT</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_F</span><span class="p">)</span>
+
+<span class="n">result_dict_rootsift</span><span class="p">,</span> <span class="n">thresholds</span> <span class="o">=</span> <span class="n">evaluate_Fs</span><span class="p">(</span><span class="n">F_results_RootSIFT</span><span class="p">,</span> <span class="n">subset</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can check results for individual image pairs, or just take an average</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">result_dict_rootsift</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">thresholds</span><span class="p">,</span> <span class="n">result_dict_rootsift</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">],</span> <span class="s1">&#39;-x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.05</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Thresholds&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Recall on GT corrs&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;RootSIFT + MAGSAC++&#39;</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>dict_keys([&#39;WGABS/kremlin&#39;, &#39;WGABS/kyiv&#39;, &#39;WGABS/strahov&#39;, &#39;WGABS/vatutin&#39;, &#39;WGALBS/bridge&#39;, &#39;WGALBS/flood&#39;, &#39;WGALBS/kyiv_dolltheater&#39;, &#39;WGALBS/rovenki&#39;, &#39;WGALBS/stadium&#39;, &#39;WGALBS/submarine&#39;, &#39;WGALBS/submarine2&#39;, &#39;WGALBS/tyn&#39;, &#39;WGALBS/zanky&#39;, &#39;WGBS/kn-church&#39;, &#39;WGLBS/alupka&#39;, &#39;WGLBS/berlin&#39;, &#39;WGLBS/charlottenburg&#39;, &#39;WGLBS/church&#39;, &#39;WGLBS/him&#39;, &#39;WGLBS/maidan&#39;, &#39;WGLBS/ministry&#39;, &#39;WGLBS/silasveta2&#39;, &#39;WGLBS/warsaw&#39;, &#39;WGSBS/kettle&#39;, &#39;WGSBS/kettle2&#39;, &#39;WGSBS/lab&#39;, &#39;WGSBS/lab2&#39;, &#39;WGSBS/window&#39;, &#39;WLABS/dh&#39;, &#39;WLABS/kpi&#39;, &#39;WLABS/kyiv&#39;, &#39;WLABS/ministry&#39;, &#39;average&#39;])
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/opt/homebrew/Caskroom/miniforge/base/envs/python39/lib/python3.9/site-packages/ipykernel/ipkernel.py:283: DeprecationWarning: `should_run_async` will not call `transform_cell` automatically in the future. Please pass the result to `transformed_cell` argument and any exception that happen during thetransform in `preprocessing_exc_tuple` in IPython 7.17 and above.
+  and should_run_async(code)
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.legend.Legend at 0x12dedf2e0&gt;</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+" />
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I have run several popular recent methods in this <a href="https://colab.research.google.com/drive/1yrCFyEoAc0HyqYCRVvzJDh5kQT2Dc3XA?usp=sharing">Colab</a>. The code is very dirty, that is why I don't put it here, and just present results.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Methods-tested">Methods tested<a class="anchor-link" href="#Methods-tested"> </a></h2><h3 id="Local-features-without-learned-matching.">Local features without learned matching.<a class="anchor-link" href="#Local-features-without-learned-matching."> </a></h3><p><a href="https://www.robots.ox.ac.uk/~vgg/publications/2012/Arandjelovic12/arandjelovic12.pdf">RootSIFT</a> (ICCV1999 - CVPR-2012), <a href="https://www.cs.ubc.ca/~lowe/papers/ijcv04.pdf">DoG</a>+<a href="https://arxiv.org/pdf/1705.10872.pdf">HardNet</a> (NeurIPS 2017), <a href="https://arxiv.org/abs/1906.06195">R2D2</a> (NeurIPS 2019), <a href="https://arxiv.org/abs/2006.13566">DISK</a> (NeurIPS 2020).</p>
+<h3 id="Local-features-with-learned-matching.">Local features with learned matching.<a class="anchor-link" href="#Local-features-with-learned-matching."> </a></h3><p><a href="https://arxiv.org/abs/1911.11763">SuperGlue</a> (CVPR2020) uses attention-based graph neural network to match SuperPoint local features.</p>
+<h3 id="Dense-matching">Dense matching<a class="anchor-link" href="#Dense-matching"> </a></h3><p><a href="https://prunetruong.com/research/pdcnet">PDCNet</a> (CVPR 2021). On top of pretrained ImageNet coarse-to-fine feature correlation,  PDCNet predicts a dense flow and a confidence for each pixel. Trained on huge dataset with synthetic warps.</p>
+<p><a href="https://arxiv.org/abs/2012.01909">Patch2pix</a> (CVPR 2021). Similarly to PDCNet, patch2pix is uses pretrained ImageNet features to get the initial corresponcences. Then the matches are progressively refined or rejected with a regressor network.</p>
+<h3 id="Dense-matching-with-transformers">Dense matching with transformers<a class="anchor-link" href="#Dense-matching-with-transformers"> </a></h3><p><a href="https://arxiv.org/abs/2103.14167">COTR</a>, (ICCV2021). Given the pixel location in a query image, COTR finds a corresponing location in the reference image. It operated on the 16x16 feature map produced by pretrained ImageNet model, which then are fed together with a positional embeddings to a transformer-based regressor.
+It is also the slowest method among evaluated - because you have to run it <em>per each pixel separately</em>, if want dense correspondences.</p>
+<p><a href="https://zju3dv.github.io/loftr/">LoFTR</a> (CVPR2021). LoFTR is very similar to Patch2pix, with the difference of using transformer architecture to for both coarse initial matching and consequent refinement. 
+The second difference, is that, unlike all other methods, which are using ImageNet-pretrained models as a feature backbone, LoFTR trains ResNet18 <em>from scratch</em> .</p>
+<h2 id="Results-&amp;-Discussion">Results &amp; Discussion<a class="anchor-link" href="#Results-&amp;-Discussion"> </a></h2><p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-07-28-Reviving-WxBS-benchmark_files/att_00005.png" alt="image.png" /></p>
+<p>The clear leader is LoFTR, then we have (patch2pix, COTR and SuperGlue) group, followed by (PDCNet, DISK, R2D2). Then DoG-HardNet and RootSIFT, where latter has barely matched couple of image pairs correctly.</p>
+<p>I have no idea, why LoFTR is so good, my guesses would be richer training data and training the backbone from scratch, instead of relying on ImageNet feaures. I am also quite surprised by the great performance of the patch2pix, which probably can be improved even more, if the backbone would be at least fine-tuned.</p>
+<p>Regarding SuperGlue - one of my guesses is that original SuperPoint features were not trained for different illuminations. Moreover, in some images, there just not enough matching corners -  when I was annotating the correspondences, I have to use also "center of the blobs".</p>
+<p>Finally, I would like to that than even excellent LofTR result is far from the ideal -- there are stil tens of pairs, where it fails.</p>
+<p>P.S. I would also like to thank Prune Truong, who helped me to debug my originally wrong run of the PDCNet.</p>
+<h3 id="Qualiative-examples">Qualiative examples<a class="anchor-link" href="#Qualiative-examples"> </a></h3><p>Here are some examples of how different methods work on the same image pairs.</p>
+<h3 id="Season-+-viewpoint">Season + viewpoint<a class="anchor-link" href="#Season-+-viewpoint"> </a></h3><p>LoFTR</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-07-28-Reviving-WxBS-benchmark_files/att_00006.png" alt="image.png" /></p>
+<p>SuperGlue</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-07-28-Reviving-WxBS-benchmark_files/att_00007.png" alt="image.png" /></p>
+<p>patch2pix</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-07-28-Reviving-WxBS-benchmark_files/att_00008.png" alt="image.png" /></p>
+<h3 id="Thermal-vs-visible-+-viewpoint">Thermal vs visible + viewpoint<a class="anchor-link" href="#Thermal-vs-visible-+-viewpoint"> </a></h3><p>LoFTR</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-07-28-Reviving-WxBS-benchmark_files/att_00011.png" alt="image.png" /></p>
+<p>SuperGlue</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-07-28-Reviving-WxBS-benchmark_files/att_00010.png" alt="image.png" /></p>
+<p>patch2pix</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-07-28-Reviving-WxBS-benchmark_files/att_00009.png" alt="image.png" /></p>
+<h3 id="Season-+-illumination-+-viewpoint">Season + illumination + viewpoint<a class="anchor-link" href="#Season-+-illumination-+-viewpoint"> </a></h3><p>LoFTR</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-07-28-Reviving-WxBS-benchmark_files/att_00014.png" alt="image.png" /></p>
+<p>SuperGlue</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-07-28-Reviving-WxBS-benchmark_files/att_00016.png" alt="image.png" /></p>
+<p>patch2pix</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-07-28-Reviving-WxBS-benchmark_files/att_00017.png" alt="image.png" /></p>
+<h3 id="Illumination-+-viewpoint-change-(zoom)">Illumination + viewpoint change (zoom)<a class="anchor-link" href="#Illumination-+-viewpoint-change-(zoom)"> </a></h3><p>LoFTR</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-07-28-Reviving-WxBS-benchmark_files/att_00018.png" alt="image.png" /></p>
+<p>SuperGlue
+<img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-07-28-Reviving-WxBS-benchmark_files/att_00019.png" alt="image.png" /></p>
+<p>patch2pix</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-07-28-Reviving-WxBS-benchmark_files/att_00020.png" alt="image.png" /></p>
+<p>As you can, see, there are many incorrect correspondences even in those images, where methods are performing well.</p>
+<p>Here I will conclude and go to vacation.</p>
+<p>In the 2nd part of the post, I would like to evaluate COTR, PDCNet and different dense descriptors directly on the GT correspondences, by giving a point in image A and asking for point in image B.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="ducha-aiki/wide-baseline-stereo-blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/wide-baseline-stereo-blog/2021/07/30/Reviving-WxBS-benchmark.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/wide-baseline-stereo-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/wide-baseline-stereo-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Everything you (didn&#39;t) want to know about image matching</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/ducha-aiki" title="ducha-aiki"><svg class="svg-icon grey"><use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/ducha_aiki" title="ducha_aiki"><svg class="svg-icon grey"><use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
