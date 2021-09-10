@@ -11,11 +11,11 @@
 <meta name="description" content="Get better data!" />
 <meta property="og:description" content="Get better data!" />
 <meta property="og:site_name" content="Wide baseline stereo meets deep learning" />
-<meta property="og:image" content="/wide-baseline-stereo-blog/images/pGT.png" />
+<meta property="og:image" content="/wide-baseline-stereo-blog/images/get_better_data.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2021-09-04T00:00:00-05:00" />
 <script type="application/ld+json">
-{"headline":"Review of On the Limits of Pseudo Ground Truth in Visual Camera Re-localisation","dateModified":"2021-09-04T00:00:00-05:00","datePublished":"2021-09-04T00:00:00-05:00","image":"/wide-baseline-stereo-blog/images/pGT.png","description":"Get better data!","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2021/09/04/review-of-pseudoGT-limitations.html"},"@type":"BlogPosting","url":"/wide-baseline-stereo-blog/2021/09/04/review-of-pseudoGT-limitations.html","@context":"https://schema.org"}</script>
+{"headline":"Review of On the Limits of Pseudo Ground Truth in Visual Camera Re-localisation","dateModified":"2021-09-04T00:00:00-05:00","datePublished":"2021-09-04T00:00:00-05:00","image":"/wide-baseline-stereo-blog/images/get_better_data.png","description":"Get better data!","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2021/09/04/review-of-pseudoGT-limitations.html"},"@type":"BlogPosting","url":"/wide-baseline-stereo-blog/2021/09/04/review-of-pseudoGT-limitations.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/wide-baseline-stereo-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="/wide-baseline-stereo-blog/feed.xml" title="Wide baseline stereo meets deep learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
 
@@ -31,11 +31,11 @@
 <meta name="description" content="Get better data!" />
 <meta property="og:description" content="Get better data!" />
 <meta property="og:site_name" content="Wide baseline stereo meets deep learning" />
-<meta property="og:image" content="/wide-baseline-stereo-blog/images/pGT.png" />
+<meta property="og:image" content="/wide-baseline-stereo-blog/images/get_better_data.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2021-09-04T00:00:00-05:00" />
 <script type="application/ld+json">
-{"headline":"Review of On the Limits of Pseudo Ground Truth in Visual Camera Re-localisation","dateModified":"2021-09-04T00:00:00-05:00","datePublished":"2021-09-04T00:00:00-05:00","image":"/wide-baseline-stereo-blog/images/pGT.png","description":"Get better data!","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2021/09/04/review-of-pseudoGT-limitations.html"},"@type":"BlogPosting","url":"/wide-baseline-stereo-blog/2021/09/04/review-of-pseudoGT-limitations.html","@context":"https://schema.org"}</script>
+{"headline":"Review of On the Limits of Pseudo Ground Truth in Visual Camera Re-localisation","dateModified":"2021-09-04T00:00:00-05:00","datePublished":"2021-09-04T00:00:00-05:00","image":"/wide-baseline-stereo-blog/images/get_better_data.png","description":"Get better data!","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2021/09/04/review-of-pseudoGT-limitations.html"},"@type":"BlogPosting","url":"/wide-baseline-stereo-blog/2021/09/04/review-of-pseudoGT-limitations.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
@@ -119,7 +119,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      6 min read
+      7 min read
     
 </span></p>
 
@@ -208,7 +208,7 @@ Another way is to train a model on a database images, such that for each pixel o
 We answered this question by running the 3d reconstruction with very different local features: <a href="https://arxiv.org/abs/1906.06195">R2D2</a>, <a href="https://www.cs.ubc.ca/~lowe/papers/ijcv04.pdf">SIFT</a>, DoG-<a href="https://arxiv.org/abs/1705.10872.pdf">HardNet</a>, <a href="https://arxiv.org/abs/1712.07629">SuperPoint</a>. Then we compared the difference in the poses produced by the different methods is very small and much smaller than the accuracy threshold we used for evaluation.</p>
 <p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-09-04-review-of-pseudoGT-limitations_files/att_00002.png" alt="image.png" title="Histograms of pose differences between reconstructions with different local feature methods" /></p>
 <p>So we can safely use our benchmark to evaluate two view matching methods. <em>Can we really?</em></p>
-<h1 id="SfM-versus-Dense-SLAM">SfM versus Dense SLAM<a class="anchor-link" href="#SfM-versus-Dense-SLAM"> </a></h1><p>The "<a href="https://arxiv.org/abs/2109.00524">On the Limits...</a>" asks the different question, than the one we have answered in IMC paper. <em>While, the GT might be not biased towards specific local feature, it can be biased toward the higher-level algorithm -- Structure-from-Motion (SfM)</em>. But the (sparse) SfM is not the only way how we can obtain camera poses from the collection of images -- one could use (dense) Depth-based SLAM. Are the poses we got from them the same?</p>
+<h1 id="SfM-versus-Dense-SLAM">SfM versus Dense SLAM<a class="anchor-link" href="#SfM-versus-Dense-SLAM"> </a></h1><p>The "<a href="https://arxiv.org/abs/2109.00524">On the Limits...</a>" asks the different question, than the one we have answered in IMC paper. <em>While, the GT might be not biased towards specific local feature, it can be biased towards the higher-level algorithm -- Structure-from-Motion (SfM)</em>. But the (sparse) SfM is not the only way how we can obtain camera poses from the collection of images -- one could use (dense) Depth-based SLAM. Are the poses we got from them the same?</p>
 <p>The answer is: <strong>no</strong>, they are not the same!</p>
 <p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2021-09-04-review-of-pseudoGT-limitations_files/att_00003.png" alt="" title="Camera trajectory of the training set, estimated by SfM and RGB-D-SLAM" /></p>
 <p>The paper, however, does not stop here, it studies the following question: if the camera poses (think of them as "labels") of the <em>training</em> set were obtained with a different family of algorithms, does it influence their performance?</p>
@@ -226,9 +226,9 @@ We answered this question by running the 3d reconstruction with very different l
 The correct pose exists and the question is whether SfM or SLAM  (or neither) is closer to it. Yes, it would require some additional sensors, or running in simulated world, but anyway - the message should not be "just provide 2 versions of pGT". The message is: if your 2 versions of pGT does not agree, GET MORE/BETTER DATA.</p>
 <p>In addition to that I would like to see a paper, which answers the following question: given tha data we have (i.e. bad data) but with also available real GT camera poses, under which conditions, which algorithm (SfM or Depth SLAM) provides better results?</p>
 <h3 id="Which-algorithm-can-adapt-to-(wrong)-training-data-and-be-consistent-with-it?">Which algorithm can adapt to (wrong) training data and be consistent with it?<a class="anchor-link" href="#Which-algorithm-can-adapt-to-(wrong)-training-data-and-be-consistent-with-it?"> </a></h3><p>One thing, which paper focuses on is how the "test" pGT is generated. However, even the bigger impact can be from the fact that <em>training</em> data may conflict with the poses, that algorithm estimates.</p>
-<p>Imagine the augmented reality scenario, where one needs to draw the (virtual) teddy bear on the coach. In that case we actually don't care if the camera pose estimate is correct, or if our model of the room is correct. What we care about, is how naturally looking will be position of the Teddy bear (or Pikachu).</p>
+<p>Imagine the augmented reality scenario, where one needs to draw the (virtual) teddy bear on the coach. In that case we actually don't care if the camera pose estimate is correct, or if our model of the room is correct. What we care about, is how naturally looking will be position of the Teddy bear (or Pikachu). It also important that bear not jumps around when we move our camera slightly.</p>
 <p>Given the images and results in the paper, it seems that (learning-based) DSAC can suits this much better than (non-learning) AS. That is also stated in the paper conclusions. 
-In the same time, it seems that the variance of the pose estimates is smaller for the SfM pGT than for the SLAM.</p>
+In the same time, it seems that the variance of the pose estimates is smaller for the SfM pGT than for the SLAM even for DSAC.</p>
 <p>However, I would also like to see a paper, which studies how the error/bias/variance in the training data affects the different algorithms, so they could adapt to use bad data better, in more detail.</p>
 <h1 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion"> </a></h1><p>The paper is thought-provoking and I hope our community will read it and think about it. We also need to pay a way more attention to our data-gathering practice, because it really makes a difference.</p>
 <p>P.S. Thanks to <a href="https://twitter.com/eric_brachmann">Eric</a> for sending me additional visualizations, which were not in the arXiv paper.</p>
