@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Image Similarity Challenge 2021 recap | Wide baseline stereo meets deep learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Image Similarity Challenge 2021 recap" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Can you detect edited copies?" />
+<meta property="og:description" content="Can you detect edited copies?" />
+<meta property="og:site_name" content="Wide baseline stereo meets deep learning" />
+<meta property="og:image" content="/wide-baseline-stereo-blog/images/spiderman-meme.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-02-05T00:00:00-06:00" />
+<script type="application/ld+json">
+{"datePublished":"2022-02-05T00:00:00-06:00","dateModified":"2022-02-05T00:00:00-06:00","image":"/wide-baseline-stereo-blog/images/spiderman-meme.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2022/02/05/DISC21-recap.html"},"description":"Can you detect edited copies?","@type":"BlogPosting","url":"/wide-baseline-stereo-blog/2022/02/05/DISC21-recap.html","headline":"Image Similarity Challenge 2021 recap","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/wide-baseline-stereo-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="/wide-baseline-stereo-blog/feed.xml" title="Wide baseline stereo meets deep learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-174193910-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+<link rel="shortcut icon" type="image/x-icon" href="/wide-baseline-stereo-blog/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Image Similarity Challenge 2021 recap | Wide baseline stereo meets deep learning</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Image Similarity Challenge 2021 recap" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Can you detect edited copies?" />
+<meta property="og:description" content="Can you detect edited copies?" />
+<meta property="og:site_name" content="Wide baseline stereo meets deep learning" />
+<meta property="og:image" content="/wide-baseline-stereo-blog/images/spiderman-meme.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-02-05T00:00:00-06:00" />
+<script type="application/ld+json">
+{"datePublished":"2022-02-05T00:00:00-06:00","dateModified":"2022-02-05T00:00:00-06:00","image":"/wide-baseline-stereo-blog/images/spiderman-meme.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2022/02/05/DISC21-recap.html"},"description":"Can you detect edited copies?","@type":"BlogPosting","url":"/wide-baseline-stereo-blog/2022/02/05/DISC21-recap.html","headline":"Image Similarity Challenge 2021 recap","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="/wide-baseline-stereo-blog/feed.xml" title="Wide baseline stereo meets deep learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-174193910-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/wide-baseline-stereo-blog/">Wide baseline stereo meets deep learning</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/wide-baseline-stereo-blog/about/">About Me</a><a class="page-link" href="/wide-baseline-stereo-blog/search/">Search</a><a class="page-link" href="/wide-baseline-stereo-blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Image Similarity Challenge 2021 recap</h1><p class="page-description">Can you detect edited copies?</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2022-02-05T00:00:00-06:00" itemprop="datePublished">
+        Feb 5, 2022
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      7 min read
+    
+</span></p>
+
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/ducha-aiki/wide-baseline-stereo-blog/tree/master/_notebooks/2022-02-05-DISC21-recap.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/ducha-aiki/wide-baseline-stereo-blog/master?filepath=_notebooks%2F2022-02-05-DISC21-recap.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/ducha-aiki/wide-baseline-stereo-blog/blob/master/_notebooks/2022-02-05-DISC21-recap.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2022-02-05-DISC21-recap.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="What-is-Image-Similarity-Challenge?">What is Image Similarity Challenge?<a class="anchor-link" href="#What-is-Image-Similarity-Challenge?"> </a></h2><p>Image Similarity Challenge is benchmark of the methods, which should find the original in the database (if any) by the edited query image. The main difference to the classical instance retrieval task (datasets <a href="https://www.robots.ox.ac.uk/~vgg/data/oxbuildings/">Oxford5k</a>, <a href="https://github.com/cvdfoundation/google-landmark">GLD</a>, etc) is that we should NOT retrieve the different photos of the given instance. Instead only version of the same photos are valid. In other words, we are looking for the image forgery and copyright infringement.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-02-05-DISC21-recap_files/att_00000.png" alt="" title="Example of the query and reference images in the ISC" /></p>
+<h3 id="Image-Similarity-Dataset-(DISC)">Image Similarity Dataset (DISC)<a class="anchor-link" href="#Image-Similarity-Dataset-(DISC)"> </a></h3><p>The dataset is described in the "<a href="https://arxiv.org/pdf/2106.09672.pdf">The 2021 Image Similarity Dataset and Challenge</a>" paper. It is created by processing YCC100M and DeepFake Detection Challenge images with manually in GIMP editor and automatically with help of <a href="https://arxiv.org/abs/2201.06494">AugLy</a> library.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-02-05-DISC21-recap_files/att_00001.png" alt="" title="More example of the image transformations used in DISC. Taken from DISC paper" /></p>
+<p>Besides the public part of the test set (Phase I of the competition), there is also final test set (Phase II) was also composed with use of adversarial attack methods and so-called "air-gap attack". Air-gap, according to the paper is</p>
+<blockquote><p>We asked manual editors to perform “air-gap” transformations, where the picture is displayed or printed out, and re-captured with a camera or mobile phone. It is a quite common image attack, that is hard to reproduce automatically or even with an image editor like the GIMP. Figure 8 shows an example air-gap augmentation (the zebra). The effect is a combination of over-exposure, geometric framing and blurriness on the picture.</p>
+</blockquote>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-02-05-DISC21-recap_files/att_00002.png" alt="" title="Test set Phase 2 transformations. Taken from DISC paper" /></p>
+<p>The paper also provides several baselines, mostly based on global and local descriptors</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-02-05-DISC21-recap_files/att_00003.png" alt="" title="Baselines, provided by the challenge organizers" /></p>
+<h2 id="Tracks:Descriptor-track-and-Matching-track">Tracks:Descriptor track and Matching track<a class="anchor-link" href="#Tracks:Descriptor-track-and-Matching-track"> </a></h2><p>The competition had 2 tracks.</p>
+<ol>
+<li><p><strong>Descriptor</strong> track expects participant to submit global image descriptors, up to 256-dim, which should be compared by L2 distance. Matching image pairs should have small descriptor distances, while non-matching - large.</p>
+</li>
+<li><p><strong>Matching</strong> track, where the model can do any pairwise (but only pairwise!) comparisons to get the similarity score between two images.</p>
+</li>
+</ol>
+<p>Below I will overview the winning solutions, presented at the <a href="https://sites.google.com/view/isc2021">NeurIPS2021 workshop</a>. But first let me show you a couple of slides from the <a href="https://drive.google.com/file/d/1Jcw9NWpBJ65A3RM5MaHB9-AKG_rM6-Wt/view">organizer's analisys</a>.</p>
+<p>The easiest image transformations are geometrical ones, except cropping the image to a very small size. The hardest ones are those, which involve combination of several images. The global descriptors are very sensitive to image rotatio and vertical flip (not really surprising).</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-02-05-DISC21-recap_files/att_00004.png" alt="" title="Easy-to-hard transformations. From organaizer&#39;s analysis" /></p>
+<p>The models are more or less reasonably robust to adversarial attacks, except really strong ones.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-02-05-DISC21-recap_files/att_00005.png" alt="" title="Models sensitivity to the adversarial attacks" /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-02-05-DISC21-recap_files/att_00006.png" alt="" title="Examples of the adversarial attacks" /></p>
+<p>Finally organizers found that have not done enough de-duplication in the dataset, meaning that models were able to discover the duplicates in the dataset. While some of this annotation errors were genuine, others were in the gray zone.</p>
+<p>For example, images, which were taken from the different positions, but the background object DOES look identical. Another example is the camera burst, where the part of the content, which is not the same across the burst images ended up cropped out by annotators or automatic procedure.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-02-05-DISC21-recap_files/att_00007.png" alt="" title="Images taken from different position, but with the object far away" /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-02-05-DISC21-recap_files/att_00008.png" alt="" title="Image bursts, which are not de-duplicated" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Descriptor-track">Descriptor track<a class="anchor-link" href="#Descriptor-track"> </a></h2><h3 id="1st-place:-Contrastive-Learning-with-Large-Memory-Bank-and-Negative-Embedding-Subtraction-for-Accurate-Copy-Detection">1st place: Contrastive Learning with Large Memory Bank and Negative Embedding Subtraction for Accurate Copy Detection<a class="anchor-link" href="#1st-place:-Contrastive-Learning-with-Large-Memory-Bank-and-Negative-Embedding-Subtraction-for-Accurate-Copy-Detection"> </a></h3><p>by Shuhei Yokoo aka lyakaap.</p>
+<p>The method takes ImageNet-21k-pretrained EfficientNetv2 from <a href="https://fastai.github.io/timmdocs/">timm</a> and trains it with contrastive loss, gradually increasing the augmentations intensity, as well as image size. Final augmentations are quite strong, see the image below. The loss is the simple constrastive loss with memory bank for the hard negatives.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-02-05-DISC21-recap_files/att_00009.png" alt="" title="Examples of augnentations by lyakaap team" /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-02-05-DISC21-recap_files/att_00010.png" alt="" title="Ablation study of the different steps" /></p>
+<p>Finally, Shuhei Yokoo proposes novel postprocessing technique - to subtract hard negative embedding from all database image embeddings. It added nice final boost to the submission.</p>
+<p><a href="https://arxiv.org/pdf/2112.04323.pdf">arXiv</a> <a href="https://github.com/lyakaap/ISC21-Descriptor-Track-1st">github</a></p>
+<h3 id="2nd-place:--Producing-augmentation-invariant-embeddings-from-real-life-imagery">2nd place:  Producing augmentation-invariant embeddings from real-life imagery<a class="anchor-link" href="#2nd-place:--Producing-augmentation-invariant-embeddings-from-real-life-imagery"> </a></h3><p>by Sergio Manuel Papadakis and  Sanjay Addicam</p>
+<p>The method relies on the GeM descriptors ( trained EfficientNetv1, EfficientNetv2, NfNet) with ArcFace loss. ArcFace loss assumes classification, not contrastive setup and hard to train with &gt;1M classes. That is why the method gradually increases the number of classes (images used to train) and the classifier head is re-initialized with centroids, obtained from backbone descriptors from the previous stage.  Multiple models are combined by Concat -&gt; PCA -&gt; L2Norm.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-02-05-DISC21-recap_files/att_00011.png" alt="" title="2nd place model architecture" /></p>
+<p>Finally, the embeddings are modified, to take into account the most similar images from the database, similar to the 1st place, but in a bit more complicated way.</p>
+<p><a href="https://arxiv.org/pdf/2112.03415.pdf">arXiv</a>, <a href="https://github.com/socom20/facebook-image-similarity-challenge-2021">github</a></p>
+<h3 id="3rd-place:-Bag-of-Tricks-and-A-Strong-baseline-for-Image-Copy-Detection">3rd place: Bag of Tricks and A Strong baseline for Image Copy Detection<a class="anchor-link" href="#3rd-place:-Bag-of-Tricks-and-A-Strong-baseline-for-Image-Copy-Detection"> </a></h3><p>by Wenhao Wang, Weipu Zhang, Yifan Sun, Yi Yang</p>
+<p>The method uses ResNet50 backbone, pretrained in augmentation-supervised fashion (<a href="https://arxiv.org/abs/2103.03230">BarlowTwins</a>, unlike 1st and 2nd place, which used supervised pretrained EfficientNetv2. 
+The model is trained with a combination of triplet and cross entropy losses with GeM pooling and WaveBlock.
+Finally, authors also present hard-negative aware embedding de-normalization called "descriptor stretching" -- different variant of the similar idea, also used in 1st and 2nd place post-processing.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-02-05-DISC21-recap_files/att_00013.png" alt="" title="Training pipeline of the 3rd place in descriptor track" /></p>
+<p>Note that before descriptor stretching, results are much weaker than in 1st and 2nd place, but after the post-processing, the margin shrinks</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-02-05-DISC21-recap_files/att_00014.png" alt="" title="The ablation studye. Supervised or Unsupervised denotes the supervised pre-training or unsupervised pre-training is used, respectively. Des-Str denotes adding descriptor stretching strategy. Det denotes adding overlay detection YOLOv5. Multi denotes using multi-scale testing." /></p>
+<p><a href="https://arxiv.org/abs/2111.08004">arXiv</a>, <a href="https://github.com/WangWenhao0716/ISC-Track2-Submission">github</a></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Matching-track">Matching track<a class="anchor-link" href="#Matching-track"> </a></h2><h3 id="1st-place-D2LV:-A-Data-Driven-and-Local-Verification-Approach-for-Image-Copy-Detection">1st place D2LV: A Data-Driven and Local-Verification Approach for Image Copy Detection<a class="anchor-link" href="#1st-place-D2LV:-A-Data-Driven-and-Local-Verification-Approach-for-Image-Copy-Detection"> </a></h3><p>by Wenhao Wang, Yifan Sun, Weipu Zhang, Yi Yang (3rd place in descriptor track).</p>
+<p>The method relies on several ideas:</p>
+<ul>
+<li>Training specialist models on the different augmentations, e.g. "basic", "basic+superdark", "basic+superblur", etc.</li>
+<li>Different ways of splitting the image into the subparts: by YOLOv5 object detection, by 4x4 even split, by rotating the original image, etc, each of which is then "matched" by the global descriptor similarity to the right-hand image. Local-to-global means "we aplit query and match vs reference image", whereas "global-to-local" - - "we match whole query image to splitted reference".</li>
+</ul>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-02-05-DISC21-recap_files/att_00015.png" alt="" title="Winning solution pipeline" /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-02-05-DISC21-recap_files/att_00016.png" alt="" title="The ablation study D2LV. Supervised and Unsupervised denotes the supervised pre-training or unsupervised pre-training is used, respectively. Global-local -- using global-local matching strategy, and Both denotes using global-local and local-global matching strategy. Adv Aug denotes using different kinds of advanced augmentations. Multi-Tricks denotes using multi-scale testing and other men- tioned tricks." /></p>
+<p><a href="https://arxiv.org/pdf/2111.07090.pdf">arXiv</a> <a href="https://github.com/WangWenhao0716/ISC-Track1-Submission">github</a></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="2nd-place:-2nd-Place-Solution-to-Facebook-AI-Image-Similarity-Challenge:-Matching-Track">2nd place: 2nd Place Solution to Facebook AI Image Similarity Challenge: Matching Track<a class="anchor-link" href="#2nd-place:-2nd-Place-Solution-to-Facebook-AI-Image-Similarity-Challenge:-Matching-Track"> </a></h3><p>by SeungKee Jeon.</p>
+<p>The paper uses a simple approach of concatenating query and reference image and feeding such collage into the vision transformer (ViT).</p>
+<p>ViT embeddings are also used to create a short-list for the matching, trained with contrastive loss (SimCLR).</p>
+<p>Similarly to the 1st place, SeungKee Jeon also used image-to-sub-images (1 -&gt; 2x2, 1-&gt;3x3) splitting technique at test time.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-02-05-DISC21-recap_files/att_00017.png" alt="" title="Matching Track model training pipeline. Reference and query image is concatenated to form as one image and ask ViT network to predict if query image used the reference image. Label is 1 if train image A is used as reference image and its augmented image is used as query image. Label is 0 if train image A is used as reference image and augmented version of other train image C is used as query image." /></p>
+<p><a href="https://arxiv.org/abs/2111.09113">arXiv</a> <a href="https://github.com/seungkee/2nd-place-solution-to-Facebook-Image-Similarity-Matching-Track">github</a></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="3rd-place:-A-Global-and-Local-Dual-Retrieval-Solution-to-Facebook-AI-Image-Similarity-Challenge">3rd place: A Global and Local Dual Retrieval Solution to Facebook AI Image Similarity Challenge<a class="anchor-link" href="#3rd-place:-A-Global-and-Local-Dual-Retrieval-Solution-to-Facebook-AI-Image-Similarity-Challenge"> </a></h3><p>by Xinlong Sun, Yangyang Qin, Xuyuan Xu, Guoping Gong, Yang Fang, Yexin Wang</p>
+<p>This method is probably the most hand-engineered.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-02-05-DISC21-recap_files/att_00018.png" alt="" title="Overall pipeline, which consist of separate overlay-detection step, image retrieval with global EsViT and local descriptors - SIFT and finally their combination" /></p>
+<ol>
+<li>The images are pre-processed with overlay-detection -- out-of-the-box YOLOv5. Detected overlays are treated as a separate images.</li>
+<li>The global descriptor EsViT (Swin-B) is pretrained in self-supervised fashion on ImageNet, then with contrastive loss on the challange dataset, with hard-negative memory bank.</li>
+</ol>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-02-05-DISC21-recap_files/att_00019.png" alt="" /></p>
+<ol>
+<li>Resize images to 300px -&gt; SIFT features (~600 per image) -&gt; 600M descriptors. Use brute-force search in faiss with fp16 precision. That takes 165Gb memory, fit with 8 V100 GPUs. Threshold the descriptor distance first, the number of matched features second.</li>
+</ol>
+<p>According to the ablation study, SIFT was significantly worse, than global EsViT descriptor in Phase I, but significantly boosted overall score in Phase 2.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-02-05-DISC21-recap_files/att_00020.png" alt="" title="Ablation study. G-emb means global embedding, F means finetune, and P means using Preprocessing Module." /></p>
+<p><a href="https://arxiv.org/abs/2112.02373">arXiv</a>, <a href="https://github.com/sun-xl/ISC2021">github</a></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Conclusion-&amp;-my-speculations">Conclusion &amp; my speculations<a class="anchor-link" href="#Conclusion-&amp;-my-speculations"> </a></h2><p>Edited image copy detection is a challenging task, which is, nevertheless solvable to some practical extent with existing techniques. It is interesting, the all 3 winners in descriptor track come up with a similar idea of contextualized database image embeddings with hard negatives.</p>
+<p>I also don't believe that the supervised/unsupervised pretraining and transformer/CNN architecture matter as much, as participants were reporting -- precisely because different teams succesfully used different architectures and pretraining. Once one optimized the training procedure for the selected architecture, the differences would probably disappear.</p>
+<p>The matching track pipelines are quite complex and computationally demanding. Nevertheless, using local features (or at least sub-image matching) noticably improves the score.
+My personal favorite is the 2nd place in the matching track for its originality and simplicity.</p>
+<p>What would be interesting, is to check how much one looses when using visual-words tf-idf encoding for the local features matching, instead of keeping original descriptors.</p>
+<p>Challenge organizers also announced the join paper with winners, overviewing the competition and the best approaches some when in February (i.e. soon). Stay tuned :)</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="ducha-aiki/wide-baseline-stereo-blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/wide-baseline-stereo-blog/2022/02/05/DISC21-recap.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/wide-baseline-stereo-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/wide-baseline-stereo-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Everything you (didn&#39;t) want to know about image matching</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/ducha-aiki" target="_blank" title="ducha-aiki"><svg class="svg-icon grey"><use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/ducha_aiki" target="_blank" title="ducha_aiki"><svg class="svg-icon grey"><use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
