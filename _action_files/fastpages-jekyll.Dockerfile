@@ -4,5 +4,5 @@ FROM jekyll/jekyll:4.1.0
 COPY . .
 RUN chmod -R 777 .
 RUN gem install bundler
-RUN bundle update jekyll
+RUN bundle update
 RUN jekyll build
