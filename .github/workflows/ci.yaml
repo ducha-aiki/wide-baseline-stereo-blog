@@ -7,12 +7,12 @@ on:
   pull_request:
   workflow_dispatch:
 
-jobs:
+jobs:     
   build-site:
     if: ( github.event.commits[0].message != 'Initial commit' ) || github.run_number > 1
     runs-on: ubuntu-latest
     steps:
-
+      
     - name: Check if secret exists
       if: github.event_name == 'push'
       run: |
@@ -23,7 +23,7 @@ jobs:
         fi
       env:
        deploy_key: ${{ secrets.SSH_DEPLOY_KEY }}
-
+          
 
     - name: Copy Repository Contents
       uses: actions/checkout@main
@@ -41,10 +41,10 @@ jobs:
     - name: Jekyll build
       uses: docker://fastai/fastpages-jekyll
       with:
-        args: bash -c "jekyll build -V --strict_front_matter --trace"
+        args: bash -c "bundle update jekyll  && jekyll build -V --strict_front_matter --trace"
       env:
         JEKYLL_ENV: 'production'
-
+        
     - name: copy CNAME file into _site if CNAME exists
       run: |
         sudo chmod -R 777 _site/
