@@ -18,7 +18,7 @@ See the [Upgrading guide](https://github.com/fastai/fastpages/blob/master/_fastp
 
 
 ## Step 3: Observe Build Logs When Developing Locally
- 
+
 - [ ] Run the [fastpages blog server locally](DEVELOPMENT.md)
     - Pay attention to the emitted logs when you save your notebooks or files. Often, you will see errors here that will give you important clues.
 - [ ] When developing locally, you will notice that Jupyter notebooks are converted to corresponding markdown files in the `_posts` folder.  Take a look at the problematic blog posts and see if you can spot the offending HTML or markdown in that code.
@@ -48,7 +48,7 @@ See the [Upgrading guide](https://github.com/fastai/fastpages/blob/master/_fastp
 1. Malformed front matter.  Note that anything defined in front matter must be valid YAML.  **Failure to provide valid YAML could result in your page not rendering** in your blog.  For example, if you want a colon in your title you must escape it with double quotes like this:
 
     ` - title: "Deep learning: A tutorial"`
-    
+
     or in a notebook
 
     `# "Deep learning: A tutorial"`
@@ -62,5 +62,11 @@ See the [Upgrading guide](https://github.com/fastai/fastpages/blob/master/_fastp
     ```
 
 2. Can you customize the styling or theme of fastpages?  **A**: See [Customizing Fastpages](https://github.com/fastai/fastpages#customizing-fastpages)
+
+3. Your initial build failed on GH-Pages Status
+
+    `Error messsage: Unable to build page. Please try again later.` `Error: Process completed with exit code 1.`
+
+    If your github username contains capital letters e.g. YourUserName, go to [config file](../_config.yml#L17) line 17 and rename `YourUserName.github.io` to `yourusername.github.io`. After the commit blog should build without error.
 
 See the [FAQ](https://github.com/fastai/fastpages#faq) for frequently asked questions.

@@ -20,14 +20,14 @@ python /fastpages/nb2post.py
 ######## Optionally save files and build GitHub Pages ########
 if [[ "$INPUT_BOOL_SAVE_MARKDOWN" == "true" ]];then
 
-    if [ -z "$INPUT_SSH_DEPLOY_KEY" ];then 
-        echo "You must set the SSH_DEPLOY_KEY input if BOOL_SAVE_MARKDOWN is set to true."; 
+    if [ -z "$INPUT_SSH_DEPLOY_KEY" ];then
+        echo "You must set the SSH_DEPLOY_KEY input if BOOL_SAVE_MARKDOWN is set to true.";
         exit 1;
     fi
 
     # Get user's email from commit history
     if [[ "$GITHUB_EVENT_NAME" == "push" ]];then
-        USER_EMAIL=`cat $GITHUB_EVENT_PATH | jq '.commits | .[0] | .author.email'`
+        USER_EMAIL=$(jq '.commits | .[0] | .author.email' < "$GITHUB_EVENT_PATH")
     else
         USER_EMAIL="actions@github.com"
     fi
@@ -42,11 +42,9 @@ if [[ "$INPUT_BOOL_SAVE_MARKDOWN" == "true" ]];then
 
     # Optionally save intermediate markdown
     if [[ "$INPUT_BOOL_SAVE_MARKDOWN" == "true" ]]; then
-        git pull fastpages-origin ${GITHUB_REF} --ff-only
+        git pull fastpages-origin "${GITHUB_REF}" --ff-only
         git add _posts
         git commit -m "[Bot] Update $INPUT_FORMAT blog posts" --allow-empty
-        git push fastpages-origin HEAD:${GITHUB_REF}
+        git push fastpages-origin HEAD:"$GITHUB_REF"
     fi
 fi
-
-

@@ -2,7 +2,7 @@
 #
 # This config file is meant for settings that affect your whole blog.
 #
-# If you need help with YAML syntax, here are some quick references for you: 
+# If you need help with YAML syntax, here are some quick references for you:
 # https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
 # https://learnxinyminutes.com/docs/yaml/
 
@@ -13,7 +13,7 @@ github_username: ducha-aiki
 github_repo: "wide-baseline-stereo-blog"
 
 # OPTIONAL: override baseurl and url if using a custom domain
-# Note: leave out the trailing / from this value. 
+# Note: leave out the trailing / from this value.
 #url: "https://ducha-aiki.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 
 ###########################################################
@@ -21,11 +21,11 @@ github_repo: "wide-baseline-stereo-blog"
 #
 #### Scenario One: If you do not have a Custom Domain #####
 #    -  if you are not using a custom domain, the baseurl *must* be set to your repo name
-# 
+#
 ####  Scenario Two: If you have a Custom Domain #####
 # 1. If your domain does NOT have a subpath, this leave this value as ""
-# 2. If your domain does have a subpath, you must preceed the value with a / and NOT have a / at the end.  
-#      For example: 
+# 2. If your domain does have a subpath, you must preceed the value with a / and NOT have a / at the end.
+#      For example:
 #           "" is valid
 #           "/blog"        is valid
 #            "/blog/site/" is invalid  ( / at the end)
@@ -71,6 +71,11 @@ default_badges:
   github: true
   binder: true
   colab: true
+  deepnote: true
+
+# Escape HTML in post descriptions
+html_escape:
+  description: false
 
 # Everything below here should be left alone. Modifications may break fastpages
 future: true
@@ -85,6 +90,8 @@ plugins:
   - jekyll-seo-tag
   - jekyll-remote-theme
   - jekyll-paginate
+  - jekyll-sitemap
+  - jemoji
 
 # See https://jekyllrb.com/docs/pagination/
 # For pagination to work, you cannot have index.md at the root of your repo, instead you must rename this file to index.html
@@ -106,3 +113,11 @@ kramdown:
   auto_ids: true
   hard_wrap: false
   syntax_highlighter: rouge
+
+# to limit size of xml as it can grow quite large.
+feed:
+  posts_limit: 5 #default posts_limit: 10
+  excerpt_only: true
+
+exclude:
+  - settings.ini

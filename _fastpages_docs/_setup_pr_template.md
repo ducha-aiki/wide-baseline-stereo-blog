@@ -17,16 +17,16 @@ Hello :wave: @ducha-aiki!  Thank you for using fastpages!
 - Your GH-Pages Status badge on your README will eventually appear and be green, indicating your first sucessfull build.
 - You can monitor the status of your site in the GitHub Pages section of your [repository settings](https://github.com/ducha-aiki/wide-baseline-stereo-blog/settings).
 
-If you are not using a custom domain, your website will appear at: 
+If you are not using a custom domain, your website will appear at:
 
 #### https://ducha-aiki.github.io/wide-baseline-stereo-blog
 
 
 ## Optional: Using a Custom Domain
 
-1. After merging this PR, add a file named `CNAME` at the root of your repo.  For example, the `fastpages` blog is hosted at `https://fastpages.fast.ai`, which means [our CNAME](https://github.com/fastai/fastpages/blob/master/CNAME) contains the following contents: 
+1. After merging this PR, add a file named `CNAME` at the root of your repo.  For example, the `fastpages` blog is hosted at `https://fastpages.fast.ai`, which means [our CNAME](https://github.com/fastai/fastpages/blob/master/CNAME) contains the following contents:
 
-        
+
     >`fastpages.fast.ai`
 
 

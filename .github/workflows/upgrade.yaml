@@ -1,5 +1,5 @@
 name: Upgrade fastpages
-on: 
+on:
   issues:
     types: [opened]
 
@@ -7,7 +7,7 @@ jobs:
   check_credentials:
     if: |
       (github.repository != 'fastai/fastpages') &&
-      (github.event.issue.title == '[fastpages] Automated Upgrade')   
+      (github.event.issue.title == '[fastpages] Automated Upgrade')
     runs-on: ubuntu-latest
     steps:
 
@@ -21,7 +21,7 @@ jobs:
 
     - name: Comment on issue if sufficient access does not exist
       if: |
-        (github.event.issue.author_association != 'OWNER') && 
+        (github.event.issue.author_association != 'OWNER') &&
         (github.event.issue.author_association != 'COLLABORATOR') &&
         (github.event.issue.author_association != 'MEMBER')
       uses: actions/github-script@0.6.0
@@ -46,7 +46,7 @@ jobs:
           throw msg;
       env:
         permission_level: ${{ github.event.issue.author_association }}
-          
+
   upgrade:
     needs: [check_credentials]
     if: |
@@ -55,19 +55,19 @@ jobs:
       (github.event.issue.author_association == 'OWNER' || github.event.issue.author_association == 'COLLABORATOR' || github.event.issue.author_association == 'MEMBER')
     runs-on: ubuntu-latest
     steps:
-    
+
     - name: Set up Python
       uses: actions/setup-python@v1
       with:
         python-version: 3.7
-    
+
     - name: checkout latest fastpages
       uses: actions/checkout@v2
       with:
         repository: 'fastai/fastpages'
         path: 'new_files'
         persist-credentials: false
-        
+
     - name: copy this repo's contents
       uses: actions/checkout@v2
       with:
@@ -98,20 +98,19 @@ jobs:
       if: steps.check_version.outputs.vbump == 'true'
       run: |
         # remove files you don't want to copy from current version of fastpages
-        cd new_files        
+        cd new_files
         rm -rf _posts _notebooks _word images
         rm *.md CNAME action.yml _config.yml index.html LICENSE
         rm _pages/*.md
         rm .github/workflows/chatops.yaml
-        rm .github/workflows/docker-nbdev.yaml
         rm .github/workflows/docker.yaml
         rm .github/ISSUE_TEMPLATE/bug.md .github/ISSUE_TEMPLATE/feature_request.md
-        
+
         # copy new files from fastpages into your repo
-        for file in $(ls | egrep -v "(assets|_sass)"); do 
-          if [[ -f "$file" ]] || [[ -d "$file" ]] 
+        for file in $(ls | egrep -v "(assets|_sass)"); do
+          if [[ -f "$file" ]] || [[ -d "$file" ]]
           then
-            echo "copying $file"; 
+            echo "copying $file";
             cp -r $file ../current_files;
           fi
         done
@@ -126,12 +125,12 @@ jobs:
         cp -r assets/badges ../current_files/assets
         cp _sass/minima/fastpages-styles.scss ../current_files/_sass/minima/
         cp _sass/minima/fastpages-dracula-highlight.scss ../current_files/_sass/minima/
-        
+
         # copy action workflows
         cp -r .github ../current_files
-        
+
         # install dependencies
-        pip3 install pyyaml
+        pip3 install pyyaml==5.4.1
 
     - name: sync baseurl
       if: steps.check_version.outputs.vbump == 'true'
@@ -140,7 +139,7 @@ jobs:
         from pathlib import Path
         from configparser import ConfigParser
         settings = ConfigParser()
-        
+
         # specify location of config files
         nwo = os.getenv('GITHUB_REPOSITORY')
         username, repo_name = nwo.split('/')
@@ -148,22 +147,22 @@ jobs:
         config_path = Path('current_files/_config.yml')
         setup_pr_path = Path('current_files/_fastpages_docs/_setup_pr_template.md')
         upgrade_pr_path = Path('current_files/_fastpages_docs/_upgrade_pr.md')
-        
+
         assert settings_path.exists(), 'Did not find _action_files/settings.ini in your repository!'
         assert config_path.exists(), 'Did not find _config.yml in your repository!'
         assert setup_pr_path.exists(), 'Did not find_fastpages_docs/_setup_pr_template.md in the current directory!'
         assert upgrade_pr_path.exists(), 'Did not find _fastpages_docs/_upgrade_pr.md in your repository!'
-        
+
         # read data from config files
         settings.read(settings_path)
         with open(config_path, 'r') as cfg:
           config = yaml.load(cfg)
-        
+
         # sync value for baseurl b/w config.yml and settings.ini
         settings['DEFAULT']['baseurl'] = config['baseurl']
         with open(settings_path, 'w') as stg:
           settings.write(stg)
-          
+
         # update PR templates
         setup_pr = setup_pr_path.read_text().replace('{_username_}', username).replace('{_repo_name_}', repo_name)
         setup_pr_path.write_text(setup_pr)
@@ -171,11 +170,11 @@ jobs:
         upgrade_pr_path.write_text(upgrade_pr)
       shell: python
 
-    - uses: webfactory/ssh-agent@v0.2.0
+    - uses: webfactory/ssh-agent@v0.4.1
       if: steps.check_version.outputs.vbump == 'true'
       with:
           ssh-private-key: ${{ secrets.SSH_DEPLOY_KEY }}
-                        
+
     - name: push changes to branch
       if: steps.check_version.outputs.vbump == 'true'
       run: |
@@ -185,13 +184,13 @@ jobs:
         git config --global user.name "${GH_USERNAME}"
         git remote remove origin
         git remote add origin "git@github.com:${GITHUB_REPOSITORY}.git"
-        
+
         git add _action_files/settings.ini
         git checkout -b fastpages-automated-upgrade
         git add -A
         git commit -m'upgrade fastpages'
         git push -f --set-upstream origin fastpages-automated-upgrade master
-      env: 
+      env:
         GH_USERNAME: ${{ github.event.issue.user.login }}
 
     - name: Open a PR
@@ -212,7 +211,7 @@ jobs:
                         body: `${contents}`
                         })
                       .then(result => console.log(`::set-output name=pr_num::${result.data.number}`))
-  
+
     - name: Comment on issue if failure
       if: failure()  && (steps.check_version.outputs.vbump == 'true')
       uses: actions/github-script@0.6.0
@@ -231,8 +230,8 @@ jobs:
         PR_NUM: ${{ steps.pr.outputs.pr_num }}
         REPO: ${{ github.repository }}
 
-    - name: Comment on issue 
-      if: steps.check_version.outputs.vbump == 'true'    
+    - name: Comment on issue
+      if: steps.check_version.outputs.vbump == 'true'
       uses: actions/github-script@0.6.0
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
@@ -250,7 +249,7 @@ jobs:
         REPO: ${{ github.repository }}
 
     - name: Comment on issue if version has not changed
-      if: steps.check_version.outputs.vbump == 'false'    
+      if: steps.check_version.outputs.vbump == 'false'
       uses: actions/github-script@0.6.0
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
@@ -261,7 +260,7 @@ jobs:
             repo: context.repo.repo,
             body: `Your version of fastpages is up to date.  There is nothing to change.`
           })
-          
+
     - name: Close Issue
       if: always()
       uses: actions/github-script@0.6.0
