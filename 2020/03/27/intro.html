@@ -3,9 +3,9 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>The Role of Wide Baseline Stereo in the Deep Learning World | Wide baseline stereo meets deep learning</title>
-<meta name="generator" content="Jekyll v4.0.0" />
+<meta name="generator" content="Jekyll v4.1.1" />
 <meta property="og:title" content="The Role of Wide Baseline Stereo in the Deep Learning World" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Short history of wide baseline stereo in computer vision" />
@@ -15,41 +15,29 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-03-27T00:00:00-05:00" />
 <script type="application/ld+json">
-{"datePublished":"2020-03-27T00:00:00-05:00","dateModified":"2020-03-27T00:00:00-05:00","image":"/wide-baseline-stereo-blog/images/doll_wbs_300.png","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2020/03/27/intro.html"},"description":"Short history of wide baseline stereo in computer vision","@type":"BlogPosting","url":"/wide-baseline-stereo-blog/2020/03/27/intro.html","headline":"The Role of Wide Baseline Stereo in the Deep Learning World","@context":"https://schema.org"}</script>
+{"headline":"The Role of Wide Baseline Stereo in the Deep Learning World","dateModified":"2020-03-27T00:00:00-05:00","url":"/wide-baseline-stereo-blog/2020/03/27/intro.html","datePublished":"2020-03-27T00:00:00-05:00","@type":"BlogPosting","image":"/wide-baseline-stereo-blog/images/doll_wbs_300.png","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2020/03/27/intro.html"},"description":"Short history of wide baseline stereo in computer vision","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/wide-baseline-stereo-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="/wide-baseline-stereo-blog/feed.xml" title="Wide baseline stereo meets deep learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
 
 
 
-<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-174193910-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-174193910-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-<link rel="shortcut icon" type="image/x-icon" href="/wide-baseline-stereo-blog/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>The Role of Wide Baseline Stereo in the Deep Learning World | Wide baseline stereo meets deep learning</title>
-<meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="The Role of Wide Baseline Stereo in the Deep Learning World" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="Short history of wide baseline stereo in computer vision" />
-<meta property="og:description" content="Short history of wide baseline stereo in computer vision" />
-<meta property="og:site_name" content="Wide baseline stereo meets deep learning" />
-<meta property="og:image" content="/wide-baseline-stereo-blog/images/doll_wbs_300.png" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2020-03-27T00:00:00-05:00" />
-<script type="application/ld+json">
-{"datePublished":"2020-03-27T00:00:00-05:00","dateModified":"2020-03-27T00:00:00-05:00","image":"/wide-baseline-stereo-blog/images/doll_wbs_300.png","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2020/03/27/intro.html"},"description":"Short history of wide baseline stereo in computer vision","@type":"BlogPosting","url":"/wide-baseline-stereo-blog/2020/03/27/intro.html","headline":"The Role of Wide Baseline Stereo in the Deep Learning World","@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-
-<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
-<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="/wide-baseline-stereo-blog/feed.xml" title="Wide baseline stereo meets deep learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
+  gtag('config', 'UA-174193910-1');
+</script>
 
 
-
-<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-174193910-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
-
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+<link rel="shortcut icon" type="image/x-icon" href="/wide-baseline-stereo-blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
     <script>
     document.addEventListener("DOMContentLoaded", function() {
         renderMathInElement( document.body, {
@@ -127,7 +115,7 @@ window.onload = wrap_img;
 
     
       
-        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+        <div class="pb-5 d-flex flex-justify-center">
           <div class="px-2">
 
     <a href="https://github.com/ducha-aiki/wide-baseline-stereo-blog/tree/master/_notebooks/2020-03-27-intro.ipynb" role="button" target="_blank">
@@ -146,6 +134,12 @@ window.onload = wrap_img;
         <img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/colab.svg" alt="Open In Colab"/>
     </a>
 </div>
+          <div class="px-2">
+  <a href="https://deepnote.com/launch?url=https%3A%2F%2Fgithub.com%2Fducha-aiki%2Fwide-baseline-stereo-blog%2Fblob%2Fmaster%2F_notebooks%2F2020-03-27-intro.ipynb" target="_blank">
+      <img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/deepnote.svg" alt="Launch in Deepnote"/>
+  </a>
+</div>
+
         </div>
       </header>
 
@@ -159,13 +153,6 @@ window.onload = wrap_img;
 
 <div class="container" id="notebook-container">
         
-    
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Rise-of-Wide-Multiple-Baseline-Stereo">Rise of Wide Multiple Baseline Stereo<a class="anchor-link" href="#Rise-of-Wide-Multiple-Baseline-Stereo"> </a></h2><p>The <em>wide multiple baseline stereo (WxBS)</em> is a process of establishing a sufficient number of pixel or region correspondences from two or more images depicting the same scene to estimate the geometric relationship between cameras, which produced these images. Typically, WxBS relies on the scene rigidity -- the assumption that there is no motion in the scene except the motion of the camera itself. The stereo problem is called wide multiple baseline if the images are significantly different in more than one aspect: viewpoint, illumination, time of acquisition, and so on. Historically, people were focused on the simpler problem with a single baseline, which was geometrical, i.e., viewpoint difference between cameras, and the area was known as wide baseline stereo. Nowadays, the field is mature and research is focused on solving more challenging multi-baseline problems.</p>
@@ -379,6 +366,7 @@ detector-descriptor [<a class="latex_cit" id="call-SuperPoint2017" href="#cit-Su
         async>
 </script><a class="u-url" href="/wide-baseline-stereo-blog/2020/03/27/intro.html" hidden></a>
 </article>
+
       </div>
     </main><footer class="site-footer h-card">
   <data class="u-url" href="/wide-baseline-stereo-blog/"></data>
