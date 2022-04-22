@@ -1,5 +1,6 @@
 FROM fastai/jekyll:2020-12-30
 
+RUN bundle update jekyll
 WORKDIR /fastpages
 COPY . .
 RUN chmod u+x action_entrypoint.sh
