@@ -1,26 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>/wide-baseline-stereo-blog/2020/01/01/Microsoft-Word-Example-Post.html</loc>
-<lastmod>2020-01-01T00:00:00-06:00</lastmod>
-</url>
-<url>
-<loc>/wide-baseline-stereo-blog/markdown/2020/01/14/test-markdown-post.html</loc>
-<lastmod>2020-01-14T00:00:00-06:00</lastmod>
-</url>
-<url>
-<loc>/wide-baseline-stereo-blog/jupyter/2020/02/20/test.html</loc>
-<lastmod>2020-02-20T00:00:00-06:00</lastmod>
-</url>
-<url>
-<loc>/wide-baseline-stereo-blog/fastpages/jupyter/2020/02/21/introducing-fastpages.html</loc>
-<lastmod>2020-02-21T00:00:00-06:00</lastmod>
-</url>
-<url>
-<loc>/wide-baseline-stereo-blog/actions/markdown/2020/03/06/fastpages-actions.html</loc>
-<lastmod>2020-03-06T00:00:00-06:00</lastmod>
-</url>
-<url>
 <loc>/wide-baseline-stereo-blog/2020/03/27/intro.html</loc>
 <lastmod>2020-03-27T00:00:00-05:00</lastmod>
 </url>
@@ -41,16 +21,8 @@
 <lastmod>2020-08-06T00:00:00-05:00</lastmod>
 </url>
 <url>
-<loc>/wide-baseline-stereo-blog/fastcore/</loc>
-<lastmod>2020-09-01T00:00:00-05:00</lastmod>
-</url>
-<url>
 <loc>/wide-baseline-stereo-blog/2020/09/23/local-descriptors-validation.html</loc>
 <lastmod>2020-09-23T00:00:00-05:00</lastmod>
-</url>
-<url>
-<loc>/wide-baseline-stereo-blog/fastlinkcheck/</loc>
-<lastmod>2020-11-17T00:00:00-06:00</lastmod>
 </url>
 <url>
 <loc>/wide-baseline-stereo-blog/2020/11/25/review-of-retrieval-for-localization.html</loc>
@@ -59,10 +31,6 @@
 <url>
 <loc>/wide-baseline-stereo-blog/2020/11/26/lessons-and-future-directions.html</loc>
 <lastmod>2020-11-26T00:00:00-06:00</lastmod>
-</url>
-<url>
-<loc>/wide-baseline-stereo-blog/codespaces</loc>
-<lastmod>2020-12-10T00:00:00-06:00</lastmod>
 </url>
 <url>
 <loc>/wide-baseline-stereo-blog/2021/01/09/wxbs-in-simple-terms.html</loc>
