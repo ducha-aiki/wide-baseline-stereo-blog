@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Un-SuperPoint family: who are they? | Wide baseline stereo meets deep learning</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Un-SuperPoint family: who are they?" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="does it worth to know them?" />
+<meta property="og:description" content="does it worth to know them?" />
+<meta property="og:site_name" content="Wide baseline stereo meets deep learning" />
+<meta property="og:image" content="/wide-baseline-stereo-blog/images/eval-on-IMC-vs-Hpatches.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-01-04T00:00:00-06:00" />
+<script type="application/ld+json">
+{"url":"/wide-baseline-stereo-blog/2023/01/04/UnsuperPoint-family.html","headline":"Un-SuperPoint family: who are they?","dateModified":"2023-01-04T00:00:00-06:00","datePublished":"2023-01-04T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2023/01/04/UnsuperPoint-family.html"},"image":"/wide-baseline-stereo-blog/images/eval-on-IMC-vs-Hpatches.png","description":"does it worth to know them?","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/wide-baseline-stereo-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="/wide-baseline-stereo-blog/feed.xml" title="Wide baseline stereo meets deep learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GE2NZRSZBN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-GE2NZRSZBN');
+</script>
+
+
+<link rel="shortcut icon" type="image/x-icon" href="/wide-baseline-stereo-blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/wide-baseline-stereo-blog/">Wide baseline stereo meets deep learning</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/wide-baseline-stereo-blog/about/">About Me</a><a class="page-link" href="/wide-baseline-stereo-blog/search/">Search</a><a class="page-link" href="/wide-baseline-stereo-blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Un-SuperPoint family: who are they?</h1><p class="page-description">does it worth to know them?</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2023-01-04T00:00:00-06:00" itemprop="datePublished">
+        Jan 4, 2023
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      9 min read
+    
+</span></p>
+
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-justify-center">
+          <div class="px-2">
+
+    <a href="https://github.com/ducha-aiki/wide-baseline-stereo-blog/tree/master/_notebooks/2023-01-04-UnsuperPoint-family.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/ducha-aiki/wide-baseline-stereo-blog/master?filepath=_notebooks%2F2023-01-04-UnsuperPoint-family.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/ducha-aiki/wide-baseline-stereo-blog/blob/master/_notebooks/2023-01-04-UnsuperPoint-family.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+          <div class="px-2">
+  <a href="https://deepnote.com/launch?url=https%3A%2F%2Fgithub.com%2Fducha-aiki%2Fwide-baseline-stereo-blog%2Fblob%2Fmaster%2F_notebooks%2F2023-01-04-UnsuperPoint-family.ipynb" target="_blank">
+      <img class="notebook-badge-image" src="/wide-baseline-stereo-blog/assets/badges/deepnote.svg" alt="Launch in Deepnote"/>
+  </a>
+</div>
+
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2023-01-04-UnsuperPoint-family.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Super-starts-with-Magic">Super starts with Magic<a class="anchor-link" href="#Super-starts-with-Magic"> </a></h2><p>If you work in image matching, you know <a href="https://arxiv.org/abs/1712.07629">SuperPoint</a>. If you don't - that is one of the most successful modern local feature, developed by Daniel DeTone, Tomasz Malisiewicz and Andrew Rabinovich in 2017.</p>
+<p>Idea was simple and genious: we know that corners are good keypoints. Let's train a basic corner (in wide meaning) on unlimited synthetic data. Then we somehow adapt it to realworld images.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/att_00001.png" alt="" title="SuperPoint starts with MagicPoint - corner/junctions detector supervised by synthetically rendered cube scenes." /></p>
+<p>The adaptation is done under augmentation supervision. In other word - we believe that our detector is already good, but noisy and we will cancel this noise by running the same detector on multiple augmented version of the same image, which gives us pseudo-ground truth. 
+The training is done via optimizing cross-entropy loss, which leads to very peaky response map compared to other alternatives such as R2D2.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/att_00002.png" alt="" title="MagicPoint becomes SuperPoint after being finetuned on real images with augmentation supervision." /></p>
+<p>That's it. The resulting detector (and descriptor) was fast enough on GPU and great for SLAM purposes. It was especially good on indoor images with lots of textureless areas.</p>
+<p>On outdoor images it was not so great, however, as it was shown later, the problem was more in descriptor and matching, not detector. <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/14/IMC2020-competition-recap.html">SuperGlue matching</a> on top of SuperPoint local features won 3 competitions at CVPR 2020, including our <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/14/IMC2020-competition-recap.html">Image Matching Challenge</a>.</p>
+<p>So, it was huge success. However, not without drawbacks. The main drawback is that training code was never released. That is why people tried independently re-implement SuperPoint, as well as present new, supposedly better versions of it.</p>
+<p>Unfortunately, none of this version was properly evaluated, so we have no idea how they work in reality. Let me fill this gap and present a small eval of the SuperPoint children.</p>
+<p>I'll first do a short review of how are they different, and the benchmark will be in the last section.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Original-SuperPoint">Original SuperPoint<a class="anchor-link" href="#Original-SuperPoint"> </a></h3><p>Besides the description, I will show how the detections are different between implementations. I will use two images. One is realworld photo taken by myself on Xiaomi phone, and another one is synthetic from <a href="https://learnopencv.com/blob-detection-using-opencv-python-c/">OpenCV Blob detection tutorial</a>. It is kind of adversarial, as SuperPoint is not designed to fire or not fire on circular patterns. Well, that is exactly why I added that image.
+So here are the original SP detections:</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/sp_dets1.png" alt="" title="MagicLeap SuperPoint detections" /></p>
+<h3 id="3rd-party-SuperPoint-implementations">3rd party SuperPoint implementations<a class="anchor-link" href="#3rd-party-SuperPoint-implementations"> </a></h3><p>There are two main 3rd party SuperPoint implementations. <a href="https://github.com/rpautrat/SuperPoint">One of them</a> is in Tensorflow, by Rémi Pautrat and Paul-Edouard Sarlin. I will skip this one, because I am too lazy to install TF on my M1 machine. So I will show another - Pytorch - implementation, which is based on Tensorflow one, and is developed by <a href="https://github.com/eric-yyjau/pytorch-superpoint">You-Yi Jau and Rui Zhu</a>.</p>
+<p>Besides being 3rd party implementation, this one also has architectural changes. 
+They are:</p>
+<ul>
+<li><a href="https://github.com/eric-yyjau/pytorch-superpoint/blob/master/models/SuperPointNet_gauss2.py#L31">adding BatchNorm</a>. </li>
+<li>using <a href="https://github.com/eric-yyjau/pytorch-superpoint/blob/master/models/model_utils.py#L118">SoftArgMax2d from torchgeometry</a> (early version of <a href="https://github.com/kornia/kornia">kornia</a>) to achieve subpixel accuracy. </li>
+</ul>
+<p>Here are the detections by this version and original.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/sp.gif" alt="" title="Pytorch-SuperPoint and MagicLeap SuperPoint detections" /></p>
+<p>Here is also a short report by one of the authors: <a href="https://eric-yyjau.medium.com/what-have-i-learned-from-the-implementation-of-deep-learning-paper-365ee3253a89">What have I learned from the implementation of deep learning paper?</a></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="SuperChildren">SuperChildren<a class="anchor-link" href="#SuperChildren"> </a></h2><h3 id="Reinforced-SuperPoint">Reinforced SuperPoint<a class="anchor-link" href="#Reinforced-SuperPoint"> </a></h3><p>This is a paper by Aritra Bhowmik et al, named <a href="https://arxiv.org/pdf/1912.00623.pdf">Reinforced Feature Points: Optimizing Feature Detection and Description for a High-Level Task</a>. The main idea is that one can use reinforcement learning to optimize non-differentiable downstream metric such as camera pose accuracy through RANSAC.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/att_00007.png" alt="" title="Reinforced SuperPoint training pipeline" /></p>
+<p>The idea is very cool, but the final result is not so. Specifically, the main thing end up optimized is keypoint score function. Which can increase a precision of the keypoint detector, but not the recall. See the image below for the illustration. The synthetic image at the right clearly benefits, but the realworld image - not so much, because of loosing many keypoints on the ground.</p>
+<p>This also can explain a bit worse performance of the Reinforced SuperPoint in our evaluation - we don't set the confidence threshold, but instead take top-2048 keypoints whatsoever.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/sp_reinf.gif" alt="" title="SuperPoint vs its finetuned version via Reinforcement learning. One can see that keypoint map is cleaner, but there are no new keypoints appearing" /></p>
+<h3 id="UnsuperPoint">UnsuperPoint<a class="anchor-link" href="#UnsuperPoint"> </a></h3><p>This is a <a href="https://arxiv.org/abs/1907.04011">paper from eiva.com and Aarhus University by Peter Hviid Christiansen</a>, which proposed to drop the supervised pretraining and use regression module instead of CE on heatmap for training detector.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/att_00003.png" alt="image.png" title="UnsuperPoint training scheme" /></p>
+<p>Unfortunately, there is no implementation available, so I will pretend the paper never existed.</p>
+<h3 id="KP2D-aka-KeypointNet-aka-IONet">KP2D aka KeypointNet aka IONet<a class="anchor-link" href="#KP2D-aka-KeypointNet-aka-IONet"> </a></h3><p>Despite no implementation, UnsuperPoint inspired other people to make a follow-up, which was published at ICLR 2020. The paper name is "<a href="https://openreview.net/pdf?id=Skx82ySYPH">Neural Outlier Rejection for Self-Supervised Keypoint Learning</a>" by Jiexiong Tang et al.</p>
+<p>It made two contributions. First, paper argues that cell-based approach (SuperPoint and friends have 1 keypoint per 8x8 px cell) is unstable for training when keypoints are near the cell border. Second, it introduced yet another loss function, similar to CNe and other outlier rejection methods.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/att_00005.png" alt="" title="Cross-border detection in KP2D network" /></p>
+<p>Here are the KP2D detections for all versions. Note that on realworld image it detects corners nicely, despite not being training for it specifically. On the synthetic blob image it mostly work as dark-to-light (or light-to-dark for V0 and V2) edge detector, no idea why.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/kp2d.gif" alt="" title="KeypointNet aka KP2D detections." /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="LANet">LANet<a class="anchor-link" href="#LANet"> </a></h3><p>It is the most recent paper of the SP family, published at ACCV2022 -- "<a href="https://openaccess.thecvf.com/content/ACCV2022/html/Wang_Rethinking_Low-level_Features_for_Interest_Point_Detection_and_Description_ACCV_2022_paper.html">Rethinking Low-level Features for Interest Point Detection and Description</a>" by Changhao Wang et al.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/att_00006.png" alt="" title="LANet architecture" /></p>
+<p>It is based on KP2D and presents mostly architectural changes into description branch. Second, it has two versions. <code>v0</code> is similar to the SuperPoint original architecture -- lightweight VGG-like network, trained from scratch. <code>v1</code> is uses <code>vgg16_bn</code>, pretrained on the ImageNet as feature encoder. <code>v1</code> is like 2-3x slower than <code>v0</code>.</p>
+<p>Here are the detections:</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/lanet.gif" alt="" title="LANet detections" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Benchmark-on-IMC-PhotoTourism">Benchmark on IMC PhotoTourism<a class="anchor-link" href="#Benchmark-on-IMC-PhotoTourism"> </a></h1><p>I have benchmarked all the variants, using my own tutorial on <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/12/submitting-to-IMC2021-step-by-step.html">how to submit to IMC-2021</a>. The code for feature extraction is <a href="https://github.com/ubc-vision/image-matching-benchmark-baselines">here</a> (uncommented yet).
+All the images were resized to have 1024 px by large size (which explains the slight diffefences compared to <a href="https://arxiv.org/abs/2003.01587">original SuperPoint results in the paper</a>, where 1200 was used. I have also circumvented confidence threshold and pick top-2048 keypoints instead for all images. 
+Then I have tuned everything on the validation set (see table with optimal params in the end of the post) - such as matching threshold, RANSAC threshold and method-specific things, like "version" for KP2D and LANet, etc. Unlike for the IMC paper, I haven't tuned anything for multiview setup. Specifically,  matching threshold might be suboptimal. Anyway.</p>
+<p>Finally I have run all features with found optimal parameters on the test set (GT is released now!). Here are the results.</p>
+<h3 id="Stereo-task">Stereo task<a class="anchor-link" href="#Stereo-task"> </a></h3><p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/map_stereo_pp_pt_2k.pdf" alt="" title="Stereo task results. MagicLeap SuperPoint results are shown with dashed line." /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>First, as you can see, 3rd part SuperPoint implementation is way worse: ~2x than MagicLeap one. Reinforced SuperPoint also is slightly worse. KP2D is better on PhotoTourism, but worse on the PragueParks. <a href="https://www.cs.ubc.ca/research/image-matching-challenge/2021/data/">PragueParks</a> is easier dataset than PhotoTourism, however it features different scenes. While PhotoTourism is mostly buildings, PragueParks contains natural scenes such as trees and pond. Thus I may argue that original SP is more general.</p>
+<p>LANet works considerably better on Phototourism and on par on PragueParks. If considering adding to kornia, I would select LANet. It is interesting though, if it is performing well because of detector, or descriptor. The latter is worse, because training SuperGlue/OpenGlue would fix descriptor issues, but less of detector.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Multiview-task">Multiview task<a class="anchor-link" href="#Multiview-task"> </a></h3><p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/map_mv_pp_pt_2k.pdf" alt="" title="Multiview task results. MagicLeap SuperPoint results are shown with dashed line." /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Multiview results are similar to stereo, with slight differences: Reinforced SP is slightly better than original on PragueParks, and LANet v0 is exactly as good as original SP.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Why-eval-only-on-HPatches-is-meaningless.">Why eval only on HPatches is meaningless.<a class="anchor-link" href="#Why-eval-only-on-HPatches-is-meaningless."> </a></h2><p>KP2D and 3rd party SuperPoint eval themselves on HPatches only. Let's look at them. According to KP2D paper, it is slightly better than Superpoint on homography estimation and 2x better on matching score. Which we haven't seen on realworld IMC data.</p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/att_00009.png" alt="" title="Evaluation on HPatches from KP2D paper. KP2D seems to be much better" /></p>
+<p>And here is <a href="https://github.com/eric-yyjau/pytorch-superpoint/tree/master">eval from 3rd part SuperPoint</a>. According to it, Superpoint-coco is almost as good as SP MagicLeap on homography estimation, better on detector metrics and slightle worse on descriptor metrics. Which, again, doesn't correspond to our results.</p>
+<table>
+<thead><tr>
+<th>Task</th>
+<th>Homography estimation</th>
+<th></th>
+<th></th>
+<th>Detector metric</th>
+<th></th>
+<th>Descriptor metric</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>Epsilon = 1</td>
+<td>3</td>
+<td>5</td>
+<td>Repeatability</td>
+<td>MLE</td>
+<td>NN mAP</td>
+<td>Matching Score</td>
+</tr>
+<tr>
+<td>MagicLeap</td>
+<td>0.44</td>
+<td>0.77</td>
+<td>0.83</td>
+<td>0.606</td>
+<td>1.14</td>
+<td>0.81</td>
+<td>0.55</td>
+</tr>
+<tr>
+<td>superpoint_coco_heat2_0_170k_hpatches_sub</td>
+<td>0.46</td>
+<td>0.75</td>
+<td>0.81</td>
+<td>0.63</td>
+<td>1.07</td>
+<td>0.78</td>
+<td>0.42</td>
+</tr>
+<tr>
+<td>superpoint_kitti_heat2_0_50k_hpatches_sub</td>
+<td>0.44</td>
+<td>0.71</td>
+<td>0.77</td>
+<td>0.56</td>
+<td>0.95</td>
+<td>0.78</td>
+<td>0.41</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Additional-results-from-validation-set-and-recommended-hyper-paramers">Additional results from validation set and recommended hyper-paramers<a class="anchor-link" href="#Additional-results-from-validation-set-and-recommended-hyper-paramers"> </a></h2><p>Here I will present some results from the tuning on validation set. I believe that they would translate to the other datasets as well.</p>
+<ol>
+<li>L2-normalization of descriptor does not help ANY of the evaluated models. It doesn't hurt either.</li>
+<li>Subpixel with soft-argmax helps 3rd party SuperPoint. One may try to apply it to original model as well. The difference is: <code>mAA = 0.2965</code> for subpixel vs <code>mAA = 0.2789</code> no-subpixel on PhotoTourism and <code>0.3567</code> vs <code>0.3274</code> on PragueParks. </li>
+<li>The <code>v2</code> model of the KP2D is much better than then rest. <code>v0</code> and <code>v1</code> might be bugged, or require code changes to be run properly maybe?</li>
+</ol>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/map_stereo_pt_2k_val_kp2d.pdf" alt="" title="KP2D versions comparison on validation set." /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Optimal-hyperparamers">Optimal hyperparamers<a class="anchor-link" href="#Optimal-hyperparamers"> </a></h2><p>SNN - 2nd nearest neighbor threshold, PT - PhotoTourism, PP - PragueParks.</p>
+<table>
+<thead><tr>
+<th>Method</th>
+<th>mutual SNN threshold</th>
+<th>PT inl_th</th>
+<th>PP inl_th</th>
+<th>PT val stereo mAA</th>
+<th>PP val stereo mAA</th>
+<th>Other</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MagicLeap SuperPoint</td>
+<td>0.9</td>
+<td>1.0</td>
+<td>1.5</td>
+<td>0.3746</td>
+<td>0.5628</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Reinforced SuperPoint</td>
+<td>0.9</td>
+<td>1.0</td>
+<td>1.5</td>
+<td>0.3491</td>
+<td>0.5497</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>SuperPoint 3rd party COCO</td>
+<td>0.95</td>
+<td>0.75</td>
+<td>1.0</td>
+<td>0.2966</td>
+<td>0.3488</td>
+<td>subpix</td>
+</tr>
+<tr>
+<td>SuperPoint 3rd party KITTY</td>
+<td>0.95</td>
+<td>0.75</td>
+<td>1.0</td>
+<td>0.1910</td>
+<td>0.2621</td>
+<td>subpix</td>
+</tr>
+<tr>
+<td>KP2D</td>
+<td>0.99</td>
+<td>0.75</td>
+<td>1.0</td>
+<td>0.3633</td>
+<td>0.4971</td>
+<td>v2</td>
+</tr>
+<tr>
+<td>LANet v0</td>
+<td>0.99</td>
+<td>0.5</td>
+<td>1.0</td>
+<td>0.4591</td>
+<td><strong>0.6175</strong></td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>LANet v1</td>
+<td>0.99</td>
+<td>0.5</td>
+<td>1.0</td>
+<td><strong>0.4838</strong></td>
+<td><strong>0.6127</strong></td>
+<td>n/a</td>
+</tr>
+</tbody>
+</table>
+<h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions"> </a></h1><p>It seems that LANet and KP2D might be good alternatives to the MagicLeap SuperPoint. There are 2 missing things though:</p>
+<ol>
+<li>SuperGlue analogue yet to be trained for them. Nobody sane would you SuperPoint w/o SuperGlue for the most of the cases.</li>
+<li>Evaluation on indoor data, e.g. ScanNet. One of the SuperPoint strengths - good performance indoor, which is yet to be tested for others. I might test it, but right not in the mood to download, print and scan the data form required for ScanNet access. </li>
+</ol>
+<h3 id="Acknowledgements.">Acknowledgements.<a class="anchor-link" href="#Acknowledgements."> </a></h3><p>This blogpost is supported by CTU in Prague RCI computing cluster from <code>OP VVV funded project CZ.02.1.01/0.0/0.0/16 019/0000765 “Research Center for Informatics”</code> grant. Really, it took ~2 compute days to tune all those hyperparams and do tests.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="ducha-aiki/wide-baseline-stereo-blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/wide-baseline-stereo-blog/2023/01/04/UnsuperPoint-family.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/wide-baseline-stereo-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/wide-baseline-stereo-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Everything you (didn&#39;t) want to know about image matching</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li>
+  <a rel="me" href="https://github.com/ducha-aiki/" target="_blank" title="github">
+    <svg class="svg-icon grey">
+      <use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#github"></use>
+    </svg>
+  </a>
+</li>
+<li>
+  <a rel="me" href="https://twitter.com/ducha_aiki" target="_blank" title="twitter">
+    <svg class="svg-icon grey">
+      <use xlink:href="/wide-baseline-stereo-blog/assets/minima-social-icons.svg#twitter"></use>
+    </svg>
+  </a>
+</li>
+</ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
