@@ -225,7 +225,7 @@ They are:</p>
 All the images were resized to have 1024 px by large size (which explains the slight diffefences compared to <a href="https://arxiv.org/abs/2003.01587">original SuperPoint results in the paper</a>, where 1200 was used. I have also circumvented confidence threshold and pick top-2048 keypoints instead for all images. 
 Then I have tuned everything on the validation set (see table with optimal params in the end of the post) - such as matching threshold, RANSAC threshold and method-specific things, like "version" for KP2D and LANet, etc. Unlike for the IMC paper, I haven't tuned anything for multiview setup. Specifically,  matching threshold might be suboptimal. Anyway.</p>
 <p>Finally I have run all features with found optimal parameters on the test set (GT is released now!). Here are the results.</p>
-<h3 id="Stereo-task">Stereo task<a class="anchor-link" href="#Stereo-task"> </a></h3><p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/map_stereo_pp_pt_2k.pdf" alt="" title="Stereo task results. MagicLeap SuperPoint results are shown with dashed line." /></p>
+<h3 id="Stereo-task">Stereo task<a class="anchor-link" href="#Stereo-task"> </a></h3><p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/map_stereo_pp_pt_2k.png" alt="" title="Stereo task results. MagicLeap SuperPoint results are shown with dashed line." /></p>
 
 </div>
 </div>
@@ -240,7 +240,7 @@ Then I have tuned everything on the validation set (see table with optimal param
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Multiview-task">Multiview task<a class="anchor-link" href="#Multiview-task"> </a></h3><p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/map_mv_pp_pt_2k.pdf" alt="" title="Multiview task results. MagicLeap SuperPoint results are shown with dashed line." /></p>
+<h3 id="Multiview-task">Multiview task<a class="anchor-link" href="#Multiview-task"> </a></h3><p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/map_mv_pp_pt_2k.png" alt="" title="Multiview task results. MagicLeap SuperPoint results are shown with dashed line." /></p>
 
 </div>
 </div>
@@ -324,7 +324,7 @@ Then I have tuned everything on the validation set (see table with optimal param
 <li>Subpixel with soft-argmax helps 3rd party SuperPoint. One may try to apply it to original model as well. The difference is: <code>mAA = 0.2965</code> for subpixel vs <code>mAA = 0.2789</code> no-subpixel on PhotoTourism and <code>0.3567</code> vs <code>0.3274</code> on PragueParks. </li>
 <li>The <code>v2</code> model of the KP2D is much better than then rest. <code>v0</code> and <code>v1</code> might be bugged, or require code changes to be run properly maybe?</li>
 </ol>
-<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/map_stereo_pt_2k_val_kp2d.pdf" alt="" title="KP2D versions comparison on validation set." /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/map_stereo_pt_2k_val_kp2d.png" alt="" title="KP2D versions comparison on validation set." /></p>
 
 </div>
 </div>
