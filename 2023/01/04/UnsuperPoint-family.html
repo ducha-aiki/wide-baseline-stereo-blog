@@ -331,7 +331,7 @@ Then I have tuned everything on the validation set (see table with optimal param
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Optimal-hyperparamers">Optimal hyperparamers<a class="anchor-link" href="#Optimal-hyperparamers"> </a></h2><p>SNN - 2nd nearest neighbor threshold, PT - PhotoTourism, PP - PragueParks.</p>
+<h2 id="Optimal-hyperparamers">Optimal hyperparamers<a class="anchor-link" href="#Optimal-hyperparamers"> </a></h2><p>SNN - 2nd nearest neighbor threshold, PT - PhotoTourism, PP - PragueParks, inl_th - inlier threshold for DEGENSAC.</p>
 <table>
 <thead><tr>
 <th>Method</th>
@@ -414,6 +414,15 @@ Then I have tuned everything on the validation set (see table with optimal param
 <li>SuperGlue analogue yet to be trained for them. Nobody sane would you SuperPoint w/o SuperGlue for the most of the cases.</li>
 <li>Evaluation on indoor data, e.g. ScanNet. One of the SuperPoint strengths - good performance indoor, which is yet to be tested for others. I might test it, but right not in the mood to download, print and scan the data form required for ScanNet access. </li>
 </ol>
+<h2 id="Bonus:-more-visualizations">Bonus: more visualizations<a class="anchor-link" href="#Bonus:-more-visualizations"> </a></h2><p>Legend:</p>
+<ul>
+<li>blue points: COLMAP reconstructed 3D points</li>
+<li>red point: non-matched keypoints .</li>
+</ul>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/tree1.gif" alt="" title="Matched and non-matched keypoints from PragueParks Tree scene" /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/ll.gif" alt="" title="Matched and non-matched keypoints from PhotoTourism Lincoln memorial statue scene" /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/flo.gif" alt="" title="Matched and non-matched keypoints from PhotoTourism Florence cathedral side scene" /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2022-12-31-UnsuperPoint-family_files/pond1.gif" alt="" title="Matched and non-matched keypoints from PragueParks Pond scene" /></p>
 <h3 id="Acknowledgements.">Acknowledgements.<a class="anchor-link" href="#Acknowledgements."> </a></h3><p>This blogpost is supported by CTU in Prague RCI computing cluster from <code>OP VVV funded project CZ.02.1.01/0.0/0.0/16 019/0000765 “Research Center for Informatics”</code> grant. Really, it took ~2 compute days to tune all those hyperparams and do tests.</p>
 
 </div>
