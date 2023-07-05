@@ -4,9 +4,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Image Matching Challenge 2023: SfM Unchained | Wide baseline stereo meets deep learning</title>
+<title>Image Matching Challenge 2023: The Unbearable Weight of the Bundle Adjustment | Wide baseline stereo meets deep learning</title>
 <meta name="generator" content="Jekyll v4.1.1" />
-<meta property="og:title" content="Image Matching Challenge 2023: SfM Unchained" />
+<meta property="og:title" content="Image Matching Challenge 2023: The Unbearable Weight of the Bundle Adjustment" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="3D reconstruction is harder than two view matching" />
 <meta property="og:description" content="3D reconstruction is harder than two view matching" />
@@ -15,7 +15,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2023-07-05T00:00:00-05:00" />
 <script type="application/ld+json">
-{"url":"/wide-baseline-stereo-blog/2023/07/05/IMC2023-Recap.html","@type":"BlogPosting","headline":"Image Matching Challenge 2023: SfM Unchained","dateModified":"2023-07-05T00:00:00-05:00","datePublished":"2023-07-05T00:00:00-05:00","image":"/wide-baseline-stereo-blog/images/pascal-cage.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2023/07/05/IMC2023-Recap.html"},"description":"3D reconstruction is harder than two view matching","@context":"https://schema.org"}</script>
+{"url":"/wide-baseline-stereo-blog/2023/07/05/IMC2023-Recap.html","@type":"BlogPosting","headline":"Image Matching Challenge 2023: The Unbearable Weight of the Bundle Adjustment","dateModified":"2023-07-05T00:00:00-05:00","datePublished":"2023-07-05T00:00:00-05:00","image":"/wide-baseline-stereo-blog/images/pascal-cage.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"/wide-baseline-stereo-blog/2023/07/05/IMC2023-Recap.html"},"description":"3D reconstruction is harder than two view matching","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/wide-baseline-stereo-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="/wide-baseline-stereo-blog/feed.xml" title="Wide baseline stereo meets deep learning" /><!-- the google_analytics_id gets auto inserted from the config file -->
 
@@ -101,7 +101,7 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Image Matching Challenge 2023: SfM Unchained</h1><p class="page-description">3D reconstruction is harder than two view matching</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2023-07-05T00:00:00-05:00" itemprop="datePublished">
+    <h1 class="post-title p-name" itemprop="name headline">Image Matching Challenge 2023: The Unbearable Weight of the Bundle Adjustment</h1><p class="page-description">3D reconstruction is harder than two view matching</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2023-07-05T00:00:00-05:00" itemprop="datePublished">
         Jul 5, 2023
       </time>
        • <span class="read-time" title="Estimated read time">
@@ -214,6 +214,7 @@ Here is the image of the <a href="https://www.kaggle.com/competitions/image-matc
 <h3 id="&quot;Old&quot;-features-are-not-done-yet---KeyNetAffNet-HardNet-solution.">"Old" features are not done yet - KeyNetAffNet-HardNet solution.<a class="anchor-link" href="#&quot;Old&quot;-features-are-not-done-yet---KeyNetAffNet-HardNet-solution."> </a></h3><p>5th place actually end up in money by using an modified <a href="https://github.com/ducha-aiki/imc2023-kornia-starter-pack/blob/main/keynetaffnet-adalam-pycolmap-3dreconstruction.ipynb">example submission</a> with a classical pipeline using such ancient local features as DoG, Harris and GFTT, together with KeyNet (2019), coupled together with <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2020/07/17/affine-correspondences.html">local affine shape estimation</a> by AffNet, patch descriptor HardNet and hadncrafted AdaLAM matcher.</p>
 <p>Basically, that is cleverly engineered submission of the off-the-shelf local features, available in <a href="https://kornia.readthedocs.io/en/latest/feature.html">kornia</a>.</p>
 <p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2023-07-05-IMC2023-Recap_files/inbox-3964695-051e9413d0ce9cd8357723ba7efab1be-full_pipeline.png" alt="" title="5th place solution, classical affine features, off-the-shelf kornia. Candidate for 1st money prize" /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2023-07-05-IMC2023-Recap_files/7rlp3j.jpg" alt="" title="Clever engineering is all you need sometimes" /></p>
 <h3 id="Permissive-license-and-faster-SuperGlue-is-out---LightGlue">Permissive license and faster SuperGlue is out - LightGlue<a class="anchor-link" href="#Permissive-license-and-faster-SuperGlue-is-out---LightGlue"> </a></h3><p><a href="https://arxiv.org/pdf/2306.13643.pdf">LightGlue</a> - the solution by 7th place team and likely 2nd money prize, presents a SuperGlue-like architecture with early-stopping for easy image pairs and bunch of training recipes.
 It also uses somewhat unpopular, but well-performing <a href="https://github.com/Shiaoming/ALIKED">ALIKED local feature</a></p>
 <p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2023-07-05-IMC2023-Recap_files/att_00003.png" alt="" title="The LightGlue architecture from the paper" /></p>
