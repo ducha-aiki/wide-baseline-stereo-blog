@@ -232,12 +232,12 @@ Do NOT compare these results to the LightGlue paper SIFT results, as it we haven
 <h2 id="Can-we-initialize-LightGlue-for-features-X-from-LightGlue-trained-for-features-Y?">Can we initialize LightGlue for features X from LightGlue trained for features Y?<a class="anchor-link" href="#Can-we-initialize-LightGlue-for-features-X-from-LightGlue-trained-for-features-Y?"> </a></h2><p>Recently I have accidentally run ALIKED-LightGlue with DISK features. To my surprise, result was quite good.</p>
 <p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2023-11-20-Geometry-Encoding-SIFT-LightGlue_files/disk-aliked-easy.jpg" alt="" title="For easy image pairs, LightGlue trained for ALIKED features works for DISK features as well." /></p>
 <p>Unfortunately, that works only for simple image pairs, not harder ones.</p>
-<p><img src="2023-11-20-Geometry-Encoding-SIFT-LightGlue_files/disk-aliked-hard.jpg" alt="" title="For hard image pairs, LightGlue trained for ALIKED features does not work for DISK features" /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2023-11-20-Geometry-Encoding-SIFT-LightGlue_files/disk-aliked-hard.jpg" alt="" title="For hard image pairs, LightGlue trained for ALIKED features does not work for DISK features" /></p>
 <p>On the second though, that kind of makes sense - once (in intial layers) we went far from original descriptors, then the attention and positional encoding are kind of similar.</p>
 <p>This begs for the question - can we initialize LightGlue for new local features with previous ones, and train faster or better?</p>
 <p>I have initialized the LightGlue with SuperPoint LightGlue and started training for <a href="https://github.com/Parskatt/DeDoDe">DeDoDe features</a>. <code>as_sift</code> here stands for the hyperparameters setup, ignore it.</p>
-<p><img src="2023-11-20-Geometry-Encoding-SIFT-LightGlue_files/dedode_pretraining.png" alt="" title="Initializing DeDoDe LightGlue with SuperPoint weights seemingly significantly helps for the pretraining." /></p>
-<p><img src="2023-11-20-Geometry-Encoding-SIFT-LightGlue_files/dedode_megadepth.png" alt="" title="The advantage of initializing from pretrained other features seemingly holds on MegaDepth training" /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2023-11-20-Geometry-Encoding-SIFT-LightGlue_files/dedode_pretraining.png" alt="" title="Initializing DeDoDe LightGlue with SuperPoint weights seemingly significantly helps for the pretraining." /></p>
+<p><img src="/wide-baseline-stereo-blog/images/copied_from_nb/2023-11-20-Geometry-Encoding-SIFT-LightGlue_files/dedode_megadepth.png" alt="" title="The advantage of initializing from pretrained other features seemingly holds on MegaDepth training" /></p>
 <p>Unfotunately, one cannot rely on the match recall/precision validation metric. When I have evaluated on MegaDepth-1500, the model initialized from SuperPoint was worse.</p>
 <table>
 <thead><tr>
