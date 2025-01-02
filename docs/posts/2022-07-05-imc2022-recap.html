@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2022-07-05">
+<meta name="description" content="Look, LoFTRs and SuperGlue everywhere">
+
+<title>Image Matching Challenge 2022 Recap – Wide baseline stereo meets deep learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-GE2NZRSZBN"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
+</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Wide baseline stereo meets deep learning</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html"> 
+<span class="menu-text">About Me</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/ducha_aiki"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/ducha_aiki"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Image Matching Challenge 2022 Recap</h1>
+                  <div>
+        <div class="description">
+          Look, LoFTRs and SuperGlue everywhere
+        </div>
+      </div>
+                </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">July 5, 2022</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="what-has-been-changed-in-the-challenge-itself-kaggle" class="level2">
+<h2 class="anchored" data-anchor-id="what-has-been-changed-in-the-challenge-itself-kaggle">What has been changed in the challenge itself? Kaggle!</h2>
+<p>Yes, it is the main change, compared to previous years. How it works: - Participants submit notebooks that run offline - Test set remains private (not visible to participants) : very difficult to cheat (big concern at Kaggle) - Allows for quick iterations</p>
+<p>That allowed us to get 25x more participants and 150x more submissions</p>
+<p><img src="2022-06-29-IMC2022_files/att_00001.png" title="We have 14 186 submissions from 642 teams this year" class="img-fluid"></p>
+<p>There are other differences compared to the previous years.</p>
+<ol type="1">
+<li><p>No multiview track. Unlike previous competitions with multivew and stereo tracks, this year we focused on stereo only. There are many reasons for it, but the main is technical difficulty - to run and evaluate this under reasonable time limit. Having a pair of images as an input also could potentially broaden the family of methods used by participants.</p></li>
+<li><p>New dataset and new metric. Unlike previous years, where our GT data was scale-less, now we have a metric ground truth, so we can evaluate translation error more in line with visual re-localization literature. We also used non-public dataset from Google, not available anywhere online. This was also only possible because of <a href="https://www.kaggle.com/docs/competitions#notebooks-only-FAQ">Kaggle Code competition</a> nature.</p></li>
+<li><p>Time limit. I have mentioned this already, but it is important. The submission should finish in 9 hours on Kaggle GPU virtual instance. This forced teams to think, what to add, and what not. Simple example would be a semantic segmentation masking - teams decided that benefit is not worth computational overhead it brings.</p></li>
+</ol>
+<p><img src="2022-06-29-IMC2022_files/att_00002.png" title="Inliers from LoFTR and KeyNetAffNetHardnet from kornia on one of 3 image pairs" class="img-fluid"></p>
+</section>
+<section id="top-solutions-2022-overview" class="level2">
+<h2 class="anchored" data-anchor-id="top-solutions-2022-overview">Top solutions-2022 overview</h2>
+<p>Unlike previous competitions, almost all the top-performing teams have converged to almost the same pipeline, although different in implementation details, but based on the same ideas. Let me condence it is for you, and if you are interested in participants own write-ups, just scroll down, I will provide all the links after the post.</p>
+<p>The only top-participant, who did not apply any pre/post-processing is 2nd place winner hkchkc. It is based on novel matcher (let’s call it LoFTR 2.0), which he did not want to disclose yet. Anyway, check <a href="https://www.kaggle.com/competitions/image-matching-challenge-2022/discussion/329317">his write-up here</a>.</p>
+<p>So, the general pipeline is shown below. The following steps are present in the most of solutions:</p>
+<p><img src="2022-06-29-IMC2022_files/general-scheme-1c.png" title="Common pipeline among the top-performers of IMC-2022" class="img-fluid"></p>
+<ol type="1">
+<li><p>Obtaining initial pool of matches, using a combination of off-the-shelf models. Such models are LoFTR, SuperGlue, QuadTree Attention LoFTR and DKM. Some of the teams also applied test-time scale augmentation (TTA) and concatenated tentative correspondence, which came from matching differently-resize images.</p></li>
+<li><p>The next step is an estimation of the co-visible area between two images, similar to <a href="https://arxiv.org/abs/2112.04846">ScaleNet</a> idea, but totally handcrafted and based on tentative matches. The approach is to cluster the matches using K-means or DBSCAN and then find the bounding box in each image, which contains the most of the matches. This can lead to potentially several “co-visible areas”. One may take a step further and estimate the homography between each matching region. An alternative to clustering (from 9th place) is to use MAGSAC++ with few iterations and coarse threshold to reject the most of outliers, and get the bounding box .</p></li>
+<li><p>Each of such co-visible and matching regions is then cropped and resized to a predefined image size. Then the base-matcher, or other set of matching algorithms are applied for this “zoomed-in” image pair. All the correspondences are then reprojected into original image pair coordinates and contatenated with original correspondences. <strong>Important</strong>: “zoomed-in” is used to entend original tentative correspondences, not replace them, otherwise first failure would kill the matching process.</p></li>
+<li><p>The correspondences are (optionally) filtered with some kind of non-maxima-suppression, like <a href="https://github.com/BAILOOL/ANMS-Codes">ANMS</a> or radius-based NMS. The intuition here is to select the fewer set of more precise matches. It is interesting, that no team run any kind of filtering network as OANet.</p></li>
+<li><p>MAGSAC++ from OpenCV (as recommended in <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/17/OpenCV-New-RANSACs.html">my evaluation</a>) is applied to find fundamental matrix.</p></li>
+</ol>
+</section>
+<section id="tricks-which-improve-results" class="level2">
+<h2 class="anchored" data-anchor-id="tricks-which-improve-results">Tricks which improve results</h2>
+<ol type="1">
+<li><p><a href="https://www.kaggle.com/competitions/image-matching-challenge-2022/discussion/328865">Switching img1 and img2 for LoFTR-like methods</a>, because the method is asymmetric.</p></li>
+<li><p>Running RANSAC and local feature extraction in separate threads. Although competition specific, this also may help to speed-up some semi-real-time SLAM methods.</p></li>
+</ol>
+</section>
+<section id="works-with-tuning" class="level2">
+<h2 class="anchored" data-anchor-id="works-with-tuning">Works with tuning</h2>
+<ol type="1">
+<li>Some teams successfully used <a href="https://arxiv.org/abs/2003.08348">two-view keypoint refinement</a>, while others <a href="https://www.kaggle.com/competitions/image-matching-challenge-2022/discussion/328982">didn’t make it work</a>.</li>
+</ol>
+<p><img src="2022-06-29-IMC2022_files/att_00005.png" title="Illustration from Multi-View Optimization of Local Feature Geometry" class="img-fluid"></p>
+<ol start="2" type="1">
+<li>Unlike <a href="https://ieeexplore.ieee.org/abstract/document/9511155">MAGSAC++</a>, which works out of the box, <a href="https://arxiv.org/abs/2106.10240v2">VSAC</a> could bring significant time improvements, but needs a lot of hyperparameter tuning, otherwise epipolar geometry quality suffers.</li>
+</ol>
+</section>
+<section id="rare-findings" class="level2">
+<h2 class="anchored" data-anchor-id="rare-findings">Rare findings</h2>
+<ol type="1">
+<li><p>Normalizing positional embeddings used in LoFTR-like methods. See <a href="https://www.kaggle.com/competitions/image-matching-challenge-2022/discussion/329317">solution 2</a>.</p></li>
+<li><p>When doing TTA, run and cache SuperPoint prior to SuperGlue matching, this saves a lot of time. Also, SuperGlue whould be run on the extracted, not reprojected keypoints.</p></li>
+<li><p>Resize method matters a little bit: <a href="https://www.kaggle.com/competitions/image-matching-challenge-2022/discussion/328803#1809862">Lanczos</a> seems to work the best.</p></li>
+<li><p>Coordinates refinement by ECO-TR (improved fast version of <a href="https://github.com/ubc-vision/COTR">COTR</a>, not yet available online)</p></li>
+</ol>
+<p><img src="2022-06-29-IMC2022_files/att_00006.png" title="Refinement by ECO-TR" class="img-fluid"></p>
+</section>
+<section id="does-not-work" class="level2">
+<h2 class="anchored" data-anchor-id="does-not-work">Does not work</h2>
+<ol type="1">
+<li><p>Adding tentative matches from local features without learned matcher, such as DISK, ALike, etc. Team 1 mentioned that KeyNetAffNetHardNet was the one, which do imporove results, but at the cost of huge computational overhead, so it doesn’t worth it.</p></li>
+<li><p>Semantic segmentation masking (sky, people, etc).</p></li>
+</ol>
+</section>
+<section id="final-thoughts" class="level2">
+<h2 class="anchored" data-anchor-id="final-thoughts">Final thoughts</h2>
+<p>Sooo…first think I want to say, is that going Kaggle was definitely worth it. We learned a lot, challenge got visibility, and many new improvements came out of of the challenge.</p>
+<p>Second, is that our training set was too small and and too different from the test set, that is why it was almost useless. I don’t have any solution yet for this.</p>
+<p>Thresholds on the pose accuracy were probably too loose, as you can see from the results.</p>
+<p>On the lessons from the solution themselves:</p>
+<ol type="1">
+<li><p>2-stage approach of first finding covisible region, and then zooming-in into it seems to be way to go. What is also important, is to delay the decision until the very end.</p></li>
+<li><p>It is better to first fix recall problem, i.e.&nbsp;to get as many tentative correspondences as possible, e.g.&nbsp;from different methods, and only the filter them. Modern RANSACs can recover the pose from a small inlier ratio, but never from small number of correct correspondences themselves.</p></li>
+<li><p>Learned methods like LoFTR are very sensitive on the input image size, we probably have to do something about it.</p></li>
+</ol>
+</section>
+<section id="list-of-all-top-solution-write-ups" class="level2">
+<h2 class="anchored" data-anchor-id="list-of-all-top-solution-write-ups">List of all top solution write-ups</h2>
+<p>It is <a href="https://www.kaggle.com/competitions/image-matching-challenge-2022/discussion/329650">here</a>, created by Addison Howard.</p>
+
+
+</section>
+
+<p>Everything you (didn’t) want to know about image matching</p></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

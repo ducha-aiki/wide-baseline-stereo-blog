@@ -1,0 +1,18 @@
+---
+title: "About Me"
+image: profile.jpg
+about:
+  template: jolla
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/ducha_aiki
+    - icon: github
+      text: Github
+      href: https://github.com/ducha-aiki
+
+---
+
+Hi! My name is Dmytro Mishkin, I am computer vision researcher and consultant. This is blog series was originally based on my PhD thesis, and now just continuing on the same topic.
+My personal website is <a href="http://dmytro.ai">here</a>.
+The best way to contact me is <a href="mailto: ducha.aiki@gmail.com">email</a> and <a href="https://twitter.com/ducha_aiki">Twitter</a>.

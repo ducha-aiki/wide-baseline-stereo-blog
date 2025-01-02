@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2023-01-04">
+<meta name="description" content="does it worth to know them?">
+
+<title>Un-SuperPoint family: who are they? – Wide baseline stereo meets deep learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-GE2NZRSZBN"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
+</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Wide baseline stereo meets deep learning</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html"> 
+<span class="menu-text">About Me</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/ducha_aiki"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/ducha_aiki"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Un-SuperPoint family: who are they?</h1>
+                  <div>
+        <div class="description">
+          does it worth to know them?
+        </div>
+      </div>
+                </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">January 4, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="super-starts-with-magic" class="level2">
+<h2 class="anchored" data-anchor-id="super-starts-with-magic">Super starts with Magic</h2>
+<p>If you work in image matching, you know <a href="https://arxiv.org/abs/1712.07629">SuperPoint</a>. If you don’t - that is one of the most successful modern local feature, developed by Daniel DeTone, Tomasz Malisiewicz and Andrew Rabinovich in 2017.</p>
+<p>Idea was simple and genious: we know that corners are good keypoints. Let’s train a basic corner (in wide meaning) on unlimited synthetic data. Then we somehow adapt it to realworld images.</p>
+<p><img src="2022-12-31-UnsuperPoint-family_files/att_00001.png" title="SuperPoint starts with MagicPoint - corner/junctions detector supervised by synthetically rendered cube scenes." class="img-fluid"></p>
+<p>The adaptation is done under augmentation supervision. In other word - we believe that our detector is already good, but noisy and we will cancel this noise by running the same detector on multiple augmented version of the same image, which gives us pseudo-ground truth. The training is done via optimizing cross-entropy loss, which leads to very peaky response map compared to other alternatives such as R2D2.</p>
+<p><img src="2022-12-31-UnsuperPoint-family_files/att_00002.png" title="MagicPoint becomes SuperPoint after being finetuned on real images with augmentation supervision." class="img-fluid"></p>
+<p>That’s it. The resulting detector (and descriptor) was fast enough on GPU and great for SLAM purposes. It was especially good on indoor images with lots of textureless areas.</p>
+<p>On outdoor images it was not so great, however, as it was shown later, the problem was more in descriptor and matching, not detector. <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/14/IMC2020-competition-recap.html">SuperGlue matching</a> on top of SuperPoint local features won 3 competitions at CVPR 2020, including our <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/14/IMC2020-competition-recap.html">Image Matching Challenge</a>.</p>
+<p>So, it was huge success. However, not without drawbacks. The main drawback is that training code was never released. That is why people tried independently re-implement SuperPoint, as well as present new, supposedly better versions of it.</p>
+<p>Unfortunately, none of this version was properly evaluated, so we have no idea how they work in reality. Let me fill this gap and present a small eval of the SuperPoint children.</p>
+<p>I’ll first do a short review of how are they different, and the benchmark will be in the last section.</p>
+<section id="original-superpoint" class="level3">
+<h3 class="anchored" data-anchor-id="original-superpoint">Original SuperPoint</h3>
+<p>Besides the description, I will show how the detections are different between implementations. I will use two images. One is realworld photo taken by myself on Xiaomi phone, and another one is synthetic from <a href="https://learnopencv.com/blob-detection-using-opencv-python-c/">OpenCV Blob detection tutorial</a>. It is kind of adversarial, as SuperPoint is not designed to fire or not fire on circular patterns. Well, that is exactly why I added that image. So here are the original SP detections:</p>
+<p><img src="2022-12-31-UnsuperPoint-family_files/sp_dets1.png" title="MagicLeap SuperPoint detections" class="img-fluid"></p>
+</section>
+<section id="rd-party-superpoint-implementations" class="level3">
+<h3 class="anchored" data-anchor-id="rd-party-superpoint-implementations">3rd party SuperPoint implementations</h3>
+<p>There are two main 3rd party SuperPoint implementations. <a href="https://github.com/rpautrat/SuperPoint">One of them</a> is in Tensorflow, by Rémi Pautrat and Paul-Edouard Sarlin. I will skip this one, because I am too lazy to install TF on my M1 machine. So I will show another - Pytorch - implementation, which is based on Tensorflow one, and is developed by <a href="https://github.com/eric-yyjau/pytorch-superpoint">You-Yi Jau and Rui Zhu</a>.</p>
+<p>Besides being 3rd party implementation, this one also has architectural changes. They are: - <a href="https://github.com/eric-yyjau/pytorch-superpoint/blob/master/models/SuperPointNet_gauss2.py#L31">adding BatchNorm</a>. - using <a href="https://github.com/eric-yyjau/pytorch-superpoint/blob/master/models/model_utils.py#L118">SoftArgMax2d from torchgeometry</a> (early version of <a href="https://github.com/kornia/kornia">kornia</a>) to achieve subpixel accuracy.</p>
+<p>Here are the detections by this version and original.</p>
+<p><img src="2022-12-31-UnsuperPoint-family_files/sp.gif" title="Pytorch-SuperPoint and MagicLeap SuperPoint detections" class="img-fluid"></p>
+<p>Here is also a short report by one of the authors: <a href="https://eric-yyjau.medium.com/what-have-i-learned-from-the-implementation-of-deep-learning-paper-365ee3253a89">What have I learned from the implementation of deep learning paper?</a></p>
+</section>
+</section>
+<section id="superchildren" class="level2">
+<h2 class="anchored" data-anchor-id="superchildren">SuperChildren</h2>
+<section id="reinforced-superpoint" class="level3">
+<h3 class="anchored" data-anchor-id="reinforced-superpoint">Reinforced SuperPoint</h3>
+<p>This is a paper by Aritra Bhowmik et al, named <a href="https://arxiv.org/pdf/1912.00623.pdf">Reinforced Feature Points: Optimizing Feature Detection and Description for a High-Level Task</a>. The main idea is that one can use reinforcement learning to optimize non-differentiable downstream metric such as camera pose accuracy through RANSAC.</p>
+<p><img src="2022-12-31-UnsuperPoint-family_files/att_00007.png" title="Reinforced SuperPoint training pipeline" class="img-fluid"></p>
+<p>The idea is very cool, but the final result is not so. Specifically, the main thing end up optimized is keypoint score function. Which can increase a precision of the keypoint detector, but not the recall. See the image below for the illustration. The synthetic image at the right clearly benefits, but the realworld image - not so much, because of loosing many keypoints on the ground.</p>
+<p>This also can explain a bit worse performance of the Reinforced SuperPoint in our evaluation - we don’t set the confidence threshold, but instead take top-2048 keypoints whatsoever.</p>
+<p><img src="2022-12-31-UnsuperPoint-family_files/sp_reinf.gif" title="SuperPoint vs its finetuned version via Reinforcement learning. One can see that keypoint map is cleaner, but there are no new keypoints appearing" class="img-fluid"></p>
+</section>
+<section id="unsuperpoint" class="level3">
+<h3 class="anchored" data-anchor-id="unsuperpoint">UnsuperPoint</h3>
+<p>This is a <a href="https://arxiv.org/abs/1907.04011">paper from eiva.com and Aarhus University by Peter Hviid Christiansen</a>, which proposed to drop the supervised pretraining and use regression module instead of CE on heatmap for training detector.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-12-31-UnsuperPoint-family_files/att_00003.png" title="UnsuperPoint training scheme" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<p>Unfortunately, there is no implementation available, so I will pretend the paper never existed.</p>
+</section>
+<section id="kp2d-aka-keypointnet-aka-ionet" class="level3">
+<h3 class="anchored" data-anchor-id="kp2d-aka-keypointnet-aka-ionet">KP2D aka KeypointNet aka IONet</h3>
+<p>Despite no implementation, UnsuperPoint inspired other people to make a follow-up, which was published at ICLR 2020. The paper name is “<a href="https://openreview.net/pdf?id=Skx82ySYPH">Neural Outlier Rejection for Self-Supervised Keypoint Learning</a>” by Jiexiong Tang et al.</p>
+<p>It made two contributions. First, paper argues that cell-based approach (SuperPoint and friends have 1 keypoint per 8x8 px cell) is unstable for training when keypoints are near the cell border. Second, it introduced yet another loss function, similar to CNe and other outlier rejection methods.</p>
+<p><img src="2022-12-31-UnsuperPoint-family_files/att_00005.png" title="Cross-border detection in KP2D network" class="img-fluid"></p>
+<p>Here are the KP2D detections for all versions. Note that on realworld image it detects corners nicely, despite not being training for it specifically. On the synthetic blob image it mostly work as dark-to-light (or light-to-dark for V0 and V2) edge detector, no idea why.</p>
+<p><img src="2022-12-31-UnsuperPoint-family_files/kp2d.gif" title="KeypointNet aka KP2D detections." class="img-fluid"></p>
+</section>
+<section id="lanet" class="level3">
+<h3 class="anchored" data-anchor-id="lanet">LANet</h3>
+<p>It is the most recent paper of the SP family, published at ACCV2022 – “<a href="https://openaccess.thecvf.com/content/ACCV2022/html/Wang_Rethinking_Low-level_Features_for_Interest_Point_Detection_and_Description_ACCV_2022_paper.html">Rethinking Low-level Features for Interest Point Detection and Description</a>” by Changhao Wang et al.</p>
+<p><img src="2022-12-31-UnsuperPoint-family_files/att_00006.png" title="LANet architecture" class="img-fluid"></p>
+<p>It is based on KP2D and presents mostly architectural changes into description branch. Second, it has two versions. <code>v0</code> is similar to the SuperPoint original architecture – lightweight VGG-like network, trained from scratch. <code>v1</code> is uses <code>vgg16_bn</code>, pretrained on the ImageNet as feature encoder. <code>v1</code> is like 2-3x slower than <code>v0</code>.</p>
+<p>Here are the detections:</p>
+<p><img src="2022-12-31-UnsuperPoint-family_files/lanet.gif" title="LANet detections" class="img-fluid"></p>
+</section>
+</section>
+<section id="benchmark-on-imc-phototourism" class="level1">
+<h1>Benchmark on IMC PhotoTourism</h1>
+<p>I have benchmarked all the variants, using my own tutorial on <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/12/submitting-to-IMC2021-step-by-step.html">how to submit to IMC-2021</a>. The code for feature extraction is <a href="https://github.com/ubc-vision/image-matching-benchmark-baselines">here</a> (uncommented yet). All the images were resized to have 1024 px by large size (which explains the slight diffefences compared to <a href="https://arxiv.org/abs/2003.01587">original SuperPoint results in the paper</a>, where 1200 was used. I have also circumvented confidence threshold and pick top-2048 keypoints instead for all images. Then I have tuned everything on the validation set (see table with optimal params in the end of the post) - such as matching threshold, RANSAC threshold and method-specific things, like “version” for KP2D and LANet, etc. Unlike for the IMC paper, I haven’t tuned anything for multiview setup. Specifically, matching threshold might be suboptimal. Anyway.</p>
+<p>Finally I have run all features with found optimal parameters on the test set (GT is released now!). Here are the results.</p>
+<section id="stereo-task" class="level3">
+<h3 class="anchored" data-anchor-id="stereo-task">Stereo task</h3>
+<p><img src="2022-12-31-UnsuperPoint-family_files/map_stereo_pp_pt_2k.png" title="Stereo task results. MagicLeap SuperPoint results are shown with dashed line." class="img-fluid"></p>
+<p>First, as you can see, 3rd part SuperPoint implementation is way worse: ~2x than MagicLeap one. Reinforced SuperPoint also is slightly worse. KP2D is better on PhotoTourism, but worse on the PragueParks. <a href="https://www.cs.ubc.ca/research/image-matching-challenge/2021/data/">PragueParks</a> is easier dataset than PhotoTourism, however it features different scenes. While PhotoTourism is mostly buildings, PragueParks contains natural scenes such as trees and pond. Thus I may argue that original SP is more general.</p>
+<p>LANet works considerably better on Phototourism and on par on PragueParks. If considering adding to kornia, I would select LANet. It is interesting though, if it is performing well because of detector, or descriptor. The latter is worse, because training SuperGlue/OpenGlue would fix descriptor issues, but less of detector.</p>
+</section>
+<section id="multiview-task" class="level3">
+<h3 class="anchored" data-anchor-id="multiview-task">Multiview task</h3>
+<p><img src="2022-12-31-UnsuperPoint-family_files/map_mv_pp_pt_2k.png" title="Multiview task results. MagicLeap SuperPoint results are shown with dashed line." class="img-fluid"></p>
+<p>Multiview results are similar to stereo, with slight differences: Reinforced SP is slightly better than original on PragueParks, and LANet v0 is exactly as good as original SP.</p>
+</section>
+<section id="why-eval-only-on-hpatches-is-meaningless." class="level2">
+<h2 class="anchored" data-anchor-id="why-eval-only-on-hpatches-is-meaningless.">Why eval only on HPatches is meaningless.</h2>
+<p>KP2D and 3rd party SuperPoint eval themselves on HPatches only. Let’s look at them. According to KP2D paper, it is slightly better than Superpoint on homography estimation and 2x better on matching score. Which we haven’t seen on realworld IMC data.</p>
+<p><img src="2022-12-31-UnsuperPoint-family_files/att_00009.png" title="Evaluation on HPatches from KP2D paper. KP2D seems to be much better" class="img-fluid"></p>
+<p>And here is <a href="https://github.com/eric-yyjau/pytorch-superpoint/tree/master">eval from 3rd part SuperPoint</a>. According to it, Superpoint-coco is almost as good as SP MagicLeap on homography estimation, better on detector metrics and slightle worse on descriptor metrics. Which, again, doesn’t correspond to our results.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 31%">
+<col style="width: 16%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 12%">
+<col style="width: 4%">
+<col style="width: 13%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Task</th>
+<th>Homography estimation</th>
+<th></th>
+<th></th>
+<th>Detector metric</th>
+<th></th>
+<th>Descriptor metric</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>Epsilon = 1</td>
+<td>3</td>
+<td>5</td>
+<td>Repeatability</td>
+<td>MLE</td>
+<td>NN mAP</td>
+<td>Matching Score</td>
+</tr>
+<tr class="even">
+<td>MagicLeap</td>
+<td>0.44</td>
+<td>0.77</td>
+<td>0.83</td>
+<td>0.606</td>
+<td>1.14</td>
+<td>0.81</td>
+<td>0.55</td>
+</tr>
+<tr class="odd">
+<td>superpoint_coco_heat2_0_170k_hpatches_sub</td>
+<td>0.46</td>
+<td>0.75</td>
+<td>0.81</td>
+<td>0.63</td>
+<td>1.07</td>
+<td>0.78</td>
+<td>0.42</td>
+</tr>
+<tr class="even">
+<td>superpoint_kitti_heat2_0_50k_hpatches_sub</td>
+<td>0.44</td>
+<td>0.71</td>
+<td>0.77</td>
+<td>0.56</td>
+<td>0.95</td>
+<td>0.78</td>
+<td>0.41</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="additional-results-from-validation-set-and-recommended-hyper-paramers" class="level2">
+<h2 class="anchored" data-anchor-id="additional-results-from-validation-set-and-recommended-hyper-paramers">Additional results from validation set and recommended hyper-paramers</h2>
+<p>Here I will present some results from the tuning on validation set. I believe that they would translate to the other datasets as well.</p>
+<ol type="1">
+<li>L2-normalization of descriptor does not help ANY of the evaluated models. It doesn’t hurt either.</li>
+<li>Subpixel with soft-argmax helps 3rd party SuperPoint. One may try to apply it to original model as well. The difference is: <code>mAA = 0.2965</code> for subpixel vs <code>mAA = 0.2789</code> no-subpixel on PhotoTourism and <code>0.3567</code> vs <code>0.3274</code> on PragueParks.</li>
+<li>The <code>v2</code> model of the KP2D is much better than then rest. <code>v0</code> and <code>v1</code> might be bugged, or require code changes to be run properly maybe?</li>
+</ol>
+<p><img src="2022-12-31-UnsuperPoint-family_files/map_stereo_pt_2k_val_kp2d.png" title="KP2D versions comparison on validation set." class="img-fluid"></p>
+</section>
+<section id="optimal-hyperparamers" class="level2">
+<h2 class="anchored" data-anchor-id="optimal-hyperparamers">Optimal hyperparamers</h2>
+<p>SNN - 2nd nearest neighbor threshold, PT - PhotoTourism, PP - PragueParks, inl_th - inlier threshold for DEGENSAC.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 23%">
+<col style="width: 10%">
+<col style="width: 12%">
+<col style="width: 19%">
+<col style="width: 19%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>mutual SNN threshold</th>
+<th>PT inl_th</th>
+<th>PP inl_th</th>
+<th>PT val stereo mAA</th>
+<th>PP val stereo mAA</th>
+<th>Other</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>MagicLeap SuperPoint</td>
+<td>0.9</td>
+<td>1.0</td>
+<td>1.5</td>
+<td>0.3746</td>
+<td>0.5628</td>
+<td>n/a</td>
+</tr>
+<tr class="even">
+<td>Reinforced SuperPoint</td>
+<td>0.9</td>
+<td>1.0</td>
+<td>1.5</td>
+<td>0.3491</td>
+<td>0.5497</td>
+<td>n/a</td>
+</tr>
+<tr class="odd">
+<td>SuperPoint 3rd party COCO</td>
+<td>0.95</td>
+<td>0.75</td>
+<td>1.0</td>
+<td>0.2966</td>
+<td>0.3488</td>
+<td>subpix</td>
+</tr>
+<tr class="even">
+<td>SuperPoint 3rd party KITTY</td>
+<td>0.95</td>
+<td>0.75</td>
+<td>1.0</td>
+<td>0.1910</td>
+<td>0.2621</td>
+<td>subpix</td>
+</tr>
+<tr class="odd">
+<td>KP2D</td>
+<td>0.99</td>
+<td>0.75</td>
+<td>1.0</td>
+<td>0.3633</td>
+<td>0.4971</td>
+<td>v2</td>
+</tr>
+<tr class="even">
+<td>LANet v0</td>
+<td>0.99</td>
+<td>0.5</td>
+<td>1.0</td>
+<td>0.4591</td>
+<td><strong>0.6175</strong></td>
+<td>n/a</td>
+</tr>
+<tr class="odd">
+<td>LANet v1</td>
+<td>0.99</td>
+<td>0.5</td>
+<td>1.0</td>
+<td><strong>0.4838</strong></td>
+<td><strong>0.6127</strong></td>
+<td>n/a</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="conclusions" class="level1">
+<h1>Conclusions</h1>
+<p>It seems that LANet and KP2D might be good alternatives to the MagicLeap SuperPoint. There are 2 missing things though:</p>
+<ol type="1">
+<li>SuperGlue analogue yet to be trained for them. Nobody sane would you SuperPoint w/o SuperGlue for the most of the cases.</li>
+<li>Evaluation on indoor data, e.g.&nbsp;ScanNet. One of the SuperPoint strengths - good performance indoor, which is yet to be tested for others. I might test it, but right not in the mood to download, print and scan the data form required for ScanNet access.</li>
+</ol>
+<section id="bonus-more-visualizations" class="level2">
+<h2 class="anchored" data-anchor-id="bonus-more-visualizations">Bonus: more visualizations</h2>
+<p>Legend: - blue points: COLMAP reconstructed 3D points - red point: non-matched keypoints .</p>
+<p><img src="2022-12-31-UnsuperPoint-family_files/tree1.gif" title="Matched and non-matched keypoints from PragueParks Tree scene" class="img-fluid"></p>
+<p><img src="2022-12-31-UnsuperPoint-family_files/ll.gif" title="Matched and non-matched keypoints from PhotoTourism Lincoln memorial statue scene" class="img-fluid"></p>
+<p><img src="2022-12-31-UnsuperPoint-family_files/flo.gif" title="Matched and non-matched keypoints from PhotoTourism Florence cathedral side scene" class="img-fluid"></p>
+<p><img src="2022-12-31-UnsuperPoint-family_files/pond1.gif" title="Matched and non-matched keypoints from PragueParks Pond scene" class="img-fluid"></p>
+<section id="acknowledgements." class="level3">
+<h3 class="anchored" data-anchor-id="acknowledgements.">Acknowledgements.</h3>
+<p>This blogpost is supported by CTU in Prague RCI computing cluster from <code>OP VVV funded project CZ.02.1.01/0.0/0.0/16 019/0000765 “Research Center for Informatics”</code> grant. Really, it took ~2 compute days to tune all those hyperparams and do tests.</p>
+
+
+</section>
+</section>
+</section>
+
+<p>Everything you (didn’t) want to know about image matching</p></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

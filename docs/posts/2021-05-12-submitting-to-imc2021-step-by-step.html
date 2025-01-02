@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2021-05-12">
+<meta name="description" content="Step by step tutorial">
+
+<title>Submitting to Image Matching Challenge 2021 – Wide baseline stereo meets deep learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-GE2NZRSZBN"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
+</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Wide baseline stereo meets deep learning</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html"> 
+<span class="menu-text">About Me</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/ducha_aiki"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/ducha_aiki"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Submitting to Image Matching Challenge 2021</h1>
+                  <div>
+        <div class="description">
+          Step by step tutorial
+        </div>
+      </div>
+                </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">May 12, 2021</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="what-is-image-matching-challenge" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-image-matching-challenge">What is Image Matching Challenge?</h2>
+<p>IMC is a benchmark and <a href="https://www.cs.ubc.ca/research/image-matching-challenge/current/">challenge</a> for the local features (such as SIFT, SuperPoint, etc), matching methods (CNe, SuperGlue, etc.) and robust geometry estimators such as RANSAC, at <a href="https://image-matching-workshop.github.io/">CVPR 2021 Workshop on Image Matching</a>.</p>
+<p>I will walk you through the submission process, including writing setting-up an environment, writing a processing script and tuning matching and RANSAC for the best performance. As this is a tutorial, not a research paper, we use local feature descriptor available in <a href="https://github.com/kornia/kornia">kornia</a> for this sample submission.</p>
+<p>All the codes and scripts in this tutorial are also avilable at https://github.com/ducha-aiki/imc2021-sample-kornia-submission. Let’s go!</p>
+</section>
+<section id="setting-up-the-environment" class="level2">
+<h2 class="anchored" data-anchor-id="setting-up-the-environment">Setting up the environment</h2>
+<p>First, let’s clone the benchmark repository.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/ubc-vision/image-matching-benchmark</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> image-matching-benchmark</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> submodule update <span class="at">--init</span> <span class="at">--recursive</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now we need to create conda virtual environment. I assume that you have conda installed, and if not - please, follow instructions <a href="https://conda.io/projects/conda/en/latest/user-guide/install/index.html">here</a></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env create <span class="at">-f</span> system/conda_env_dm.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>After successfull environment creation, let’s activate it</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate sfm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="downloading-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="downloading-the-data">Downloading the data</h2>
+<p>IMC-2021 data consists of <a href="https://www.cs.ubc.ca/research/image-matching-challenge/2021/data/">3 datasets</a>: Phototourism, PragueParks and GoogleUrban. You can download first two freely, but need to request a credentials and accept license agreement for the GoogleUrban dataset.</p>
+<p>Latter is done by writing an email to image-matching@googlegroups.com and asking for the password. All datasets consist of two parts each: test part, which contains only images and validation part, which comes together with ground truth. Validation ground truth can (and should!) be used for hyperparameter tuning for your submission.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> imc-2021-data</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> imc-2021-data</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://www.cs.ubc.ca/research/kmyi_data/imc2021-public/imc-2021-test-public-pragueparks.tar.gz</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://www.cs.ubc.ca/research/kmyi_data/imc2021-public/imc-2021-validation-pragueparks.tar.gz</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://www.cs.ubc.ca/research/kmyi_data/imc2021-public/imc-2021-test-public-phototourism.tar.gz</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://www.cs.ubc.ca/research/kmyi_data/imc2021-public/imc-2021-validation-phototourism.tar.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>I am assuming that you have requsted an access to the GoogleUrban dataset, downloaded it and put in the same directory, as the rest of the data:</p>
+<pre><code>(sfm) mishkdmy@n33:~/dev/imc-2021-data$ ls
+imc-2021-test-public-googleurban.tar.gz   imc-2021-validation-googleurban.tar.gz
+imc-2021-test-public-phototourism.tar.gz  imc-2021-validation-phototourism.tar.gz
+imc-2021-test-public-pragueparks.tar.gz   imc-2021-validation-pragueparks.tar.gz</code></pre>
+<p>Now let’s unpack it.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> <span class="pp">*</span>.tar.gz <span class="kw">;</span> <span class="cf">do</span> <span class="fu">tar</span> <span class="at">-xzf</span> <span class="va">$f</span><span class="kw">;</span> <span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now the directory should look like this:</p>
+<pre><code>(sfm) mishkdmy@n33:~/dev/imc-2021-data$ ls
+googleurban                               imc-2021-validation-phototourism.tar.gz
+imc-2021-test-public-googleurban.tar.gz   imc-2021-validation-pragueparks.tar.gz
+imc-2021-test-public-phototourism.tar.gz  phototourism
+imc-2021-test-public-pragueparks.tar.gz   pragueparks
+imc-2021-validation-googleurban.tar.gz</code></pre>
+</section>
+<section id="extracting-the-features" class="level2">
+<h2 class="anchored" data-anchor-id="extracting-the-features">Extracting the features</h2>
+<p>Let’s start with creating the directory for our scripts (or you can clone it from <a href="https://github.com/ducha-aiki/imc2021-sample-kornia-submission">here</a> )</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> imc2021-sample-kornia-submission</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> imc2021-sample-kornia-submission</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now we will create a script, which extracts <a href="https://arxiv.org/abs/1711.06704">AffNet</a>-<a href="https://arxiv.org/abs/2007.09699">HardNet8</a> descriptors on top of OpenCV <a href="https://www.cs.ubc.ca/~lowe/papers/ijcv04.pdf">SIFT</a> keypoints.</p>
+<p>We need to install <a href="https://github.com/pytorch/pytorch">pytorch</a> and <a href="https://github.com/kornia/kornia">kornia</a> for this:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install torch torchvision kornia</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install kornia_moons <span class="at">--no-deps</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Great! Now we are ready to extract the features from the images. Required imports and initializations:</p>
+<div id="cell-6" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> cv2</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> kornia <span class="im">as</span> K</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> kornia.feature <span class="im">as</span> KF</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> kornia_moons.feature <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>device <span class="op">=</span> torch.device(<span class="st">'cpu'</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> torch.cuda.is_available():</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        device <span class="op">=</span> torch.device(<span class="st">'cuda'</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span> (<span class="st">"GPU mode"</span>)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span>:</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span> (<span class="st">'CPU mode'</span>)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#device = torch.device('cpu')</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co"># SIFT (DoG) Detector</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>sift_det <span class="op">=</span>  cv2.SIFT_create(<span class="dv">8000</span>, contrastThreshold<span class="op">=-</span><span class="dv">10000</span>, edgeThreshold<span class="op">=-</span><span class="dv">10000</span>)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co"># HardNet8 descriptor</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>hardnet8 <span class="op">=</span> KF.HardNet8(<span class="va">True</span>).<span class="bu">eval</span>().to(device)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Affine shape estimator</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>affnet <span class="op">=</span> KF.LAFAffNetShapeEstimator(<span class="va">True</span>).<span class="bu">eval</span>().to(device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we can define extract_features function. Feel free to modify it for your own features.</p>
+<div id="cell-9" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_features(img_fname, detector, affine, descriptor, device, visualize<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> cv2.cvtColor(cv2.imread(img_fname), cv2.COLOR_BGR2RGB)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> visualize:</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        plt.imshow(img)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    kpts <span class="op">=</span> detector.detect(img, <span class="va">None</span>)[:<span class="dv">8000</span>]</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># We will not train anything, so let's save time and memory by no_grad()</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        timg <span class="op">=</span> K.image_to_tensor(img, <span class="va">False</span>).<span class="bu">float</span>()<span class="op">/</span><span class="fl">255.</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        timg <span class="op">=</span> timg.to(device)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>        timg_gray <span class="op">=</span> K.rgb_to_grayscale(timg)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># kornia expects keypoints in the local affine frame format. </span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Luckily, kornia_moons has a conversion function</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>        lafs <span class="op">=</span> laf_from_opencv_SIFT_kpts(kpts, device<span class="op">=</span>device)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        lafs_new <span class="op">=</span> affine(lafs, timg_gray)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> visualize:</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>            visualize_LAF(timg, lafs_new, <span class="dv">0</span>)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>        patches <span class="op">=</span> KF.extract_patches_from_pyramid(timg_gray, lafs_new, <span class="dv">32</span>)</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>        B, N, CH, H, W <span class="op">=</span> patches.size()</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Descriptor accepts standard tensor [B, CH, H, W], while patches are [B, N, CH, H, W] shape</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># So we need to reshape a bit :) </span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>        descs <span class="op">=</span> descriptor(patches.view(B <span class="op">*</span> N, CH, H, W)).view(B <span class="op">*</span> N, <span class="op">-</span><span class="dv">1</span>).detach().cpu().numpy()    </span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> kpts, descs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s check how it works on a single image.</p>
+<div id="cell-11" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>img_fname <span class="op">=</span> <span class="st">'../imc-2021-data/pragueparks/wooden_lady/set_100/images/IMG_9603.MOV_frame000001.jpg'</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>kpts, descs <span class="op">=</span> extract_features(img_fname,  sift_det, affnet, hardnet8, device, <span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2021-05-12-submitting-to-IMC2021-step-by-step_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2021-05-12-submitting-to-IMC2021-step-by-step_files/figure-html/cell-5-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>So far, so good. Now we need to convert our keypoints from OpenCV format to the benchmark format, which is <code>numpy.array</code> <code>[N x dim]</code></p>
+<div id="cell-14" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> convert_kpts_to_imc(cv2_kpts):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    keypoints <span class="op">=</span> np.array([(x.pt[<span class="dv">0</span>], x.pt[<span class="dv">1</span>]) <span class="cf">for</span> x <span class="kw">in</span> cv2_kpts ]).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    scales <span class="op">=</span> np.array([<span class="fl">12.0</span><span class="op">*</span> x.size <span class="cf">for</span> x <span class="kw">in</span> cv2_kpts ]).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    angles <span class="op">=</span> np.array([x.angle <span class="cf">for</span> x <span class="kw">in</span> cv2_kpts ]).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    responses <span class="op">=</span> np.array([x.response <span class="cf">for</span> x <span class="kw">in</span> cv2_kpts]).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> keypoints, scales, angles, responses</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we are ready to write a script, which extracts local features for all images in the IMC-2021. The full script is accesible <a href="https://github.com/ducha-aiki/imc2021-sample-kornia-submission/blob/master/extract_features_imc.py">here</a></p>
+<div id="cell-16" class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> h5py</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>INPUT_DIR <span class="op">=</span> <span class="st">'../imc-2021-data'</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>OUT_DIR <span class="op">=</span> <span class="st">'extracted/cv2-dog-affnet-hardnet8'</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>os.makedirs(OUT_DIR, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>datasets <span class="op">=</span> os.listdir(INPUT_DIR)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ds <span class="kw">in</span> datasets:</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    ds_in_path <span class="op">=</span> os.path.join(INPUT_DIR, ds)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    ds_out_path <span class="op">=</span> os.path.join(OUT_DIR, ds)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    os.makedirs(ds_out_path, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    seqs <span class="op">=</span> os.listdir(ds_in_path)</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> seq <span class="kw">in</span> seqs:</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> os.path.isdir(os.path.join(ds_in_path, seq, <span class="st">'set_100'</span>)):</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>            seq_in_path <span class="op">=</span> os.path.join(ds_in_path, seq, <span class="st">'set_100'</span>, <span class="st">'images'</span>)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>            seq_in_path <span class="op">=</span> os.path.join(ds_in_path, seq)</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>        seq_out_path <span class="op">=</span> os.path.join(ds_out_path, seq)</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>        os.makedirs(seq_out_path, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>        img_fnames <span class="op">=</span> os.listdir(seq_in_path)</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>        num_kp <span class="op">=</span> []</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> h5py.File(<span class="ss">f'</span><span class="sc">{</span>seq_out_path<span class="sc">}</span><span class="ss">/keypoints.h5'</span>, <span class="st">'w'</span>) <span class="im">as</span> f_kp, <span class="op">\</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>             h5py.File(<span class="ss">f'</span><span class="sc">{</span>seq_out_path<span class="sc">}</span><span class="ss">/descriptors.h5'</span>, <span class="st">'w'</span>) <span class="im">as</span> f_desc, <span class="op">\</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>             h5py.File(<span class="ss">f'</span><span class="sc">{</span>seq_out_path<span class="sc">}</span><span class="ss">/scores.h5'</span>, <span class="st">'w'</span>) <span class="im">as</span> f_score, <span class="op">\</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>             h5py.File(<span class="ss">f'</span><span class="sc">{</span>seq_out_path<span class="sc">}</span><span class="ss">/angles.h5'</span> <span class="st">'w'</span>) <span class="im">as</span> f_ang, <span class="op">\</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>             h5py.File(<span class="ss">f'</span><span class="sc">{</span>seq_out_path<span class="sc">}</span><span class="ss">/scales.h5'</span>, <span class="st">'w'</span>) <span class="im">as</span> f_scale:</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> img_fname <span class="kw">in</span> tqdm(img_fnames):</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>                img_fname_full <span class="op">=</span> os.path.join(seq_in_path, img_fname)</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>                key <span class="op">=</span> os.path.splitext(os.path.basename(img_fname))[<span class="dv">0</span>]</span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>                kpts, descs <span class="op">=</span> extract_features(img_fname_full,  sift_det, affnet, hardnet8, device, <span class="va">False</span>)</span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>                keypoints, scales, angles, responses <span class="op">=</span> convert_kpts_to_imc(kpts)</span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>                f_kp[key] <span class="op">=</span> keypoints</span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>                f_desc[key] <span class="op">=</span> descs.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">128</span>)</span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>                f_score[key] <span class="op">=</span> responses</span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>                f_ang[key] <span class="op">=</span> angles</span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>                f_scale[key] <span class="op">=</span> scales</span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>                num_kp.append(<span class="bu">len</span>(keypoints))</span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f'Finished processing "</span><span class="sc">{</span>ds<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>seq<span class="sc">}</span><span class="ss">" -&gt; </span><span class="sc">{</span>np<span class="sc">.</span>array(num_kp)<span class="sc">.</span>mean()<span class="sc">}</span><span class="ss"> features/image'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="creating-config-json-file" class="level2">
+<h2 class="anchored" data-anchor-id="creating-config-json-file">Creating config json file</h2>
+<p>In addition to features, we should submit a config file, which tells the benchmark, how the features should be matched and which RANSAC we prefer. In priciple, we can just write an arbitrary config file and submit already, but this may lead to the bad results. Let’s instead generate a config file from python, so we can easily re-generate it. Why would we need this? Quite simple - to try different parameters on the validation set and only then create a final config.</p>
+<p>First part of the config is <code>metadata</code> – information about the method and authors. If your method is under review, you may want to set flag <code>publish_anonymously</code> to <code>True</code>.</p>
+<div id="cell-19" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>metadata_dict <span class="op">=</span>  {</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"publish_anonymously"</span>: <span class="va">False</span>,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"authors"</span>: <span class="st">"Dmytro Mishkin, Milan Pultar and kornia team"</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"contact_email"</span>: <span class="st">"ducha.aiki@gmail.com"</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"method_name"</span>: <span class="st">"CV-DoG-AffNet-HardNet8 (kornia)"</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"method_description"</span>: </span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r"""OpeCV SIFT keypoints 8000 features, followed by the AffNet normalization </span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="vs">    and HardNet8 descriptor as implemented in kornia.</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="vs">    Matched using the built-in matcher (bidirectional filter with the 'both' strategy, </span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="vs">    hopefully optimal inlier and ratio test thresholds) with DEGENSAC"""</span>,</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"link_to_website"</span>: <span class="st">"https://github.com/kornia/kornia"</span>,</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"link_to_pdf"</span>: <span class="st">"https://arxiv.org/abs/2007.09699"</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Second part is <code>config_common</code>: it tells the benchmark, which keypoints and descriptors you use. We will also need this names when importing our features during tuning on the validation set.</p>
+<div id="cell-21" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>config_common_dict <span class="op">=</span>  {<span class="st">"json_label"</span>: <span class="st">"dog-affnet-hardnet8-degensac"</span>,</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"keypoint"</span>: <span class="st">"cv2dog"</span>,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"descriptor"</span>: <span class="st">"affnethardnet8"</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"num_keypoints"</span>: <span class="dv">8000</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now comes the information how to match your local features. It may vary from dataset to dataset and also be different for the <code>multiview</code> and <code>stereo</code> mode. That is why we will create a template dictionary and change some parameters later.</p>
+<p>Specifically, we have to specify, which distance our descriptor prefers: <code>L2</code>, <code>L1</code> and <code>Hamming</code> are supported.</p>
+<p>Then comes the tentative matches filtering. One can pass <code>none</code> for no filtering, <code>snn_ratio_pairwise</code> for Lowe’s SNN ratio and <code>fginn_ratio_pairwise</code> for FGINN. If you are not familiar with filtering strategies, checkout this blogpost: “<a href="https://ducha-aiki.medium.com/how-to-match-to-learn-or-not-to-learn-part-2-1ab52ede2022">How to match: to learn or not to learn?</a>”. The threshold is what have to be tunes.</p>
+<p>We will use SNN, because of simplicity. Finally, we would like to make sure that tentative matches are cross-consistent, that is why we will enable <code>symmetric</code> matching.</p>
+<p><strong>Warning!</strong> We will use <em>FLANN</em> approximate nearest neighbor matching for speed-up tuning procedure, but it is better to turn it off for the final submission.</p>
+<div id="cell-23" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> copy <span class="im">import</span> deepcopy</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>matcher_template_dict <span class="op">=</span> {</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>     <span class="st">"method"</span>: <span class="st">"nn"</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>     <span class="st">"distance"</span>: <span class="st">"L2"</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>     <span class="st">"flann"</span>: <span class="va">True</span>,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>     <span class="st">"num_nn"</span>: <span class="dv">1</span>,</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>     <span class="st">"filtering"</span>: {</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>         <span class="st">"type"</span>: <span class="st">"snn_ratio_pairwise"</span>,</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>         <span class="st">"threshold"</span>: <span class="fl">0.90</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>     },</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>     <span class="st">"symmetric"</span>: {</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>         <span class="st">"enabled"</span>: <span class="va">True</span>,</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>         <span class="st">"reduce"</span>: <span class="st">"both"</span>,</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>     }</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, we have to specify robust geometry estimation method. We will pick the default choise from the previous challenge - <a href="https://github.com/ducha-aiki/pydegensac">DEGENSAC</a>. <code>threshold</code> is what have to be tuned, the rest of parameters are already optimal, or fixed by the competition rules – <code>max_iter</code>.</p>
+<div id="cell-25" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>geom_template_dict <span class="op">=</span>  {<span class="st">"method"</span>: <span class="st">"cmp-degensac-f"</span>,</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>                <span class="st">"threshold"</span>: <span class="fl">0.5</span>,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                <span class="st">"confidence"</span>: <span class="fl">0.999999</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                <span class="st">"max_iter"</span>: <span class="dv">100000</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>                <span class="st">"error_type"</span>: <span class="st">"sampson"</span>,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>                <span class="st">"degeneracy_check"</span>: <span class="va">True</span>,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>            }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s assemble and save our base config.</p>
+<div id="cell-27" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>base_config <span class="op">=</span>  {</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"metadata"</span>: metadata_dict,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"config_common"</span>: config_common_dict,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"config_phototourism_stereo"</span>: {</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"use_custom_matches"</span>: <span class="va">False</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"matcher"</span>: deepcopy(matcher_template_dict),</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"outlier_filter"</span>: { <span class="st">"method"</span>: <span class="st">"none"</span> },</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"geom"</span>: deepcopy(geom_template_dict)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        },</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"config_phototourism_multiview"</span>: {</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"use_custom_matches"</span>: <span class="va">False</span>,</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">"matcher"</span>: deepcopy(matcher_template_dict),</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"outlier_filter"</span>: { <span class="st">"method"</span>: <span class="st">"none"</span> },</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">"colmap"</span>: {}},</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"config_pragueparks_stereo"</span>: {</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"use_custom_matches"</span>: <span class="va">False</span>,</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"matcher"</span>: deepcopy(matcher_template_dict),</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"outlier_filter"</span>: { <span class="st">"method"</span>: <span class="st">"none"</span> },</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"geom"</span>: deepcopy(geom_template_dict)</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>        },</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"config_pragueparks_multiview"</span>: {</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>        <span class="st">"use_custom_matches"</span>: <span class="va">False</span>,</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>        <span class="st">"matcher"</span>: deepcopy(matcher_template_dict),</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>        <span class="st">"outlier_filter"</span>: { <span class="st">"method"</span>: <span class="st">"none"</span> },</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">"colmap"</span>: {}},</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"config_googleurban_stereo"</span>: {</span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>        <span class="st">"use_custom_matches"</span>: <span class="va">False</span>,</span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>        <span class="st">"matcher"</span>: deepcopy(matcher_template_dict),</span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>        <span class="st">"outlier_filter"</span>: { <span class="st">"method"</span>: <span class="st">"none"</span> },</span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>        <span class="st">"geom"</span>: deepcopy(geom_template_dict)</span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>        },</span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">"config_googleurban_multiview"</span>: {</span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>        <span class="st">"use_custom_matches"</span>: <span class="va">False</span>,</span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>        <span class="st">"matcher"</span>: deepcopy(matcher_template_dict),</span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>        <span class="st">"outlier_filter"</span>: { <span class="st">"method"</span>: <span class="st">"none"</span> },</span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a>        <span class="st">"colmap"</span>: {}}</span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, benchmark expects multiple configs, so we have to create a list, and then we can save our config</p>
+<div id="cell-29" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'base_config.json'</span>, <span class="st">'w'</span>) <span class="im">as</span> f:</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    json.dump([base_config], f, indent<span class="op">=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="preliminary-evaluation" class="level1">
+<h1>Preliminary evaluation</h1>
+<p>Now let’s check how our features perform on validation set. We have to import our feature to the benchmark and run the benchmark.</p>
+<p>I will cheat a little bit here and skip the multiview evaluation. The reason is that it requires <a href="https://colmap.github.io">colmap</a>, which might be not easy to install.</p>
+<section id="importing-features" class="level3">
+<h3 class="anchored" data-anchor-id="importing-features">Importing features</h3>
+<p>Here we have to provide the same <code>keypoint</code> and <code>descriptor</code> names, as we wrote in json config. The rest of arguments are straightforward: path to features, json, etc.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../image-matching-benchmark/</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-utt</span> import_features.py <span class="at">--kp_name</span> cv2dog <span class="at">--desc_name</span> affnethardnet8 <span class="at">--num_keypoints</span> 8000 <span class="at">--path_features</span> ../imc2021-sample-kornia-submission/extracted/cv2-dog-affnet-hardnet8  <span class="at">--path_results</span> ../benchmark-results <span class="at">--subset</span> both  <span class="at">--is_challenge</span> false <span class="at">--path_json</span> ../imc2021-sample-kornia-submission/base_config.json  <span class="at">--datasets</span> phototourism googleurban pragueparks</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="running-the-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="running-the-evaluation">Running the evaluation</h3>
+<p>Now we are ready to run the evaluation</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-utt</span> run.py <span class="at">--run_mode</span><span class="op">=</span>interactive <span class="at">--json_method</span><span class="op">=</span>../imc2021-sample-kornia-submission/base_config.json <span class="at">--subset</span><span class="op">=</span>val  <span class="at">--eval_multiview</span><span class="op">=</span>False <span class="at">--path_data</span> ../imc-2021-data/ <span class="at">--path_results</span> ../benchmark-results <span class="at">--is_challenge</span> false</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>After a while (an 30 min for 32 cores machine), the process will finish and you will see the following log message:</p>
+<pre><code> -- Saving to: "packed-val/dog-affnet-hardnet8-degensac.json"</code></pre>
+</section>
+<section id="reading-results" class="level3">
+<h3 class="anchored" data-anchor-id="reading-results">Reading results</h3>
+<p>Json file with evaluation results is saved to <code>image-matching-benchmark/packed-val/dog-affnet-hardnet8-degensac.json</code>, and some visualizations – to <code>../benchmark-visualization/png</code>.</p>
+<p>First, we come back to our <code>imc2021-sample-kornia-submission</code> directory:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../imc2021-sample-kornia-submission</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Metric, which are used for the competition is mean average accuracy (mAA) at visibility threshold 0.1</p>
+<div id="cell-34" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>hashname<span class="op">=</span><span class="st">'dog-affnet-hardnet8-degensac'</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>res_fname <span class="op">=</span> os.path.join(<span class="st">'../image-matching-benchmark/packed-val'</span>, <span class="ss">f'</span><span class="sc">{</span>hashname<span class="sc">}</span><span class="ss">.json'</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(res_fname, <span class="st">'r'</span>) <span class="im">as</span> f:</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> json.load(f)</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>submission_name <span class="op">=</span> results[<span class="st">'config'</span>][<span class="st">'metadata'</span>][<span class="st">'method_name'</span>]</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>datasets <span class="op">=</span> [<span class="st">'phototourism'</span>, <span class="st">'pragueparks'</span>, <span class="st">'googleurban'</span>]</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>tasks <span class="op">=</span> [<span class="st">'stereo'</span>] <span class="co"># ['stereo', 'multiview']  #Remember, that we skip colmap evaluations</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>metric <span class="op">=</span> <span class="st">'qt_auc_10_th_0.1'</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> dset <span class="kw">in</span> datasets:</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> task <span class="kw">in</span> tasks:</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>        mAA <span class="op">=</span> results[dset][<span class="st">'results'</span>][<span class="st">'allseq'</span>][task][<span class="st">'run_avg'</span>][metric][<span class="st">'mean'</span>]</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span> (<span class="ss">f'</span><span class="sc">{</span>submission_name<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>task<span class="sc">}</span><span class="ss"> mAA for </span><span class="sc">{</span>dset<span class="sc">}</span><span class="ss"> is </span><span class="sc">{</span>mAA<span class="sc">:.4f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>CV-DoG-AffNet-HardNet8 (kornia) stereo mAA for phototourism is 0.7108
+CV-DoG-AffNet-HardNet8 (kornia) stereo mAA for pragueparks is 0.5850
+CV-DoG-AffNet-HardNet8 (kornia) stereo mAA for googleurban is 0.3099</code></pre>
+</div>
+</div>
+<p>We can also see results sequence-by-sequence</p>
+<div id="cell-36" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>sns.set_context(<span class="st">'paper'</span>, font_scale<span class="op">=</span><span class="fl">1.7</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>seqs <span class="op">=</span> []</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>mAAs <span class="op">=</span> []</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> dset <span class="kw">in</span> datasets:</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> task <span class="kw">in</span> tasks:</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> seq <span class="kw">in</span> results[dset][<span class="st">'results'</span>].keys():</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> seq <span class="op">==</span> <span class="st">'allseq'</span>: </span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>                <span class="cf">continue</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>            mAA  <span class="op">=</span> results[dset][<span class="st">'results'</span>][seq][task][<span class="st">'run_avg'</span>][metric][<span class="st">'mean'</span>]</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>            mAAs.append(mAA)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>            seqs.append(seq)</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">15</span>,<span class="dv">5</span>))</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>xticks <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>np.arange(<span class="bu">len</span>(seqs))</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(xticks)</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>ax.bar(xticks, mAAs)</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>ax.set_xticklabels(seqs)</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'mAA'</span>)</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Sequence'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>Text(0.5, 0, 'Sequence')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2021-05-12-submitting-to-IMC2021-step-by-step_files/figure-html/cell-16-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>How do our feature correspondences look like?</p>
+<div id="cell-38" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> cv2</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_image_grid(images, ncols<span class="op">=</span><span class="va">None</span>, cmap<span class="op">=</span><span class="st">'gray'</span>):</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Taken from https://stackoverflow.com/a/66961099/1983544</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">'''Plot a grid of images'''</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> ncols:</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>        factors <span class="op">=</span> [i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(images)<span class="op">+</span><span class="dv">1</span>) <span class="cf">if</span> <span class="bu">len</span>(images) <span class="op">%</span> i <span class="op">==</span> <span class="dv">0</span>]</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>        ncols <span class="op">=</span> factors[<span class="bu">len</span>(factors) <span class="op">//</span> <span class="dv">2</span>] <span class="cf">if</span> <span class="bu">len</span>(factors) <span class="cf">else</span> <span class="bu">len</span>(images) <span class="op">//</span> <span class="dv">4</span> <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    nrows <span class="op">=</span> <span class="bu">int</span>(<span class="bu">len</span>(images) <span class="op">/</span> ncols) <span class="op">+</span> <span class="bu">int</span>(<span class="bu">len</span>(images) <span class="op">%</span> ncols)</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    imgs <span class="op">=</span> [images[i] <span class="cf">if</span> <span class="bu">len</span>(images) <span class="op">&gt;</span> i <span class="cf">else</span> <span class="va">None</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(nrows <span class="op">*</span> ncols)]</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    f, axes <span class="op">=</span> plt.subplots(nrows, ncols, figsize<span class="op">=</span>(<span class="dv">3</span><span class="op">*</span>ncols, <span class="dv">2</span><span class="op">*</span>nrows))</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    axes <span class="op">=</span> axes.flatten()[:<span class="bu">len</span>(imgs)]</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> img, ax <span class="kw">in</span> <span class="bu">zip</span>(imgs, axes.flatten()): </span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> np.<span class="bu">any</span>(img):</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">len</span>(img.shape) <span class="op">&gt;</span> <span class="dv">2</span> <span class="kw">and</span> img.shape[<span class="dv">2</span>] <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>                img <span class="op">=</span> img.squeeze()</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>            ax.imshow(img, cmap<span class="op">=</span>cmap)</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>imgs <span class="op">=</span> []</span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>VIS_DIR <span class="op">=</span> <span class="ss">f'../benchmark-visualization/png/</span><span class="sc">{</span>hashname<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> dset <span class="kw">in</span> os.listdir(VIS_DIR):</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>    dset_dir <span class="op">=</span> os.path.join(VIS_DIR, dset)</span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> seq <span class="kw">in</span> os.listdir(dset_dir):</span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>        seq_dir <span class="op">=</span> os.path.join(dset_dir, seq, <span class="st">'stereo'</span>)</span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> img_fname <span class="kw">in</span> os.listdir(seq_dir):</span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>            full_fname <span class="op">=</span> os.path.join(seq_dir, img_fname)</span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>            img <span class="op">=</span> cv2.resize(cv2.cvtColor(cv2.imread(full_fname), cv2.COLOR_BGR2RGB), (<span class="dv">200</span>,<span class="dv">100</span>))</span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>            imgs.append(img)</span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a>plot_image_grid(imgs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2021-05-12-submitting-to-IMC2021-step-by-step_files/figure-html/cell-17-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="hyperparameters-tuning" class="level2">
+<h2 class="anchored" data-anchor-id="hyperparameters-tuning">Hyperparameters tuning</h2>
+<p>Let’s now tune our hyperparameters, specifically, matching threshold and RANSAC inlier ratio. First we tune RANSAC and then matching ratio. We need to generate jsons for each configuration.</p>
+<div id="cell-40" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>inl_ths <span class="op">=</span> [<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">1.0</span>, <span class="fl">1.5</span>, <span class="fl">2.0</span>, <span class="fl">2.5</span>, <span class="fl">3.0</span>]</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>configs <span class="op">=</span> []</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> inl_th <span class="kw">in</span> inl_ths:</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    current_config <span class="op">=</span> deepcopy(base_config)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> dset <span class="kw">in</span> [<span class="st">'phototourism'</span>, <span class="st">'pragueparks'</span>, <span class="st">'googleurban'</span>]:</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>        current_config[<span class="ss">f'config_</span><span class="sc">{</span>dset<span class="sc">}</span><span class="ss">_stereo'</span>][<span class="st">'geom'</span>][<span class="st">'threshold'</span>] <span class="op">=</span> inl_th</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    label <span class="op">=</span> current_config[<span class="st">'config_common'</span>][<span class="st">'json_label'</span>] </span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>    current_config[<span class="st">'config_common'</span>][<span class="st">'json_label'</span>]  <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">-inlth-</span><span class="sc">{</span>inl_th<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    configs.append(current_config)</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'ransac_tuning.json'</span>, <span class="st">'w'</span>) <span class="im">as</span> f:</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    json.dump(configs, f, indent<span class="op">=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../image-matching-benchmark/</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-utt</span> run.py <span class="at">--run_mode</span><span class="op">=</span>interactive <span class="at">--json_method</span><span class="op">=</span>../imc2021-sample-kornia-submission/base_config.json <span class="at">--subset</span><span class="op">=</span>val  <span class="at">--eval_multiview</span><span class="op">=</span>False <span class="at">--path_data</span> ../imc-2021-data/ <span class="at">--path_results</span> ../benchmark-results <span class="at">--is_challenge</span> false</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../imc2021-sample-kornia-submission</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now we will write a function, which reads results and picks the best threshold per dataset</p>
+<div id="cell-42" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>hashname<span class="op">=</span><span class="st">'dog-affnet-hardnet8-degensac'</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>res_dict <span class="op">=</span> {}</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>datasets <span class="op">=</span> [<span class="st">'phototourism'</span>, <span class="st">'pragueparks'</span>, <span class="st">'googleurban'</span>]</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> dset <span class="kw">in</span> datasets:</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    res_dict[dset] <span class="op">=</span> {}</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>task <span class="op">=</span> <span class="st">'stereo'</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>metric <span class="op">=</span> <span class="st">'qt_auc_10_th_0.1'</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> inl_th <span class="kw">in</span> inl_ths:</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    res_fname <span class="op">=</span> os.path.join(<span class="st">'../image-matching-benchmark/packed-val'</span>, <span class="ss">f'</span><span class="sc">{</span>hashname<span class="sc">}</span><span class="ss">-inlth-</span><span class="sc">{</span>inl_th<span class="sc">}</span><span class="ss">.json'</span>)</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="bu">open</span>(res_fname, <span class="st">'r'</span>) <span class="im">as</span> f:</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>            results <span class="op">=</span> json.load(f)</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>    submission_name <span class="op">=</span> results[<span class="st">'config'</span>][<span class="st">'metadata'</span>][<span class="st">'method_name'</span>]</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>    res_dict[inl_th] <span class="op">=</span> {}</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> dset <span class="kw">in</span> datasets:</span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>        mAA <span class="op">=</span> results[dset][<span class="st">'results'</span>][<span class="st">'allseq'</span>][task][<span class="st">'run_avg'</span>][metric][<span class="st">'mean'</span>]</span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>        res_dict[dset][inl_th] <span class="op">=</span> mAA</span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">5</span>,<span class="dv">5</span>))</span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">'r'</span>,<span class="st">'b'</span>,<span class="st">'k'</span>]</span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>final_ths <span class="op">=</span> {}</span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, dset <span class="kw">in</span> <span class="bu">enumerate</span>(datasets):</span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>    inl_ths <span class="op">=</span> []</span>
+<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a>    mAAs <span class="op">=</span> []</span>
+<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> inl_th, mAA <span class="kw">in</span> res_dict[dset].items():</span>
+<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a>        inl_ths.append(inl_th)</span>
+<span id="cb32-29"><a href="#cb32-29" aria-hidden="true" tabindex="-1"></a>        mAAs.append(mAA)</span>
+<span id="cb32-30"><a href="#cb32-30" aria-hidden="true" tabindex="-1"></a>    best_th_idx <span class="op">=</span> np.argmax(np.array(mAAs))</span>
+<span id="cb32-31"><a href="#cb32-31" aria-hidden="true" tabindex="-1"></a>    best_th <span class="op">=</span> inl_ths[best_th_idx]</span>
+<span id="cb32-32"><a href="#cb32-32" aria-hidden="true" tabindex="-1"></a>    best_mAA <span class="op">=</span> mAAs[best_th_idx]</span>
+<span id="cb32-33"><a href="#cb32-33" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span> (<span class="ss">f'Best </span><span class="sc">{</span>dset<span class="sc">}</span><span class="ss"> mAA = </span><span class="sc">{</span>best_mAA<span class="sc">:.4f}</span><span class="ss"> with inl_th = </span><span class="sc">{</span>best_th<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb32-34"><a href="#cb32-34" aria-hidden="true" tabindex="-1"></a>    ax.plot(inl_ths, mAAs, label<span class="op">=</span>dset, color<span class="op">=</span>colors[i])</span>
+<span id="cb32-35"><a href="#cb32-35" aria-hidden="true" tabindex="-1"></a>    ax.plot(best_th, best_mAA, label <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>dset<span class="sc">}</span><span class="ss">-best'</span>, marker<span class="op">=</span><span class="st">'x'</span>, linestyle<span class="op">=</span><span class="st">''</span>, color<span class="op">=</span>colors[i])</span>
+<span id="cb32-36"><a href="#cb32-36" aria-hidden="true" tabindex="-1"></a>    final_ths[dset] <span class="op">=</span> best_th</span>
+<span id="cb32-37"><a href="#cb32-37" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb32-38"><a href="#cb32-38" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb32-39"><a href="#cb32-39" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'mAA'</span>)</span>
+<span id="cb32-40"><a href="#cb32-40" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'DEGENSAC inlier threshold'</span>)</span>
+<span id="cb32-41"><a href="#cb32-41" aria-hidden="true" tabindex="-1"></a>    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Best phototourism mAA = 0.7108 with inl_th = 0.5
+Best pragueparks mAA = 0.6700 with inl_th = 1.5
+Best googleurban mAA = 0.3116 with inl_th = 0.75</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>Text(0.5, 0, 'DEGENSAC inlier threshold')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2021-05-12-submitting-to-IMC2021-step-by-step_files/figure-html/cell-19-output-3.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="creating-final-submission" class="level2">
+<h2 class="anchored" data-anchor-id="creating-final-submission">Creating final submission</h2>
+<p>Its time to create our final submission!</p>
+<div id="cell-44" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>configs <span class="op">=</span> []</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>current_config <span class="op">=</span> deepcopy(base_config)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> dset <span class="kw">in</span> [<span class="st">'phototourism'</span>, <span class="st">'pragueparks'</span>, <span class="st">'googleurban'</span>]:</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    current_config[<span class="ss">f'config_</span><span class="sc">{</span>dset<span class="sc">}</span><span class="ss">_stereo'</span>][<span class="st">'geom'</span>][<span class="st">'threshold'</span>] <span class="op">=</span> final_ths[dset]</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># I did a little bit of tuning offline for multiview, so we will put it here</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    current_config[<span class="ss">f'config_</span><span class="sc">{</span>dset<span class="sc">}</span><span class="ss">_multiview'</span>][<span class="st">'matcher'</span>][<span class="st">'filtering'</span>][<span class="st">'threshold'</span>] <span class="op">=</span> <span class="fl">0.95</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Remember, that we should not forget to turn FLANN ofd</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>    current_config[<span class="ss">f'config_</span><span class="sc">{</span>dset<span class="sc">}</span><span class="ss">_multiview'</span>][<span class="st">'matcher'</span>][<span class="st">'flann'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>    current_config[<span class="ss">f'config_</span><span class="sc">{</span>dset<span class="sc">}</span><span class="ss">_stereo'</span>][<span class="st">'matcher'</span>][<span class="st">'flann'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>current_config[<span class="st">'metadata'</span>][<span class="st">'method_name'</span>] <span class="op">=</span> <span class="st">'KORNIA TUTORIAL CV-DoG-AffNet-HardNet8'</span></span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>label <span class="op">=</span> current_config[<span class="st">'config_common'</span>][<span class="st">'json_label'</span>] </span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>current_config[<span class="st">'config_common'</span>][<span class="st">'json_label'</span>]  <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>configs.append(current_config)</span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span> (current_config)</span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'final_submission.json'</span>, <span class="st">'w'</span>) <span class="im">as</span> f:</span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>    json.dump(configs, f, indent<span class="op">=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'metadata': {'publish_anonymously': False, 'authors': 'Dmytro Mishkin, Milan Pultar and kornia team', 'contact_email': 'ducha.aiki@gmail.com', 'method_name': 'KORNIA TUTORIAL CV-DoG-AffNet-HardNet8', 'method_description': "OpeCV SIFT keypoints 8000 features, followed by the AffNet normalization \n    and HardNet8 descriptor as implemented in kornia.\n    Matched using the built-in matcher (bidirectional filter with the 'both' strategy, \n    hopefully optimal inlier and ratio test thresholds) with DEGENSAC", 'link_to_website': 'https://github.com/kornia/kornia', 'link_to_pdf': 'https://arxiv.org/abs/2007.09699'}, 'config_common': {'json_label': 'dog-affnet-hardnet8-degensac', 'keypoint': 'cv2dog', 'descriptor': 'affnethardnet8', 'num_keypoints': 8000}, 'config_phototourism_stereo': {'use_custom_matches': False, 'matcher': {'method': 'nn', 'distance': 'L2', 'flann': False, 'num_nn': 1, 'filtering': {'type': 'snn_ratio_pairwise', 'threshold': 0.9}, 'symmetric': {'enabled': True, 'reduce': 'both'}}, 'outlier_filter': {'method': 'none'}, 'geom': {'method': 'cmp-degensac-f', 'threshold': 0.5, 'confidence': 0.999999, 'max_iter': 100000, 'error_type': 'sampson', 'degeneracy_check': True}}, 'config_phototourism_multiview': {'use_custom_matches': False, 'matcher': {'method': 'nn', 'distance': 'L2', 'flann': False, 'num_nn': 1, 'filtering': {'type': 'snn_ratio_pairwise', 'threshold': 0.95}, 'symmetric': {'enabled': True, 'reduce': 'both'}}, 'outlier_filter': {'method': 'none'}, 'colmap': {}}, 'config_pragueparks_stereo': {'use_custom_matches': False, 'matcher': {'method': 'nn', 'distance': 'L2', 'flann': False, 'num_nn': 1, 'filtering': {'type': 'snn_ratio_pairwise', 'threshold': 0.9}, 'symmetric': {'enabled': True, 'reduce': 'both'}}, 'outlier_filter': {'method': 'none'}, 'geom': {'method': 'cmp-degensac-f', 'threshold': 1.5, 'confidence': 0.999999, 'max_iter': 100000, 'error_type': 'sampson', 'degeneracy_check': True}}, 'config_pragueparks_multiview': {'use_custom_matches': False, 'matcher': {'method': 'nn', 'distance': 'L2', 'flann': False, 'num_nn': 1, 'filtering': {'type': 'snn_ratio_pairwise', 'threshold': 0.95}, 'symmetric': {'enabled': True, 'reduce': 'both'}}, 'outlier_filter': {'method': 'none'}, 'colmap': {}}, 'config_googleurban_stereo': {'use_custom_matches': False, 'matcher': {'method': 'nn', 'distance': 'L2', 'flann': False, 'num_nn': 1, 'filtering': {'type': 'snn_ratio_pairwise', 'threshold': 0.9}, 'symmetric': {'enabled': True, 'reduce': 'both'}}, 'outlier_filter': {'method': 'none'}, 'geom': {'method': 'cmp-degensac-f', 'threshold': 0.75, 'confidence': 0.999999, 'max_iter': 100000, 'error_type': 'sampson', 'degeneracy_check': True}}, 'config_googleurban_multiview': {'use_custom_matches': False, 'matcher': {'method': 'nn', 'distance': 'L2', 'flann': False, 'num_nn': 1, 'filtering': {'type': 'snn_ratio_pairwise', 'threshold': 0.95}, 'symmetric': {'enabled': True, 'reduce': 'both'}}, 'outlier_filter': {'method': 'none'}, 'colmap': {}}}</code></pre>
+</div>
+</div>
+<pre><code>Submission Zip file should have folder structure as follow:
+ ├── config.json
+ ├── [Dataset 1]
+ │   ├── [Sequence 1]
+ │   │   ├── keypoints.h5
+ │   │   ├── descriptors.h5
+ │   │   ├── matches.h5
+ │   ├── [Sequence 2]
+ │   │   ├── ...
+ ├── [Dataset 2]
+ │   ├── ...</code></pre>
+<p>So we have to just copy our features, add config and zip them.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> final_submission.json extracted/cv2-dog-affnet-hardnet8/config.json</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> extracted/cv2-dog-affnet-hardnet8</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">zip</span> <span class="at">-r</span> submission.zip <span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Last step before the submission - check the submission for correctness with provided script</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../../../image-matching-benchmark</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-utt</span> submission_validator.py <span class="at">--submit_file_path</span> ../imc2021-sample-kornia-submission/extracted/cv2-dog-affnet-hardnet8/submission.zip <span class="at">--benchmark_repo_path</span> . <span class="at">--raw_data_path</span> ../imc-2021-data/ <span class="at">--datasets</span> googleurban phototourism pragueparks</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If everything is correct, you will see:</p>
+<pre><code>Validating method 1/1: "dog-affnet-hardnet8-degensac"
+['googleurban', 'phototourism', 'pragueparks']
+Running: googleurban, stereo track
+Running: googleurban, multiview track
+Running: phototourism, stereo track
+Running: phototourism, multiview track
+Running: pragueparks, stereo track
+Running: pragueparks, multiview track
+Validating key "config_googleurban_stereo"
+Validating key "config_googleurban_multiview"
+Validating key "config_phototourism_stereo"
+Validating key "config_phototourism_multiview"
+Validating key "config_pragueparks_stereo"
+Validating key "config_pragueparks_multiview"</code></pre>
+<p>And file <code>submission_log.txt</code> will appear near our .zip file.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> ../imc2021-sample-kornia-submission/extracted/cv2-dog-affnet-hardnet8/submission_log.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>Submission is in proper format, please submit to IMW 2021 website.</code></pre>
+<p>That’s all, folks! We can submit! But, please, do not just submit this sample submission - make your own :)</p>
+
+
+</section>
+</section>
+
+<p>Everything you (didn’t) want to know about image matching</p></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
