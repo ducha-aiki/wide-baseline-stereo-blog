@@ -1,8 +1,9 @@
 project:
   type: website
+  output-dir: docs
 
 website:
-  title: "Wide Baseline Stereo Blog"
+  title: "Wide baseline stereo meets deep learning"
   navbar:
     right:
       - about.qmd
