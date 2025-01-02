@@ -1,0 +1,19 @@
+project:
+  type: website
+
+website:
+  title: "Wide Baseline Stereo Blog"
+  navbar:
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/ducha_aiki
+      - icon: twitter
+        href: https://twitter.com/ducha_aiki
+  body-footer: | 
+    Everything you (didn't) want to know about image matching
+  google-analytics: "G-GE2NZRSZBN"
+format:
+  html:
+    theme: cosmo
+    css: styles.css

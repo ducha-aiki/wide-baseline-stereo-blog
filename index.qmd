@@ -1,0 +1,14 @@
+---
+title: "Wide Baseline Stereo Blog"
+listing:
+  contents: posts
+  sort: "date desc"
+  type: default
+  categories: false
+  sort-ui: false
+  filter-ui: false
+page-layout: full
+title-block-banner: true
+---
+
+This website is devoted to wide baseline stereo, one of the most important problems in computer vision.
