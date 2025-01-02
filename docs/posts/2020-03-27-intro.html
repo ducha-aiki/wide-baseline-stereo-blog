@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2020-03-27">
+<meta name="description" content="Short history of wide baseline stereo in computer vision">
+
+<title>The Role of Wide Baseline Stereo in the Deep Learning World – Wide baseline stereo meets deep learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-GE2NZRSZBN"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
+</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Wide baseline stereo meets deep learning</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html"> 
+<span class="menu-text">About Me</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/ducha_aiki"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/ducha_aiki"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">The Role of Wide Baseline Stereo in the Deep Learning World</h1>
+                  <div>
+        <div class="description">
+          Short history of wide baseline stereo in computer vision
+        </div>
+      </div>
+                </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 27, 2020</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="rise-of-wide-multiple-baseline-stereo" class="level2">
+<h2 class="anchored" data-anchor-id="rise-of-wide-multiple-baseline-stereo">Rise of Wide Multiple Baseline Stereo</h2>
+<p>The <em>wide multiple baseline stereo (WxBS)</em> is a process of establishing a sufficient number of pixel or region correspondences from two or more images depicting the same scene to estimate the geometric relationship between cameras, which produced these images. Typically, WxBS relies on the scene rigidity – the assumption that there is no motion in the scene except the motion of the camera itself. The stereo problem is called wide multiple baseline if the images are significantly different in more than one aspect: viewpoint, illumination, time of acquisition, and so on. Historically, people were focused on the simpler problem with a single baseline, which was geometrical, i.e., viewpoint difference between cameras, and the area was known as wide baseline stereo. Nowadays, the field is mature and research is focused on solving more challenging multi-baseline problems.</p>
+<p>WxBS is a building block of many popular computer vision applications, where spatial localization or 3D world understanding is required – panorama stitching, 3D reconstruction, image retrieval, SLAM, etc.</p>
+<p>If the wide baseline stereo is a new concept for you, I recommend checking the <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/01/09/wxbs-in-simple-terms.html">examplanation in simple terms</a>.</p>
+<p><img src="00_intro_files/match_doll.png" title="Correspondences between two views found by wide baseline stereo algorithm. Photo and doll created by Olha Mishkina" class="img-fluid"></p>
+<p><strong>Where does wide baseline stereo come from?</strong></p>
+<p>As often happens, a new problem arises from the old – narrow or short baseline stereo. In the narrow baseline stereo, images are taken from nearby positions, often exactly at the same time. One could find correspondence for the point <span class="math inline">\((x,y)\)</span> from the image <span class="math inline">\(I_1\)</span> in the image <span class="math inline">\(I_2\)</span> by simply searching in some small window around <span class="math inline">\((x,y)\)</span> or, assuming that camera pair is calibrated and the images are rectified – by searching along the epipolar line.</p>
+<p><img src="2020-03-27-intro_files/att_00003.png" title="Correspondence search in narrow baseline stereo, from Moravec 1980 PhD thesis." class="img-fluid"></p>
+<!--- ![Wide baseline stereo model. "Baseline" is the distance between cameras. Image by Arne Nordmann (WikiMedia)](00_intro_files/Epipolar_geometry.svg) 
+-->
+<p>One of the first, if not the first, approaches to the wide baseline stereo problem was proposed by Schmid and Mohr in 1995. Given the difficulty of the wide multiple baseline stereo task at the moment, only a single — geometrical – baseline was considered, thus the name – wide baseline stereo (WBS). The idea of Schmid and Mohr was to equip each keypoint with an invariant descriptor. This allowed establishing tentative correspondences between keypoints under viewpoint and illumination changes, as well as occlusions. One of the stepping stones was the corner detector by Harris and Stevens , initially used for the application of tracking. It is worth a mention, that there were other good choices for the local feature detector at the time, starting with the Forstner , Moravec and Beaudet feature detectors .</p>
+<p>The Schmid and Mohr approach was later extended by Beardsley, Torr and Zisserman by adding RANSAC robust geometry estimation and later refined by Pritchett and Zisserman in 1998. The general pipeline remains mostly the same until now , which is shown in Figure below.</p>
+<!--- 
+![image.png](00_intro_files/att_00002.png)
+-->
+<p><img src="00_intro_files/matching-filtering.png" title="Commonly used wide baseline stereo pipeline" class="img-fluid"></p>
+<p>Let’s write down the WxBS algorithm:</p>
+<ol type="1">
+<li>Compute interest points/regions in all images independently</li>
+<li>For each interest point/region compute a descriptor of their neigborhood (local patch).</li>
+<li>Establish tentative correspondences between interest points based on their descriptors.</li>
+<li>Robustly estimate geometric relation between two images based on tentative correspondences with RANSAC.</li>
+</ol>
+<p>The reasoning behind each step is described in <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/02/11/WxBS-step-by-step.html">this separate post</a>.</p>
+</section>
+<section id="quick-expansion" class="level2">
+<h2 class="anchored" data-anchor-id="quick-expansion">Quick expansion</h2>
+<p>This algorithm significantly changed computer vision landscape for next forteen years.</p>
+<p>Soon after the introduction of the WBS algorithm, it became clear that its quality significantly depends on the quality of each component, i.e., local feature detector, descriptor, and geometry estimation. Local feature detectors were designed to be as invariant as possible, backed up by the scale-space theory, most notable developed by Lindenberg . A plethora of new detectors and descriptors were proposed in that time. We refer the interested reader to these two surveys: by Tuytelaars and Mikolajczyk (2008) and by Csurka (2018). Among the proposed local features is one of the most cited computer vision papers ever – SIFT local feature . Besides the SIFT descriptor itself,</p>
+<p>Lowe’s paper incorporated several important steps, proposed earlier with his co-authors, to the matching pipeline. Specifically, they are quadratic fitting of the feature responses for precise keypoint localization , using the Best-Bin-First kd-tree as an approximate nearest neightbor search engine to speed-up the tentative correspondences generation, and using second-nearest neighbor (SNN) ratio to filter the tentative matches. It is worth noting that SIFT feature became popular only after Mikolajczyk benchmark paper that showed its superiority to the rest of alternatives.</p>
+<p>Robust geometry estimation was also a hot topic: a lot of improvements over vanilla RANSAC were proposed. For example, LO-RANSAC proposed an additional local optimization step into RANSAC to significantly decrease the number of required steps. PROSAC takes into account the tentative correspondences matching score during sampling to speed up the procedure. DEGENSAC improved the quality of the geometry estimation in the presence of a dominant plane in the images, which is the typical case for urban images. We refer the interested reader to the survey by Choi .</p>
+<p>Success of wide baseline stereo with SIFT features led to aplication of its components to other computer vision tasks, which were reformulated through wide baseline stereo lens:</p>
+<ul>
+<li><strong>Scalable image search</strong>. Sivic and Zisserman in famous “Video Google” paper proposed to treat local features as “visual words” and use ideas from text processing for searching in image collections. Later even more WBS elements were re-introduced to image search, most notable – <strong>spatial verification</strong>: simplified RANSAC procedure to verify if visual word matches were spatially consistent.</li>
+</ul>
+<p><img src="00_intro_files/att_00004.png" title="Bag of words image search. Image credit: Filip Radenovic http://cmp.felk.cvut.cz/ radenfil/publications/Radenovic-CMPcolloq-2015.11.12.pdf" class="img-fluid"></p>
+<ul>
+<li><strong>Image classification</strong> was performed by placing some classifier (SVM, random forest, etc) on top of some encoding of the SIFT-like descriptors, extracted sparsely or densely.</li>
+</ul>
+<p><img src="00_intro_files/att_00005.png" title="Bag of local features representation for classification from Fergus03" class="img-fluid"></p>
+<ul>
+<li><strong>Object detection</strong> was formulated as relaxed wide baseline stereo problem or as classification of SIFT-like features inside a sliding window </li>
+</ul>
+<p><img src="00_intro_files/att_00003.png" title="Exemplar-representation of the classes using local features, cite{Chum2007Exemplar}" class="img-fluid"></p>
+<!--- 
+![HoG-based pedestrian detection algorithm](00_intro_files/att_00006.png)
+![Histogram of gradient visualization](00_intro_files/att_00007.png)
+-->
+<ul>
+<li><strong>Semantic segmentation</strong> was performed by classicication of local region descriptors, typically, SIFT and color features and postprocessing afterwards.</li>
+</ul>
+<p>Of course,wide baseline stereo was also used for its direct applications:</p>
+<ul>
+<li><strong>3D reconstruction</strong> was based on camera poses and 3D points, estimated with help of SIFT features </li>
+</ul>
+<p><img src="00_intro_files/att_00008.png" title="SfM pipeline from COLMAP" class="img-fluid"></p>
+<ul>
+<li><p><strong>SLAM(Simultaneous localization and mapping)</strong> were based on fast version of local feature detectors and descriptors. <!--- 
+![ORBSLAM pipeline](00_intro_files/att_00009.png)
+--></p></li>
+<li><p><strong>Panorama stiching</strong> and, more generally, <strong>feature-based image registration</strong> were initalized with a geometry obtained by WBS and then further optimized</p></li>
+</ul>
+</section>
+<section id="deep-learning-invasion-retreal-to-the-geometrical-fortress" class="level2">
+<h2 class="anchored" data-anchor-id="deep-learning-invasion-retreal-to-the-geometrical-fortress">Deep Learning Invasion: retreal to the geometrical fortress</h2>
+<p>In 2012 the deep learning-based AlexNet approach beat all methods in image classification at the ImageNet Large Scale Visual Recognition Challenge (ILSVRC). Soon after, Razavian et al. have shown that convolutional neural networks (CNNs) pre-trained on the Imagenet outperform more complex traditional solutions in image and scene classification, object detection and image search, see Figure below. The performance gap between deep leaning and “classical” solutions was large and quickly increasing. In addition, deep learning pipelines, be it off-the-shelf pretrained, fine-tuned or the end-to-end learned networks, are simple from the engineering perspective. That is why the deep learning algorithms quickly become the default option for lots of computer vision problems.</p>
+<p><img src="00_intro_files/att_00010.png" title="CNN representation beats complex traditional pipelines. Reds are CNN-based and greens are the handcrafted. From Astounding2014" class="img-fluid"></p>
+<p>However, there was still a domain, where deep learned solutions failed, sometimes spectacularly: geometry-related tasks. Wide baseline stereo , visual localization and SLAM are still areas, where the classical wide baseline stereo dominates .</p>
+<p>The full reasons why convolution neural network pipelines are struggling to perform tasks that are related to geometry, and how to fix that, are yet to be understood. The observations from the recent papers are following:</p>
+<ul>
+<li>CNN-based pose predictions predictions are roughly equivalent to the retrieval of the most similar image from the training set and outputing its pose . This kind of behaviour is also observed in a related area: single-view 3D reconstruction performed by deep networks is essentially a retrieval of the most similar 3D model from the training set .</li>
+<li>Geometric and arithmetic operations are hard to represent via vanilla neural networks (i.e., matrix multiplication followed by non-linearity) and they may require specialized building blocks, approximating operations of algorithmic or geometric methods, e.g.&nbsp;spatial transformers and arithmetic units . Even with such special-purpose components, the deep learning solutions require “careful initialization, restricting parameter space, and regularizing for sparsity” .</li>
+<li>Vanilla CNNs suffer from sensitivity to geometric transformations like scaling and rotation or even translation . The sensitivity to translations might sound counter-intuitive, because the concolution operation by definition is translation-covariant. However, a typical CNN contains also zero-padding and downscaling operations, which break the covariance . Unlike them, classical local feature detectors are grounded on scale-space and image processing theories. Some of the classical methods deal with the issue by explicit geometric normalization of the patches before description.</li>
+<li>CNNs predictions can be altered by a change in a small localized area or even a single pixel , while the wide baseline stereo methods require the consensus of different independent regions.</li>
+</ul>
+</section>
+<section id="today-assimilation-and-merging" class="level2">
+<h2 class="anchored" data-anchor-id="today-assimilation-and-merging">Today: assimilation and merging</h2>
+<section id="wide-baseline-stereo-as-a-task-formulate-differentiably-and-learn-modules" class="level3">
+<h3 class="anchored" data-anchor-id="wide-baseline-stereo-as-a-task-formulate-differentiably-and-learn-modules">Wide baseline stereo as a task: formulate differentiably and learn modules</h3>
+<p>This leads us to the following question – <strong>is deep learning helping WxBS today?</strong> The answer is yes. After the quick interest in the black-box-style models, the current trend is to design deep learning solutions for the wide baseline stereo in a modular fashion , resembling the one in Figure below. Such modules are learned separately. For example, the HardNet descriptor replaces SIFT local descriptor. The Hessian detector can be replaced by deep learned detectors like KeyNet or the joint detector-descriptor . The matching and filtering are performed by the SuperGlue matching network, etc. There have been attempts to formulate the full pipeline solving problem like SLAM in a differentiable way, combining the advantages of structured and learning-based approaches.</p>
+<p><img src="00_intro_files/att_00011.png" title="SuperGlue: separate matching module for handcrafter and learned features" class="img-fluid"></p>
+<p><img src="00_intro_files/gradslam.png" title="gradSLAM: differentiable formulation of SLAM pipeline" class="img-fluid"></p>
+</section>
+<section id="wide-baseline-stereo-as-a-idea-consensus-of-local-independent-predictions" class="level3">
+<h3 class="anchored" data-anchor-id="wide-baseline-stereo-as-a-idea-consensus-of-local-independent-predictions">Wide baseline stereo as a idea: consensus of local independent predictions</h3>
+<p>On the other hand, as an algorithm, wide baseline stereo is summarized into two main ideas</p>
+<ol type="1">
+<li>Image should be represented as set of local parts, robust to occlusion, and not influencing each other.</li>
+<li>Decision should be based on spatial consensus of local feature correspondences.</li>
+</ol>
+<p>One of modern revisit of wide baseline stereo ideas is Capsule Networks. Unlike vanilla CNNs, capsule networks encode not only the intensity of feature response, but also its location. Geometric agreement between “object parts” is a requirement for outputing a confident prediction.</p>
+<p>Similar ideas are now explored for ensuring adversarial robustness of CNNs.</p>
+<p>Another way of using “consensus of local independent predictions” is used in <a href="https://arxiv.org/abs/2007.11498">Cross-transformers</a> paper: spatial attention helps to select relevant feature for few-shot learning, see Figure below.</p>
+<p>While wide multiple baseline stereo is a mature field now and does not attract even nearly as much attention as before, it continues to play an important role in computer vision.</p>
+<p><img src="2020-03-27-intro_files/att_00000.png" title="Cross-transformers: spatial attention helps to select relevant feature for few-shot learning" class="img-fluid"></p>
+<p><img src="00_intro_files/capsules.png" title="Capsule networks: revisiting the WBS idea. Each feature response is accompanied with its pose. Poses should be in agreement, otherwise object would not be recognized. Image by Aurélien Géron https://www.oreilly.com/content/introducing-capsule-networks/" class="img-fluid"></p>
+</section>
+</section>
+<section id="references" class="level1">
+<h1>References</h1>
+<p>[<a id="cit-Hannah1974ComputerMO" href="#call-Hannah1974ComputerMO">Hannah1974ComputerMO</a>] M. J., ``<em>Computer matching of areas in stereo images.</em>’’, 1974.</p>
+<p>[<a id="cit-Moravec1980" href="#call-Moravec1980">Moravec1980</a>] Hans Peter Moravec, ``<em>Obstacle Avoidance and Navigation in the Real World by a Seeing Robot Rover</em>’’, 1980.</p>
+<p>[<a id="cit-Hartley2004" href="#call-Hartley2004">Hartley2004</a>] R.~I. Hartley and A. Zisserman, ``<em>Multiple View Geometry in Computer Vision</em>’’, 2004.</p>
+<p>[<a id="cit-Schmid1995" href="#call-Schmid1995">Schmid1995</a>] Schmid Cordelia and Mohr Roger, ``<em>Matching by local invariants</em>’’, , vol.&nbsp;, number , pp.&nbsp;, 1995. <a href="https://hal.inria.fr/file/index/docid/74046/filename/RR-2644.pdf">online</a></p>
+<p>[<a id="cit-Harris88" href="#call-Harris88">Harris88</a>] C. Harris and M. Stephens, ``<em>A Combined Corner and Edge Detector</em>’’, Fourth Alvey Vision Conference, 1988.</p>
+<p>[<a id="cit-forstner1987fast" href="#call-forstner1987fast">forstner1987fast</a>] W. F{"o}rstner and E. G{"u}lch, ``<em>A fast operator for detection and precise location of distinct points, corners and centres of circular features</em>’’, Proc. ISPRS intercommission conference on fast processing of photogrammetric data, 1987.</p>
+<p>[<a id="cit-Hessian78" href="#call-Hessian78">Hessian78</a>] P.R. Beaudet, ``<em>Rotationally invariant image operators</em>’’, Proceedings of the 4th International Joint Conference on Pattern Recognition, 1978.</p>
+<p>[<a id="cit-Beardsley96" href="#call-Beardsley96">Beardsley96</a>] P. Beardsley, P. Torr and A. Zisserman, ``<em>3D model acquisition from extended image sequences</em>’’, ECCV, 1996.</p>
+<p>[<a id="cit-RANSAC1981" href="#call-RANSAC1981">RANSAC1981</a>] Fischler Martin A. and Bolles Robert C., ``<em>Random sample consensus: a paradigm for model fitting with applications to image analysis and automated cartography</em>’’, Commun. ACM, vol.&nbsp;24, number 6, pp.&nbsp;381–395, jun 1981.</p>
+<p>[<a id="cit-Pritchett1998" href="#call-Pritchett1998">Pritchett1998</a>] P. Pritchett and A. Zisserman, ``<em>Wide baseline stereo matching</em>’’, ICCV, 1998.</p>
+<p>[<a id="cit-Pritchett1998b" href="#call-Pritchett1998b">Pritchett1998b</a>] P. Pritchett and A. Zisserman, ``<em>“Matching and Reconstruction from Widely Separated Views”</em>’’, 3D Structure from Multiple Images of Large-Scale Environments, 1998.</p>
+<p>[<a id="cit-WBSTorr99" href="#call-WBSTorr99">WBSTorr99</a>] P. Torr and A. Zisserman, ``<em>Feature Based Methods for Structure and Motion Estimation</em>’’, Workshop on Vision Algorithms, 1999.</p>
+<p>[<a id="cit-CsurkaReview2018" href="#call-CsurkaReview2018">CsurkaReview2018</a>] {Csurka} Gabriela, {Dance} Christopher R. and {Humenberger} Martin, ``<em>From handcrafted to deep local features</em>’’, arXiv e-prints, vol.&nbsp;, number , pp.&nbsp;, 2018.</p>
+<p>[<a id="cit-IMW2020" href="#call-IMW2020">IMW2020</a>] Jin Yuhe, Mishkin Dmytro, Mishchuk Anastasiia <em>et al.</em>, ``<em>Image Matching across Wide Baselines: From Paper to Practice</em>’’, arXiv preprint arXiv:2003.01587, vol.&nbsp;, number , pp.&nbsp;, 2020.</p>
+<p>[<a id="cit-Lindeberg1993" href="#call-Lindeberg1993">Lindeberg1993</a>] Lindeberg Tony, ``<em>Detecting Salient Blob-like Image Structures and Their Scales with a Scale-space Primal Sketch: A Method for Focus-of-attention</em>’’, Int. J. Comput. Vision, vol.&nbsp;11, number 3, pp.&nbsp;283–318, December 1993.</p>
+<p>[<a id="cit-Lindeberg1998" href="#call-Lindeberg1998">Lindeberg1998</a>] Lindeberg Tony, ``<em>Feature Detection with Automatic Scale Selection</em>’’, Int. J. Comput. Vision, vol.&nbsp;30, number 2, pp.&nbsp;79–116, November 1998.</p>
+<p>[<a id="cit-lindeberg2013scale" href="#call-lindeberg2013scale">lindeberg2013scale</a>] Lindeberg Tony, ``<em>Scale-space theory in computer vision</em>’’, , vol.&nbsp;256, number , pp.&nbsp;, 2013.</p>
+<p>[<a id="cit-Tuytelaars2008" href="#call-Tuytelaars2008">Tuytelaars2008</a>] Tuytelaars Tinne and Mikolajczyk Krystian, ``<em>Local Invariant Feature Detectors: A Survey</em>’’, Found. Trends. Comput. Graph. Vis., vol.&nbsp;3, number 3, pp.&nbsp;177–280, July 2008.</p>
+<p>[<a id="cit-Lowe99" href="#call-Lowe99">Lowe99</a>] D. Lowe, ``<em>Object Recognition from Local Scale-Invariant Features</em>’’, ICCV, 1999.</p>
+<p>[<a id="cit-SIFT2004" href="#call-SIFT2004">SIFT2004</a>] Lowe David G., ``<em>Distinctive Image Features from Scale-Invariant Keypoints</em>’’, International Journal of Computer Vision (IJCV), vol.&nbsp;60, number 2, pp.&nbsp;91–110, 2004.</p>
+<p>[<a id="cit-QuadInterp2002" href="#call-QuadInterp2002">QuadInterp2002</a>] M. Brown and D. Lowe, ``<em>Invariant Features from Interest Point Groups</em>’’, BMVC, 2002.</p>
+<p>[<a id="cit-aknn1997" href="#call-aknn1997">aknn1997</a>] J.S. Beis and D.G. Lowe, ``<em>Shape Indexing Using Approximate Nearest-Neighbour Search in High-Dimensional Spaces</em>’’, CVPR, 1997.</p>
+<p>[<a id="cit-MikoDescEval2003" href="#call-MikoDescEval2003">MikoDescEval2003</a>] K. Mikolajczyk and C. Schmid, ``<em>A Performance Evaluation of Local Descriptors</em>’’, CVPR, June 2003.</p>
+<p>[<a id="cit-Mikolajczyk05" href="#call-Mikolajczyk05">Mikolajczyk05</a>] Mikolajczyk K., Tuytelaars T., Schmid C. <em>et al.</em>, ``<em>A Comparison of Affine Region Detectors</em>’’, IJCV, vol.&nbsp;65, number 1/2, pp.&nbsp;43–72, 2005.</p>
+<p>[<a id="cit-LOransac2003" href="#call-LOransac2003">LOransac2003</a>] O. Chum, J. Matas and J. Kittler, ``<em>Locally Optimized RANSAC</em>’’, Pattern Recognition, 2003.</p>
+<p>[<a id="cit-PROSAC2005" href="#call-PROSAC2005">PROSAC2005</a>] O. Chum and J. Matas, ``<em>Matching with PROSAC – Progressive Sample Consensus</em>’’, Proceedings of the 2005 IEEE Computer Society Conference on Computer Vision and Pattern Recognition (CVPR’05) - Volume 1 - Volume 01, 2005.</p>
+<p>[<a id="cit-Degensac2005" href="#call-Degensac2005">Degensac2005</a>] O. Chum, T. Werner and J. Matas, ``<em>Two-View Geometry Estimation Unaffected by a Dominant Plane</em>’’, CVPR, 2005.</p>
+<p>[<a id="cit-RANSACSurvey2009" href="#call-RANSACSurvey2009">RANSACSurvey2009</a>] S. Choi, T. Kim and W. Yu, ``<em>Performance Evaluation of RANSAC Family.</em>’’, BMVC, 2009.</p>
+<p>[<a id="cit-VideoGoogle2003" href="#call-VideoGoogle2003">VideoGoogle2003</a>] J. Sivic and A. Zisserman, ``<em>Video Google: A Text Retrieval Approach to Object Matching in Videos</em>’’, ICCV, 2003.</p>
+<p>[<a id="cit-Philbin07" href="#call-Philbin07">Philbin07</a>] J. Philbin, O. Chum, M. Isard <em>et al.</em>, ``<em>Object Retrieval with Large Vocabularies and Fast Spatial Matching</em>’’, CVPR, 2007.</p>
+<p>[<a id="cit-Fergus03" href="#call-Fergus03">Fergus03</a>] R. Fergus, P. Perona and A. Zisserman, ``<em>Object Class Recognition by Unsupervised Scale-Invariant Learning</em>’’, CVPR, 2003.</p>
+<p>[<a id="cit-CsurkaBoK2004" href="#call-CsurkaBoK2004">CsurkaBoK2004</a>] C.D. G. Csurka, J. Willamowski, L. Fan <em>et al.</em>, ``<em>Visual Categorization with Bags of Keypoints</em>’’, ECCV, 2004.</p>
+<p>[<a id="cit-Lazebnik06" href="#call-Lazebnik06">Lazebnik06</a>] S. Lazebnik, C. Schmid and J. Ponce, ``<em>Beyond Bags of Features: Spatial Pyramid Matching for Recognizing Natural Scene Categories</em>’’, CVPR, 2006.</p>
+<p>[<a id="cit-Chum2007Exemplar" href="#call-Chum2007Exemplar">Chum2007Exemplar</a>] O. {Chum} and A. {Zisserman}, ``<em>An Exemplar Model for Learning Object Classes</em>’’, CVPR, 2007.</p>
+<p>[<a id="cit-HoG2005" href="#call-HoG2005">HoG2005</a>] N. {Dalal} and B. {Triggs}, ``<em>Histograms of oriented gradients for human detection</em>’’, CVPR, 2005.</p>
+<p>[<a id="cit-Superparsing2010" href="#call-Superparsing2010">Superparsing2010</a>] J. Tighe and S. Lazebnik, ``<em>SuperParsing: Scalable Nonparametric Image Parsing with Superpixels</em>’’, ECCV, 2010.</p>
+<p>[<a id="cit-PhotoTourism2006" href="#call-PhotoTourism2006">PhotoTourism2006</a>] Snavely Noah, Seitz Steven M. and Szeliski Richard, ``<em>Photo Tourism: Exploring Photo Collections in 3D</em>’’, ToG, vol.&nbsp;25, number 3, pp.&nbsp;835–846, 2006.</p>
+<p>[<a id="cit-RomeInDay2009" href="#call-RomeInDay2009">RomeInDay2009</a>] Agarwal Sameer, Furukawa Yasutaka, Snavely Noah <em>et al.</em>, ``<em>Building Rome in a day</em>’’, Communications of the ACM, vol.&nbsp;54, number , pp.&nbsp;105–112, 2011.</p>
+<p>[<a id="cit-COLMAP2016" href="#call-COLMAP2016">COLMAP2016</a>] J. Sch"{o}nberger and J. Frahm, ``<em>Structure-From-Motion Revisited</em>’’, CVPR, 2016.</p>
+<p>[<a id="cit-Se02" href="#call-Se02">Se02</a>] Se S., G. D. and Little J., ``<em>Mobile Robot Localization and Mapping with Uncertainty Using Scale-Invariant Visual Landmarks</em>’’, IJRR, vol.&nbsp;22, number 8, pp.&nbsp;735–758, 2002.</p>
+<p>[<a id="cit-PTAM2007" href="#call-PTAM2007">PTAM2007</a>] G. {Klein} and D. {Murray}, ``<em>Parallel Tracking and Mapping for Small AR Workspaces</em>’’, IEEE and ACM International Symposium on Mixed and Augmented Reality, 2007.</p>
+<p>[<a id="cit-Mur15" href="#call-Mur15">Mur15</a>] Mur-Artal R., Montiel J. and Tard{'o}s J., ``<em>ORB-Slam: A Versatile and Accurate Monocular Slam System</em>’’, IEEE Transactions on Robotics, vol.&nbsp;31, number 5, pp.&nbsp;1147–1163, 2015.</p>
+<p>[<a id="cit-Brown07" href="#call-Brown07">Brown07</a>] Brown M. and Lowe D., ``<em>Automatic Panoramic Image Stitching Using Invariant Features</em>’’, IJCV, vol.&nbsp;74, number , pp.&nbsp;59–73, 2007.</p>
+<p>[<a id="cit-DualBootstrap2003" href="#call-DualBootstrap2003">DualBootstrap2003</a>] V. C., Tsai} {Chia-Ling and {Roysam} B., ``<em>The dual-bootstrap iterative closest point algorithm with application to retinal image registration</em>’’, IEEE Transactions on Medical Imaging, vol.&nbsp;22, number 11, pp.&nbsp;1379-1394, 2003.</p>
+<p>[<a id="cit-AlexNet2012" href="#call-AlexNet2012">AlexNet2012</a>] Alex Krizhevsky, Ilya Sutskever and Geoffrey E., ``<em>ImageNet Classification with Deep Convolutional Neural Networks</em>’’, 2012.</p>
+<p>[<a id="cit-Astounding2014" href="#call-Astounding2014">Astounding2014</a>] A. S., H. {Azizpour}, J. {Sullivan} <em>et al.</em>, ``<em>CNN Features Off-the-Shelf: An Astounding Baseline for Recognition</em>’’, CVPRW, 2014.</p>
+<p>[<a id="cit-Melekhov2017relativePoseCnn" href="#call-Melekhov2017relativePoseCnn">Melekhov2017relativePoseCnn</a>] I. Melekhov, J. Ylioinas, J. Kannala <em>et al.</em>, ``<em>Relative Camera Pose Estimation Using Convolutional Neural Networks</em>’’, , 2017. <a href="https://arxiv.org/abs/1702.01381">online</a></p>
+<p>[<a id="cit-PoseNet2015" href="#call-PoseNet2015">PoseNet2015</a>] A. Kendall, M. Grimes and R. Cipolla, ``<em>PoseNet: A Convolutional Network for Real-Time 6-DOF Camera Relocalization</em>’’, ICCV, 2015.</p>
+<p>[<a id="cit-sattler2019understanding" href="#call-sattler2019understanding">sattler2019understanding</a>] T. Sattler, Q. Zhou, M. Pollefeys <em>et al.</em>, ``<em>Understanding the limitations of cnn-based absolute camera pose regression</em>’’, CVPR, 2019.</p>
+<p>[<a id="cit-zhou2019learn" href="#call-zhou2019learn">zhou2019learn</a>] Q. Zhou, T. Sattler, M. Pollefeys <em>et al.</em>, ``<em>To Learn or Not to Learn: Visual Localization from Essential Matrices</em>’’, ICRA, 2020.</p>
+<p>[<a id="cit-pion2020benchmarking" href="#call-pion2020benchmarking">pion2020benchmarking</a>] !! <em>This reference was not found in biblio.bib </em> !!</p>
+<p>[<a id="cit-Tatarchenko2019" href="#call-Tatarchenko2019">Tatarchenko2019</a>] M. Tatarchenko, S.R. Richter, R. Ranftl <em>et al.</em>, ``<em>What Do Single-View 3D Reconstruction Networks Learn?</em>’’, CVPR, 2019.</p>
+<p>[<a id="cit-STN2015" href="#call-STN2015">STN2015</a>] M. Jaderberg, K. Simonyan and A. Zisserman, ``<em>Spatial transformer networks</em>’’, NeurIPS, 2015.</p>
+<p>[<a id="cit-NALU2018" href="#call-NALU2018">NALU2018</a>] A. Trask, F. Hill, S.E. Reed <em>et al.</em>, ``<em>Neural arithmetic logic units</em>’’, NeurIPS, 2018.</p>
+<p>[<a id="cit-NAU2020" href="#call-NAU2020">NAU2020</a>] A. Madsen and A. Rosenberg, ``<em>Neural Arithmetic Units</em>’’, ICLR, 2020.</p>
+<p>[<a id="cit-GroupEqCNN2016" href="#call-GroupEqCNN2016">GroupEqCNN2016</a>] T. Cohen and M. Welling, ``<em>Group equivariant convolutional networks</em>’’, ICML, 2016.</p>
+<p>[<a id="cit-MakeCNNShiftInvariant2019" href="#call-MakeCNNShiftInvariant2019">MakeCNNShiftInvariant2019</a>] R. Zhang, ``<em>Making convolutional networks shift-invariant again</em>’’, ICML, 2019.</p>
+<p>[<a id="cit-AbsPositionCNN2020" href="#call-AbsPositionCNN2020">AbsPositionCNN2020</a>] M. Amirul, S. Jia and N. D., ``<em>How Much Position Information Do Convolutional Neural Networks Encode?</em>’’, ICLR, 2020.</p>
+<p>[<a id="cit-AdvPatch2017" href="#call-AdvPatch2017">AdvPatch2017</a>] T. Brown, D. Mane, A. Roy <em>et al.</em>, ``<em>Adversarial patch</em>’’, NeurIPSW, 2017.</p>
+<p>[<a id="cit-OnePixelAttack2019" href="#call-OnePixelAttack2019">OnePixelAttack2019</a>] Su Jiawei, Vargas Danilo Vasconcellos and Sakurai Kouichi, ``<em>One pixel attack for fooling deep neural networks</em>’’, IEEE Transactions on Evolutionary Computation, vol.&nbsp;23, number 5, pp.&nbsp;828–841, 2019.</p>
+<p>[<a id="cit-cv4action2019" href="#call-cv4action2019">cv4action2019</a>] Zhou Brady, Kr{"a}henb{"u}hl Philipp and Koltun Vladlen, ``<em>Does computer vision matter for action?</em>’’, Science Robotics, vol.&nbsp;4, number 30, pp.&nbsp;, 2019.</p>
+<p>[<a id="cit-HardNet2017" href="#call-HardNet2017">HardNet2017</a>] A. Mishchuk, D. Mishkin, F. Radenovic <em>et al.</em>, ``<em>Working Hard to Know Your Neighbor’s Margins: Local Descriptor Learning Loss</em>’’, NeurIPS, 2017.</p>
+<p>[<a id="cit-KeyNet2019" href="#call-KeyNet2019">KeyNet2019</a>] A. Barroso-Laguna, E. Riba, D. Ponsa <em>et al.</em>, ``<em>Key.Net: Keypoint Detection by Handcrafted and Learned CNN Filters</em>’’, ICCV, 2019.</p>
+<p>[<a id="cit-SuperPoint2017" href="#call-SuperPoint2017">SuperPoint2017</a>] Detone D., Malisiewicz T. and Rabinovich A., ``<em>Superpoint: Self-Supervised Interest Point Detection and Description</em>’’, CVPRW Deep Learning for Visual SLAM, vol.&nbsp;, number , pp.&nbsp;, 2018.</p>
+<p>[<a id="cit-R2D22019" href="#call-R2D22019">R2D22019</a>] J. Revaud, ``<em>R2D2: Repeatable and Reliable Detector and Descriptor</em>’’, NeurIPS, 2019.</p>
+<p>[<a id="cit-D2Net2019" href="#call-D2Net2019">D2Net2019</a>] M. Dusmanu, I. Rocco, T. Pajdla <em>et al.</em>, ``<em>D2-Net: A Trainable CNN for Joint Detection and Description of Local Features</em>’’, CVPR, 2019.</p>
+<p>[<a id="cit-sarlin2019superglue" href="#call-sarlin2019superglue">sarlin2019superglue</a>] P. Sarlin, D. DeTone, T. Malisiewicz <em>et al.</em>, ``<em>SuperGlue: Learning Feature Matching with Graph Neural Networks</em>’’, CVPR, 2020.</p>
+<p>[<a id="cit-gradslam2020" href="#call-gradslam2020">gradslam2020</a>] J. Krishna Murthy, G. Iyer and L. Paull, ``<em>gradSLAM: Dense SLAM meets Automatic Differentiation </em>’’, ICRA, 2020 .</p>
+<p>[<a id="cit-CapsNet2011" href="#call-CapsNet2011">CapsNet2011</a>] G.E. Hinton, A. Krizhevsky and S.D. Wang, ``<em>Transforming auto-encoders</em>’’, ICANN, 2011.</p>
+<p>[<a id="cit-CapsNet2017" href="#call-CapsNet2017">CapsNet2017</a>] S. Sabour, N. Frosst and G.E. Hinton, ``<em>Dynamic routing between capsules</em>’’, NeurIPS, 2017.</p>
+<p>[<a id="cit-li2020extreme" href="#call-li2020extreme">li2020extreme</a>] Li Jianguo, Sun Mingjie and Zhang Changshui, ``<em>Extreme Values are Accurate and Robust in Deep Networks</em>’’, , vol.&nbsp;, number , pp.&nbsp;, 2020. <a href="https://openreview.net/forum?id=H1gHb1rFwr">online</a></p>
+
+
+</section>
+
+<p>Everything you (didn’t) want to know about image matching</p></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

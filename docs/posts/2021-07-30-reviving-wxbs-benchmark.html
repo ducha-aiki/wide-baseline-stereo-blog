@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2021-07-30">
+<meta name="description" content="And I mean really challenging">
+
+<title>WxBS: Relaunching challenging benchmark for Image Matching – Wide baseline stereo meets deep learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-GE2NZRSZBN"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
+</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Wide baseline stereo meets deep learning</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html"> 
+<span class="menu-text">About Me</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/ducha_aiki"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/ducha_aiki"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">WxBS: Relaunching challenging benchmark for Image Matching</h1>
+                  <div>
+        <div class="description">
+          And I mean really challenging
+        </div>
+      </div>
+                </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">July 30, 2021</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="the-hardest-image-matching-benchmark" class="level2">
+<h2 class="anchored" data-anchor-id="the-hardest-image-matching-benchmark">The hardest image matching benchmark</h2>
+<p>Previously we have discussed <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/01/09/wxbs-in-simple-terms.html">what is WxBS in general</a>, <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2020/08/06/affine-view-synthesis.html">how to match images from a really different viewpoints</a> and also took a look into <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/14/IMC2020-competition-recap.html">Image Matching Challenge 2020</a>. Let’s now speak about how to measure progress on images, which are really hard to match even to human?</p>
+<p>For example, which have been taked in day-vs-night, years apart AND from different camera positions? One cannot register them to some 3d model, because they are too hard. And there is no 3D model either.</p>
+<p><img src="2021-07-28-Reviving-WxBS-benchmark_files/att_00001.png" title="Kyiv, Ukraine. Image pair from WxBS dataset" class="img-fluid"></p>
+<p>Well, in that case one could go back to basics and <em>handlabel</em> the correspondences between the images. Such annotation is unlikely to be very precise, but it is going to be quite robust, if the labeler is careful.</p>
+<p>That is what I have done 6 years ago and published such a dataset at <a href="http://www.bmva.org/bmvc/2015/papers/paper012/index.html">BMVC 2015</a> together with a benchmark of popular image matchers of that time. None of them was able to successfully match even a fraction of the WxBS dataset.</p>
+<p><img src="2021-07-28-Reviving-WxBS-benchmark_files/att_00002.png" title="Handlabeled correspondences in pixelstitch. The image in the bottom shows the correspondences and epipolar lines induced by them." class="img-fluid"></p>
+<p>However, as I was quite inexpereinced in product packaging, as well as in software engineering, the benchmark existed as dataset + bunch of bash and Matlab scripts. It is needless to say, that nobody evaluated their algorithms on it. That made me sad, however, I never found time to make this benchmark easy to use. Well, now I did it and want to share the evaluation of the recent agorithms on such a hard data.</p>
+</section>
+<section id="not-that-fast-problem-with-a-fundamental-matrix-and-how-to-solve-them" class="level2">
+<h2 class="anchored" data-anchor-id="not-that-fast-problem-with-a-fundamental-matrix-and-how-to-solve-them">Not that fast! Problem with a fundamental matrix and how to solve them</h2>
+<p>OK, we have ground truth correspondences. Now what? Ideally one can estimate epipolar geometry from as little, as 7 correspondences, but in practice? No.&nbsp;The problem is that there could be many relative camera poses, which are consistent with the correspondences, especially when correspondences lie in plane and the camera calibration is unknown.</p>
+<p>Let’s consider a simple example: we have 13 correspondences and they seems to be correct. Are they enough for finding good epipolar geometry? This question can be answered via leave-one-out validation procedure, described in <a href="https://arxiv.org/abs/2106.10240">VSAC paper</a>. We remove a single correspondence, estimate a fundamental matrix via DLT algorithm on the rest of the correspondences and see how the estimated epipolar geometry is changed (or not).</p>
+<p>As you can see on the animation below, the epipolar geometry estimation from our 13 correspondences is not stable and removing any of them results in noticable change.</p>
+<p><img src="2021-07-28-Reviving-WxBS-benchmark_files/epi1.gif" class="img-fluid"></p>
+<p>So, if even manually labeled corresposndences are not good enough, what can be done?</p>
+<p>First, simply add more correspondences, which are spread across image AND depth levels as even as possible. That is what I did recently, in order to make WxBS labeling better. However, it is not always possible – sometimes you have lots of correspondence on “faraway background plane” and very little somewhere on foreground, see next picture.</p>
+<p><img src="2021-07-28-Reviving-WxBS-benchmark_files/epi_harder.gif" class="img-fluid"></p>
+<p>What else can be done? We can go other way round and <em>not provide any ground truth fundamental matrix at all</em>. Instead, we ask methods, which we evaluate, to give us such matrix <em>F_est</em>, then check, how many ground truth correspondences are consident with it.</p>
+<p>The bad thing about it, is that unless all 100% GT correspondences are consistent with <em>F_est</em>, <em>F_est</em> is completely wrong in terms of camera pose accuracy. So, such a binary signal on a very challenging pairs is not that useful. The good thing about it, is that if, say, 50% GT correspondences are consistent with <em>F_est</em>, it means that detected (not GT) correspondences <em>on the part of the image</em> are correct (e.g.&nbsp;on some dominant plane) and at least there we are OK.</p>
+<p>If you are interested in more mathematical definition, here it is:</p>
+<p>The recall on ground truth correspondences <span class="math inline">\(C_i\)</span> of image pair <span class="math inline">\(i\)</span> and for geometry model <span class="math inline">\(\mathbf{M}_i\)</span> is computed as a function of a threshold <span class="math inline">\(\theta\)</span></p>
+<p><span class="math display">\[\begin{equation}
+\mathrm{r}_{i,\mathbf{M}_i}(\theta) = \frac{| \{(\mathbf{u},\mathbf{v}) : (\mathbf{u},\mathbf{v}) \in C_i,  e(\mathbf{M}_i,\mathbf{u},\mathbf{v}) &lt; \theta\}|}{| C_i |}
+% \mathrm{r}_{i,\mathbf{M}_i}(\theta) = \frac{| \{(\mathbf{u}_i,\mathbf{v}_i) : (\mathbf{u}_i,\mathbf{v}_i) \in C_i,  e(\mathbf{M}_i,\mathbf{u},\mathbf{v}) &lt; \theta\}|}{| C_i |}
+\end{equation}\]</span></p>
+<p>using <a href="https://kornia.readthedocs.io/en/latest/geometry.epipolar.html#kornia.geometry.epipolar.symmetrical_epipolar_distance">symmetric epipolar distance</a>.</p>
+</section>
+<section id="lets-evaluate" class="level2">
+<h2 class="anchored" data-anchor-id="lets-evaluate">Let’s evaluate!</h2>
+<p>First I will show you how to run the WxBS benchmark yourself and then present the results I got. Benchmark is available from pip:</p>
+<div id="cell-4" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install wxbs_benchmark</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install kornia_moons</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we will write a simple function using OpenCV RootSIFT and <a href="https://arxiv.org/abs/1912.05909">MAGSAC++</a>. RootSIFT is a gold standard handcrafted local feature and MAGSAC++ is a state-of-the-art RANSAC, which is not sensitive to an inlier threshold, as <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/17/OpenCV-New-RANSACs.html">my recent benchmark</a> shows. We will match then using mutual second nearest ratio, as implemented in <a href="https://github.com/kornia/kornia">kornia</a></p>
+<div id="cell-6" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> cv2</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> kornia.feature <span class="im">as</span> KF</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> kornia_moons.feature <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> wxbs_benchmark.dataset <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> wxbs_benchmark.evaluation <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sift2rootsift(desc):</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    desc <span class="op">/=</span> desc.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>) <span class="op">+</span> <span class="fl">1e-8</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    desc <span class="op">=</span> np.sqrt(desc)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> desc</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> estimate_F_WithRootSIFT(img1, img2):</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    det <span class="op">=</span> cv2.SIFT_create(<span class="dv">8000</span>, contrastThreshold<span class="op">=-</span><span class="dv">10000</span>, edgeThreshold<span class="op">=</span><span class="dv">10000</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    kps1, descs1 <span class="op">=</span> det.detectAndCompute(img1, <span class="va">None</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    kps2, descs2 <span class="op">=</span> det.detectAndCompute(img2, <span class="va">None</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    descs1 <span class="op">=</span> sift2rootsift(descs1)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    descs2 <span class="op">=</span> sift2rootsift(descs2)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    snn_ratio, idxs <span class="op">=</span> KF.match_smnn(torch.from_numpy(descs1),</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>                                    torch.from_numpy(descs2), <span class="fl">0.95</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    tentatives <span class="op">=</span> cv2_matches_from_kornia(snn_ratio, idxs)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    src_pts <span class="op">=</span> np.float32([ kps1[m.queryIdx].pt <span class="cf">for</span> m <span class="kw">in</span> tentatives ]).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    dst_pts <span class="op">=</span> np.float32([ kps2[m.trainIdx].pt <span class="cf">for</span> m <span class="kw">in</span> tentatives ]).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    F, inlier_mask <span class="op">=</span> cv2.findFundamentalMat(src_pts, dst_pts, cv2.USAC_MAGSAC, <span class="fl">0.25</span>, <span class="fl">0.999</span>, <span class="dv">100000</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> F</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>subset <span class="op">=</span> <span class="st">'test'</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>dset <span class="op">=</span> WxBSDataset(<span class="st">'.WxBS'</span>, subset<span class="op">=</span>subset, download<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>F_results_RootSIFT <span class="op">=</span> []</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> pair_dict <span class="kw">in</span> tqdm(dset):</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    current_F <span class="op">=</span> estimate_F_WithRootSIFT(pair_dict[<span class="st">'img1'</span>], pair_dict[<span class="st">'img2'</span>])</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    F_results_RootSIFT.append(current_F)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>result_dict_rootsift, thresholds <span class="op">=</span> evaluate_Fs(F_results_RootSIFT, subset)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can check results for individual image pairs, or just take an average</p>
+<div id="cell-8" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result_dict_rootsift.keys())</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>plt.plot(thresholds, result_dict_rootsift[<span class="st">'average'</span>], <span class="st">'-x'</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>plt.ylim([<span class="dv">0</span>,<span class="fl">1.05</span>])</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Thresholds'</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Recall on GT corrs'</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>plt.legend([<span class="st">'RootSIFT + MAGSAC++'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>dict_keys(['WGABS/kremlin', 'WGABS/kyiv', 'WGABS/strahov', 'WGABS/vatutin', 'WGALBS/bridge', 'WGALBS/flood', 'WGALBS/kyiv_dolltheater', 'WGALBS/rovenki', 'WGALBS/stadium', 'WGALBS/submarine', 'WGALBS/submarine2', 'WGALBS/tyn', 'WGALBS/zanky', 'WGBS/kn-church', 'WGLBS/alupka', 'WGLBS/berlin', 'WGLBS/charlottenburg', 'WGLBS/church', 'WGLBS/him', 'WGLBS/maidan', 'WGLBS/ministry', 'WGLBS/silasveta2', 'WGLBS/warsaw', 'WGSBS/kettle', 'WGSBS/kettle2', 'WGSBS/lab', 'WGSBS/lab2', 'WGSBS/window', 'WLABS/dh', 'WLABS/kpi', 'WLABS/kyiv', 'WLABS/ministry', 'average'])</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/homebrew/Caskroom/miniforge/base/envs/python39/lib/python3.9/site-packages/ipykernel/ipkernel.py:283: DeprecationWarning: `should_run_async` will not call `transform_cell` automatically in the future. Please pass the result to `transformed_cell` argument and any exception that happen during thetransform in `preprocessing_exc_tuple` in IPython 7.17 and above.
+  and should_run_async(code)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2021-07-30-Reviving-WxBS-benchmark_files/figure-html/cell-4-output-3.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>I have run several popular recent methods in this <a href="https://colab.research.google.com/drive/1yrCFyEoAc0HyqYCRVvzJDh5kQT2Dc3XA?usp=sharing">Colab</a>. The code is very dirty, that is why I don’t put it here, and just present results.</p>
+</section>
+<section id="methods-tested" class="level2">
+<h2 class="anchored" data-anchor-id="methods-tested">Methods tested</h2>
+<section id="local-features-without-learned-matching." class="level3">
+<h3 class="anchored" data-anchor-id="local-features-without-learned-matching.">Local features without learned matching.</h3>
+<p><a href="https://www.robots.ox.ac.uk/~vgg/publications/2012/Arandjelovic12/arandjelovic12.pdf">RootSIFT</a> (ICCV1999 - CVPR-2012), <a href="https://www.cs.ubc.ca/~lowe/papers/ijcv04.pdf">DoG</a>+<a href="https://arxiv.org/pdf/1705.10872.pdf">HardNet</a> (NeurIPS 2017), <a href="https://arxiv.org/abs/1906.06195">R2D2</a> (NeurIPS 2019), <a href="https://arxiv.org/abs/2006.13566">DISK</a> (NeurIPS 2020).</p>
+</section>
+<section id="local-features-with-learned-matching." class="level3">
+<h3 class="anchored" data-anchor-id="local-features-with-learned-matching.">Local features with learned matching.</h3>
+<p><a href="https://arxiv.org/abs/1911.11763">SuperGlue</a> (CVPR2020) uses attention-based graph neural network to match SuperPoint local features.</p>
+</section>
+<section id="dense-matching" class="level3">
+<h3 class="anchored" data-anchor-id="dense-matching">Dense matching</h3>
+<p><a href="https://prunetruong.com/research/pdcnet">PDCNet</a> (CVPR 2021). On top of pretrained ImageNet coarse-to-fine feature correlation, PDCNet predicts a dense flow and a confidence for each pixel. Trained on huge dataset with synthetic warps.</p>
+<p><a href="https://arxiv.org/abs/2012.01909">Patch2pix</a> (CVPR 2021). Similarly to PDCNet, patch2pix is uses pretrained ImageNet features to get the initial corresponcences. Then the matches are progressively refined or rejected with a regressor network.</p>
+<p><a href="https://arxiv.org/abs/2106.07791">DFM</a> (CVPRW 2021). Like PDCNet and Patch2pix, DFM uses ImageNet-pretrained and frozen VGGNet backbone as dense feature extractor. Unlike them, DFM does not requite any training and relies on simple handcrafted coarse-to-fine matching from conv5 to conv1.</p>
+</section>
+<section id="dense-matching-with-transformers" class="level3">
+<h3 class="anchored" data-anchor-id="dense-matching-with-transformers">Dense matching with transformers</h3>
+<p><a href="https://arxiv.org/abs/2103.14167">COTR</a>, (ICCV2021). Given the pixel location in a query image, COTR finds a corresponing location in the reference image. It operated on the 16x16 feature map produced by pretrained ImageNet model, which then are fed together with a positional embeddings to a transformer-based regressor. It is also the slowest method among evaluated - because you have to run it <em>per each pixel separately</em>, if want dense correspondences.</p>
+<p><a href="https://zju3dv.github.io/loftr/">LoFTR</a> (CVPR2021). LoFTR is very similar to Patch2pix, with the difference of using transformer architecture to for both coarse initial matching and consequent refinement. The second difference, is that, unlike all other methods, which are using ImageNet-pretrained models as a feature backbone, LoFTR trains ResNet18 <em>from scratch</em> .</p>
+</section>
+</section>
+<section id="results-discussion" class="level2">
+<h2 class="anchored" data-anchor-id="results-discussion">Results &amp; Discussion</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-07-30-Reviving-WxBS-benchmark_files/att_00000.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<p>The clear leader is LoFTR, then we have (patch2pix, COTR and SuperGlue) group, followed by (PDCNet, DISK, R2D2). Then DoG-HardNet and RootSIFT, where latter has barely matched couple of image pairs correctly.</p>
+<p>I have no idea, why LoFTR is so good, my guesses would be richer training data and training the backbone from scratch, instead of relying on ImageNet feaures. I am also quite surprised by the great performance of the patch2pix, which probably can be improved even more, if the backbone would be at least fine-tuned.</p>
+<p>Another surprise is a great performance of the DFM matcher, which is slightly better than PDCNet and worse (but comparable) than COTR. My hypothesis is that all this methods rely on the same ImageNet backbone: if they fail, all the methods fail.</p>
+<p>Regarding SuperGlue - one of my guesses is that original SuperPoint features were not trained for different illuminations. Moreover, in some images, there just not enough matching corners - when I was annotating the correspondences, I have to use also “center of the blobs”.</p>
+<p>Finally, I would like to that than even excellent LofTR result is far from the ideal – there are stil tens of pairs, where it fails.</p>
+<p>P.S. I would also like to thank Prune Truong and Ufuk Efe who helped me to debug my originally wrong run of the PDCNet and DFM respectively.</p>
+<section id="qualiative-examples" class="level3">
+<h3 class="anchored" data-anchor-id="qualiative-examples">Qualiative examples</h3>
+<p>Here are some examples of how different methods work on the same image pairs.</p>
+</section>
+<section id="season-viewpoint" class="level3">
+<h3 class="anchored" data-anchor-id="season-viewpoint">Season + viewpoint</h3>
+<p>LoFTR</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-07-28-Reviving-WxBS-benchmark_files/att_00006.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<p>SuperGlue</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-07-28-Reviving-WxBS-benchmark_files/att_00007.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<p>patch2pix</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-07-28-Reviving-WxBS-benchmark_files/att_00008.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+</section>
+<section id="thermal-vs-visible-viewpoint" class="level3">
+<h3 class="anchored" data-anchor-id="thermal-vs-visible-viewpoint">Thermal vs visible + viewpoint</h3>
+<p>LoFTR</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-07-28-Reviving-WxBS-benchmark_files/att_00011.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<p>SuperGlue</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-07-28-Reviving-WxBS-benchmark_files/att_00010.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<p>patch2pix</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-07-28-Reviving-WxBS-benchmark_files/att_00009.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+</section>
+<section id="season-illumination-viewpoint" class="level3">
+<h3 class="anchored" data-anchor-id="season-illumination-viewpoint">Season + illumination + viewpoint</h3>
+<p>LoFTR</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-07-28-Reviving-WxBS-benchmark_files/att_00014.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<p>SuperGlue</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-07-28-Reviving-WxBS-benchmark_files/att_00016.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<p>patch2pix</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-07-28-Reviving-WxBS-benchmark_files/att_00017.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+</section>
+<section id="illumination-viewpoint-change-zoom" class="level3">
+<h3 class="anchored" data-anchor-id="illumination-viewpoint-change-zoom">Illumination + viewpoint change (zoom)</h3>
+<p>LoFTR</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-07-28-Reviving-WxBS-benchmark_files/att_00018.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<p>SuperGlue <img src="2021-07-28-Reviving-WxBS-benchmark_files/att_00019.png" class="img-fluid" alt="image.png"></p>
+<p>patch2pix</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-07-28-Reviving-WxBS-benchmark_files/att_00020.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<p>As you can, see, there are many incorrect correspondences even in those images, where methods are performing well.</p>
+<p>Here I will conclude and go to vacation.</p>
+<p>In the 2nd part of the post, I would like to evaluate COTR, PDCNet and different dense descriptors directly on the GT correspondences, by giving a point in image A and asking for point in image B.</p>
+
+
+</section>
+</section>
+
+<p>Everything you (didn’t) want to know about image matching</p></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

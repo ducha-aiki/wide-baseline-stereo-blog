@@ -1,0 +1,29 @@
+[
+  {
+    "listing": "/index.html",
+    "items": [
+      "/posts/2025-01-02-chatgpt-image-matching.html",
+      "/posts/2023-12-03-geometry-encoding-sift-lightglue.html",
+      "/posts/2023-07-05-imc2023-recap.html",
+      "/posts/2023-01-04-unsuperpoint-family.html",
+      "/posts/2022-07-05-imc2022-recap.html",
+      "/posts/2022-02-05-disc21-recap.html",
+      "/posts/2021-09-04-review-of-pseudogt-limitations.html",
+      "/posts/2021-07-30-reviving-wxbs-benchmark.html",
+      "/posts/2021-05-27-submitting-to-imc2021-with-custom-matcher.html",
+      "/posts/2021-05-17-opencv-new-ransacs.html",
+      "/posts/2021-05-14-imc2020-competition-recap.html",
+      "/posts/2021-05-12-submitting-to-imc2021-step-by-step.html",
+      "/posts/2021-02-11-wxbs-step-by-step.html",
+      "/posts/2021-01-09-wxbs-in-simple-terms.html",
+      "/posts/2020-11-26-lessons-and-future-directions.html",
+      "/posts/2020-11-25-review-of-retrieval-for-localization.html",
+      "/posts/2020-09-23-local-descriptors-validation.html",
+      "/posts/2020-08-06-affine-view-synthesis.html",
+      "/posts/2020-07-22-patch-extraction.html",
+      "/posts/2020-07-17-affine-correspondences.html",
+      "/posts/2020-07-09-wxbs.html",
+      "/posts/2020-03-27-intro.html"
+    ]
+  }
+]

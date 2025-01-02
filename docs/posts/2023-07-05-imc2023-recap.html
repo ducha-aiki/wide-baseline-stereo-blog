@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2023-07-05">
+<meta name="description" content="3D reconstruction is harder than two view matching">
+
+<title>Image Matching Challenge 2023: The Unbearable Weight of the Bundle Adjustment – Wide baseline stereo meets deep learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-GE2NZRSZBN"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
+</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Wide baseline stereo meets deep learning</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html"> 
+<span class="menu-text">About Me</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/ducha_aiki"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/ducha_aiki"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Image Matching Challenge 2023: The Unbearable Weight of the Bundle Adjustment</h1>
+                  <div>
+        <div class="description">
+          3D reconstruction is harder than two view matching
+        </div>
+      </div>
+                </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">July 5, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="the-unbearable-weight-of-the-bundle-adjustment-and-50k-money-prize" class="level2">
+<h2 class="anchored" data-anchor-id="the-unbearable-weight-of-the-bundle-adjustment-and-50k-money-prize">The Unbearable Weight of the Bundle Adjustment and $50K money prize</h2>
+<p>This year Image Matching Challenge introduced two big changes. First, we went from two-view matching to full Structure-from-Motion as a task. Actually, the multiview track was present in pre-Kaggle era of IMC – in <a href="https://image-matching-workshop.github.io/leaderboard/">2019</a>, <a href="https://www.cs.ubc.ca/research/image-matching-challenge/2020/leaderboard/">2020</a> and <a href="https://www.cs.ubc.ca/research/image-matching-challenge/2021/leaderboard/">2021</a>, so we kind of returned to the roots.</p>
+<p>Participants were given with the sets of images and output should be the cameras poses for all of them. Second, thanks to our sponsors – Google, <a href="https://www.haiper.ai">Haiper</a>, and Kaggle itself, we were able to propose $50k prize fund. With the strict open license condition (MIT/Apache 2/etc) for the “in-money solution”.</p>
+<section id="d-reconstruction-is-not-cheap" class="level3">
+<h3 class="anchored" data-anchor-id="d-reconstruction-is-not-cheap">3D reconstruction is not cheap</h3>
+<p>While going from image pairs to image sets might seem a small change, it has a significant impact on cumpute requirements. For the two-view case, one can run almost everything on GPU, e.g.&nbsp;SuperPoint for feature detection, SuperGlue for image matching, or the LoFTR for detector-less image matching. The only CPU part is the RANSAC, which can take as little as <a href="https://arxiv.org/abs/2106.10240">10ms per image pair for VSAC</a>, so not a big deal.</p>
+<p>For the multiview case, on the other hand, one needs to performs the bundle-adjustment, which is a CPU-heavy task. Kaggle virtual machines, in addition to that, offer only 2-core CPU, so the 3D reconstruction itself becomes the main computational bottleneck of the whole process.</p>
+</section>
+<section id="example-solution" class="level3">
+<h3 class="anchored" data-anchor-id="example-solution">Example solution</h3>
+<p>To provide the participants a headstart, we have worked with Kaggle engineers to include the <a href="https://github.com/colmap/pycolmap">pycolmap</a> into the default Kaggle kernels. Based on it, we have provided an example submission, which uses local features included in <a href="link">kornia</a> library: <a href="https://zju3dv.github.io/loftr/">LoFTR</a>, <a href="https://github.com/cvlab-epfl/disk">DISK</a>, and <a href="https://kornia-tutorials.readthedocs.io/en/latest/_nbs/image_matching_adalam.html">KeyNet-AffNet-HardNet</a>.</p>
+<p>All of them have Apache 2 license, and has shown a good performance in one of the previous IMCs: LoFTR was a part of <a href="https://www.kaggle.com/competitions/image-matching-challenge-2022/discussion/328854">top solutions in 2022</a>, <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2022/07/05/IMC2022-Recap.html">recap</a>, DISK - in <a href="https://www.cs.ubc.ca/research/image-matching-challenge/2020/leaderboard/">2020</a>, <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/14/IMC2020-competition-recap.html">recap</a> and <a href="https://www.cs.ubc.ca/research/image-matching-challenge/2021/leaderboard/">2021</a>, and KeyNet-AffNet-HardNet - one of the leaders in the <a href="https://arxiv.org/abs/2003.01587">original IJCV-2020 publication</a>.</p>
+<p>The LoFTR example, however, was so heavy, that was causing time-out error without the modifications.</p>
+</section>
+</section>
+<section id="new-datasets-new-challenges-uav-to-ground-day-night-repeated-patterns-wiry-objects-scale-change" class="level2">
+<h2 class="anchored" data-anchor-id="new-datasets-new-challenges-uav-to-ground-day-night-repeated-patterns-wiry-objects-scale-change">New datasets, new challenges: UAV-to-ground, day-night, repeated patterns, wiry objects, scale change</h2>
+<p>In 2023 we have prepared 3 new datasets - Heritage, Haiper and Urban.</p>
+<p>Each dataset has been split into “training” – public, and private part. The parts were geographically disjoint, but shared a similar nuisance factors. We haven’t yet decided if we are going to release “hidden” part or not.</p>
+<section id="heritage" class="level3">
+<h3 class="anchored" data-anchor-id="heritage">Heritage</h3>
+<p>This dataset features the high resolution photos of ancient buildings, taken with DLSR cameras from the ground, as well as UAV photos. Particular challenges are:</p>
+<ul>
+<li>large scale change (up to 20x), from that overview photo to the close-up of the small detail, together with in-plane rotation</li>
+</ul>
+<p><img src="2023-07-05-IMC2023-Recap_files/Dioscuri.png" title="Images of the Dioscuri temple from Heritage dataset" class="img-fluid"></p>
+<ul>
+<li><a href="https://dev.epicgames.com/community/learning/tutorials/1xM4/capturing-reality-banana-effect-what-to-do-if-my-model-is-bent">“banana effect”</a>, when the flat surface is often reconstructed as curved due to low overlap between consecutive frames and slight misalignments, which accumulate altogether.</li>
+</ul>
+<p><img src="2023-07-05-IMC2023-Recap_files/wall.png" title="3D model of the `wall` from Heritage dataset" class="img-fluid"></p>
+<ul>
+<li>high-resolution image processing. See above about the computational challenges of bundle adjustment and then multiply that by high resolution AND large image number. Also, the most of deep learning features (DISK, LoFTR) can easily give you CUDA OOM error when run on 20 Mp image pair.</li>
+</ul>
+</section>
+<section id="haiper" class="level3">
+<h3 class="anchored" data-anchor-id="haiper">Haiper</h3>
+<p>Haiper (training) dataset is similar to captures for NERFs - layered “dome” of cameras, going around some object. The object itself is often thin (bicycle) or textureless (statue). The test part of the dataset has very small number of images, making the viewpoint difference the biggest challenge.</p>
+<p><img src="2023-07-05-IMC2023-Recap_files/att_00000.png" title="3D model 'bike' from the Haiper dataset" class="img-fluid"></p>
+<p>If IMC-2023 have discovered and used “<a href="https://research.nianticlabs.com/mapfree-reloc-benchmark">Map-free Visual Relocalization</a>” for training their pipelines, that would likely help them with Haiper dataset as well. However, everyone has missed this opportunity, including us - organizers.</p>
+</section>
+<section id="urban" class="level3">
+<h3 class="anchored" data-anchor-id="urban">Urban</h3>
+<p>The Urban dataset is, probably, the most similar one to IMC2020 PhotoTourism dataset. It covers photos of buldings in city, similar to PhotoTourism.</p>
+<p>Here is the photos of the “Kyiv Puppet Theater” – the easiest and public – part of the dataset.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-07-05-IMC2023-Recap_files/att_00001.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<p>In addition to the day-night photos, the hidden part of the dataset features highly symmetrical objects, such as the photo I took yesterday in Český Krumlov. The camera poses are actually look into each other, so visual overlap is zero. The only chance of non-wrongly-matching them, is either considering all the photos altogether, or utilizing the background. None of the existing feature matching solutions does this, as far as I know.</p>
+<p><img src="2023-07-05-IMC2023-Recap_files/IMG_4345_IMG_4352_matches.png" title="SuperGlue matches for symmetrical structures, photo from Český Krumlov to illustrate the challenges of the Urban dataset" class="img-fluid"></p>
+</section>
+</section>
+<section id="findings-from-the-competition" class="level2">
+<h2 class="anchored" data-anchor-id="findings-from-the-competition">Findings from the competition</h2>
+<section id="there-are-no-3d-reconstruction-libraries-besides-colmap" class="level3">
+<h3 class="anchored" data-anchor-id="there-are-no-3d-reconstruction-libraries-besides-colmap">There are no 3d reconstruction libraries besides colmap</h3>
+<p>At least, there are none, which you can easily compile on Kaggle kernel and then use from python notebook. I personally really hoped to see some global SfM solution like <a href="http://theia-sfm.org">Theia</a> or maybe <a href="https://github.com/mapillary/OpenSfM">OpenSfM</a> to appear among the top-solution,as it could provide a significant speed-up over the incremental SfM like Colmap. Python bindings and ease of compilation is crutial factor here.</p>
+</section>
+<section id="no-nerf-like-or-any-other-solution-than-classical-sfm" class="level3">
+<h3 class="anchored" data-anchor-id="no-nerf-like-or-any-other-solution-than-classical-sfm">No NERF-like or any other solution than classical SfM</h3>
+<p>Despite all the progress, it seems that if one doesn’t have any additional information, such as RGBD, or initial ARKit cameras poses, the best thing one can do with a challenging image collection, is classical SfM. No <a href="https://arxiv.org/abs/2211.16991">SparsePose</a>, no <a href="https://arxiv.org/abs/2212.04492">FORGE</a></p>
+</section>
+<section id="global-descriptor-based-co-visibility-is-hard" class="level3">
+<h3 class="anchored" data-anchor-id="global-descriptor-based-co-visibility-is-hard">Global descriptor-based co-visibility is hard</h3>
+<p>Given that exhaustive image matching grows quadratically with number of images, it is very tempting to filter out some of those image pairs, based on some kind of covisibility criterion. And the simplest/fastest to compute is global descriptor one - you get a single vector per image, calculate global image similarity and remove those image pairs, which similarity is below threshold. Or take the top-K most similar images. In fact, I have used such approach in our paper <a href="https://arxiv.org/abs/2011.11986">“Efficient Initial Pose-graph Generation for Global SfM”</a>. However, what worked on large (thousands) image collections with dense viewpoint coverage, as 1DSfM, does not work that well on sparse image collections with many close-ups, rotations and illumination changes.</p>
+<p>Some teams had moderate success with <a href="https://arxiv.org/abs/1511.07247">NetVLAD</a> and <a href="https://github.com/facebookresearch/dinov2">DINOv2</a> global descriptors, however, the best strategy, it seems, to use the two-view matching itself, but on a smaller resolution – such as SuperGlue, or KeyNet-AffNet-HardNet-AdaLAM.</p>
+</section>
+<section id="pixelsfm-is-good-idea-but-needs-improvements" class="level3">
+<h3 class="anchored" data-anchor-id="pixelsfm-is-good-idea-but-needs-improvements">PixelSfM is good idea, but needs improvements</h3>
+<p>Many participants has tried to improve the initial SfM camera poses by utilizing <a href="https://github.com/cvg/pixel-perfect-sfm">PixelPerfectSfM</a> – the feature-metric bundle adjustment. While it improves results, it took a lot of time and especially memory, which rendered it unpractical for many teams. Another challenge is the package compilation itself, which is not easy either.</p>
+<p><a href="https://www.kaggle.com/competitions/image-matching-challenge-2023/discussion/417407">1st-place team</a> proposed a novel version of the correspondence and poses refinement instead - called <a href="https://zju3dv.github.io/DetectorFreeSfM/">Detector-Free Structure from Motion</a>.</p>
+<p><img src="2023-07-05-IMC2023-Recap_files/inbox-14597895-2b2b6c045d8a2dfa0a536090f025db02-main_fig.png" title="1st place solution, multiview refinement." class="img-fluid"></p>
+</section>
+<section id="rotation-invariance-is-important-but-easy-to-achieve-for-superglue-and-loftr" class="level3">
+<h3 class="anchored" data-anchor-id="rotation-invariance-is-important-but-easy-to-achieve-for-superglue-and-loftr">Rotation-invariance is important, but easy to achieve for SuperGlue and LoFTR</h3>
+<p>Just rotate one of the images 4 times and select the best matches. Here is the image of the <a href="https://www.kaggle.com/competitions/image-matching-challenge-2023/discussion/416918">3rd place solution</a>, explaining it all.</p>
+<p><img src="2023-07-05-IMC2023-Recap_files/inbox-9249230-1036693590b6655d8d48d588bfd69e9c-IMC-solution.png" title="3rd place solution, brute-force rotation estimation, high-res image tiling" class="img-fluid"></p>
+</section>
+<section id="initial-image-pair-setup-in-colmap-is-suboptimal" class="level3">
+<h3 class="anchored" data-anchor-id="initial-image-pair-setup-in-colmap-is-suboptimal">Initial image pair setup in Colmap is suboptimal</h3>
+<p>Several teams reported that manually setting the image pair to start incremental reconstruction in Colmap improved results. One even can improve results by running the incremental reconstruction several times.</p>
+</section>
+<section id="many-things-do-not-work-until-they-do" class="level3">
+<h3 class="anchored" data-anchor-id="many-things-do-not-work-until-they-do">Many things do not work until they do</h3>
+<p>Many teams have reported that LoFTR or DKM doesn’t work for them - but both LoFTR and DKM are part of top-5 solutions. Recent “SiLK” keypoints are reported as not working, but maybe nobody just found a proper way to use them.</p>
+</section>
+<section id="old-features-are-not-done-yet---keynetaffnet-hardnet-solution." class="level3">
+<h3 class="anchored" data-anchor-id="old-features-are-not-done-yet---keynetaffnet-hardnet-solution.">“Old” features are not done yet - KeyNetAffNet-HardNet solution.</h3>
+<p>5th place actually end up in money by using an modified <a href="https://github.com/ducha-aiki/imc2023-kornia-starter-pack/blob/main/keynetaffnet-adalam-pycolmap-3dreconstruction.ipynb">example submission</a> with a classical pipeline using such ancient local features as DoG, Harris and GFTT, together with KeyNet (2019), coupled together with <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2020/07/17/affine-correspondences.html">local affine shape estimation</a> by AffNet, patch descriptor HardNet and handcrafted AdaLAM matcher.</p>
+<p>Basically, that is cleverly engineered submission of the off-the-shelf local features, available in <a href="https://kornia.readthedocs.io/en/latest/feature.html">kornia</a>.</p>
+<p><img src="2023-07-05-IMC2023-Recap_files/inbox-3964695-051e9413d0ce9cd8357723ba7efab1be-full_pipeline.png" title="5th place solution, classical affine features, off-the-shelf kornia. Candidate for 1st money prize" class="img-fluid"></p>
+<p><img src="2023-07-05-IMC2023-Recap_files/7rlp3j.jpg" title="Clever engineering is all you need sometimes" class="img-fluid"></p>
+</section>
+<section id="permissive-license-and-faster-superglue-is-out---lightglue" class="level3">
+<h3 class="anchored" data-anchor-id="permissive-license-and-faster-superglue-is-out---lightglue">Permissive license and faster SuperGlue is out - LightGlue</h3>
+<p><a href="https://arxiv.org/pdf/2306.13643.pdf">LightGlue</a> - the solution by 7th place team and likely 2nd money prize, presents a SuperGlue-like architecture with early-stopping for easy image pairs and bunch of training recipes. It also uses somewhat unpopular, but well-performing <a href="https://github.com/Shiaoming/ALIKED">ALIKED local feature</a></p>
+<p><img src="2023-07-05-IMC2023-Recap_files/att_00003.png" title="The LightGlue architecture from the paper" class="img-fluid"></p>
+<p>Here is the quite from the paper about tricks that matter:</p>
+<blockquote class="blockquote">
+<p>Since the depth maps of MegaDepth are often incomplete, we also label points with a large epipolar error as unmatch- able. Carefully tuning and annealing the learning rate boosts the accuracy. Training with more points also does: we use 2k per image instead of 1k. The batch size matters: we use gradient checkpointing [10] and mixed-precision to fit 32 image pairs on a single GPU with 24GB VRAM.</p>
+</blockquote>
+<p>In addition to that, homography-pretraining is crucial for the Light/Super-Glue performance.</p>
+</section>
+<section id="no-lines-monodepth-or-semantic-segmentation-this-year." class="level3">
+<h3 class="anchored" data-anchor-id="no-lines-monodepth-or-semantic-segmentation-this-year.">No lines, monodepth or semantic segmentation this year.</h3>
+<p>Actually I hoped to see <a href="https://github.com/cvg/limap/tree/main">Limap</a> line SfM or some kind of monocular depth models used. Bad luck.</p>
+</section>
+</section>
+<section id="per-dataset-results" class="level2">
+<h2 class="anchored" data-anchor-id="per-dataset-results">Per-dataset results</h2>
+<section id="heritage-1" class="level3">
+<h3 class="anchored" data-anchor-id="heritage-1">Heritage</h3>
+<p>The Heritage dataset results show the biggest variability among the methods/worst/best case performance.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-07-05-IMC2023-Recap_files/att_00007.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+</section>
+<section id="urban-1" class="level3">
+<h3 class="anchored" data-anchor-id="urban-1">Urban</h3>
+<p>Because the main Urban dataset challenge – repeated patterns and symmetrical structures – cannot be even theoretically addressed by better two-view feature matching, it is the hardest dataset. No single team tried to work on this part, so surprise it is hard.</p>
+<p><img src="2023-07-05-IMC2023-Recap_files/att_00006.png" title="Urban dataset is the hardest among 2023 ones" class="img-fluid"></p>
+</section>
+<section id="haiper-1" class="level3">
+<h3 class="anchored" data-anchor-id="haiper-1">Haiper</h3>
+<p>The Haiper results are either hit or miss w/o much difference between methods. <img src="2023-07-05-IMC2023-Recap_files/att_00005.png" title="Haiper scenes are like meeting the dinosaur: you either meet it, or not" class="img-fluid"></p>
+</section>
+</section>
+<section id="conclusion-sfm-is-far-from-solved" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion-sfm-is-far-from-solved">Conclusion: SfM is far from solved</h2>
+<p>As in many other computer vision tasks, if something seems to be “solved”, that is just because the datasets are old and obsolete. You still need a good dense capture to do the 3D reconstruction. Many images, many compute, or the additional data like inertial module/GPS, or skilled person to do the capture, is required. See you hopefully next year.</p>
+
+
+</section>
+
+<p>Everything you (didn’t) want to know about image matching</p></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
