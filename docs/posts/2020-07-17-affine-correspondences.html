@@ -200,11 +200,26 @@ window.Quarto = {
 <p>Specifically, detectors like DoG, Harris, Hessian, KeyNet, ORB, and many others rate on scale-space provide at least 3 parameters: x, y, and scale.</p>
 <p>Most of the local descriptors – SIFT, HardNet and so on – are not rotation invariant and those which are - mostly require complex matching function, , so the patch orientation has to be estimated anyway, in order to match reliably. This can be done by various methods: corners center of mass (ORB, dominant gradient orientation (SIFT) or by some learned estimator (OriNets,). Sometimes it is possible to rely on smartphone camera IMU or photographer and assume that images are upright.</p>
 <p>Thus, we can assume that if local descriptors match, this means the local feature scale and orientation also match, at least approximately – see Figure below. Possible exceptions are cases, when the patch is symmetrical and orientation is ambiguous up to some symmetry group.</p>
-<p><img src="2020-07-17-affine-correspondences_files/matches_patches.png" title="Selected matching SIFT keypoints and corresponding patches. One can see that not only patch centers correspond to each other, but also other pixels, although less precise. Image pair from Sacre Coeur IMW dataset." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-07-17-affine-correspondences_files/matches_patches.png" class="img-fluid figure-img"></p>
+<figcaption>Selected matching SIFT keypoints and corresponding patches. One can see that not only patch centers correspond to each other, but also other pixels, although less precise. Image pair from Sacre Coeur IMW dataset.</figcaption>
+</figure>
+</div>
 <p>In addition, one could assume that we observe the patch not from the fronto-parallel position and try to estimate local normal, or, more precisely, affine shape of the feature point, modeling it as an ellipse instead of circle. One could also think of affine shape estimation as finding the camera position, from where the patch is seen in some “canonical” view.</p>
-<p><img src="2020-07-17-affine-correspondences_files/affinematches_patches.png" title="Selected matching SIFT-AffNet keypoints and corresponding patches. One can see that not only patch centers correspond to each other, but also other pixels, although less precise. Image pair from Sacre Coeur IMW dataset." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-07-17-affine-correspondences_files/affinematches_patches.png" class="img-fluid figure-img"></p>
+<figcaption>Selected matching SIFT-AffNet keypoints and corresponding patches. One can see that not only patch centers correspond to each other, but also other pixels, although less precise. Image pair from Sacre Coeur IMW dataset.</figcaption>
+</figure>
+</div>
 <p>This gives us 3 points correspondences from a single local feature match, see an example in Figure below.</p>
-<p><img src="2020-07-17-affine-correspondences_files/laf-check-illustration.png" title="Local affine correspondences. While centers of both regions A and B are correct point matches, only A is a correct affine correspondence." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-07-17-affine-correspondences_files/laf-check-illustration.png" class="img-fluid figure-img"></p>
+<figcaption>Local affine correspondences. While centers of both regions A and B are correct point matches, only A is a correct affine correspondence.</figcaption>
+</figure>
+</div>
 <p>Why is it important and how to use it – see in current post. How to esimate local affine features robustly – in the next post.</p>
 </section>
 <section id="benefits-of-local-affine-features" class="level1">
@@ -212,10 +227,25 @@ window.Quarto = {
 <section id="making-descriptor-job-easier" class="level2">
 <h2 class="anchored" data-anchor-id="making-descriptor-job-easier">Making descriptor job easier</h2>
 <p>The most straightforward benefit of using local affine features is that they increase the repeatability of the detector and potentially reduce appearance changes of a local patch caused by viewpoint difference. This makes possible matching more challenging image pairs.</p>
-<p><img src="2020-07-17-affine-correspondences_files/test.png" title="Hessian features + HardNet matches + RANSAC inliers, Right: HessAffNet features + HardNet matches + RANSAC inliers. Image pair from Tanks &amp; Temples. Epipolar lines are shown in cyan." class="img-fluid"></p>
-<p><img src="2020-07-17-affine-correspondences_files/att_00009.png" title="Repeatability and the number of correspondences. AffNet compared with the de facto standard Baumberg iteration according to the Mikolajczyk protocol. Left – images with illumination differences, right – with viewpoint and scale changes. SS – patch from the scale-space pyramid at the level of the detection, image – from the original image; 19 and 33 are patch sizes." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-07-17-affine-correspondences_files/test.png" class="img-fluid figure-img"></p>
+<figcaption>Hessian features + HardNet matches + RANSAC inliers, Right: HessAffNet features + HardNet matches + RANSAC inliers. Image pair from Tanks &amp; Temples. Epipolar lines are shown in cyan.</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-07-17-affine-correspondences_files/att_00009.png" class="img-fluid figure-img"></p>
+<figcaption>Repeatability and the number of correspondences. AffNet compared with the de facto standard Baumberg iteration according to the Mikolajczyk protocol. Left – images with illumination differences, right – with viewpoint and scale changes. SS – patch from the scale-space pyramid at the level of the detection, image – from the original image; 19 and 33 are patch sizes.</figcaption>
+</figure>
+</div>
 <p>The practice is a little bit more complicated. Our recent benchmark, which measure the accuracy of the output fundamental matrix, shows that the difference in using affine and similarity-covariant features is quite minor. Specifically, the relative difference between SIFT vs SIFT-Affine features is 0.5% and between Hessian-SIFT and Hessian-AffNet SIFT is 5.1%, see Table below.</p>
-<p><img src="2020-07-17-affine-correspondences_files/att_00011.png" title="Test – Stereo results with 8k features. We report: NF -- Number of Features; NI -- Number of Inliers produced by RANSAC; and mAA@10°." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-07-17-affine-correspondences_files/att_00011.png" class="img-fluid figure-img"></p>
+<figcaption>Test – Stereo results with 8k features. We report: NF – Number of Features; NI – Number of Inliers produced by RANSAC; and mAA@10°.</figcaption>
+</figure>
+</div>
 <p>Therefore, if the benefit of local features would be to only improve descriptor extraction stage, it would be arguably not worth it. Luckily, there are more benefits, which are more pronounced.</p>
 </section>
 <section id="making-ransac-job-easier" class="level2">
@@ -231,26 +261,56 @@ window.Quarto = {
 N = \frac{\log{(1 - p)}}{\log{(1 - \nu^{m})}}
 \end{equation}\]</span></p>
 <p>Lets plot the how the number of required samples changes with inlier ratio for confidence equal 99%. Note the log scale on Y axis. Different lines are for different minimal sample size <strong>m</strong>.</p>
-<p><img src="2020-07-17-affine-correspondences_files/att_00016.png" title="Number of samples to find correct model as a function of inlier ratio." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-07-17-affine-correspondences_files/att_00016.png" class="img-fluid figure-img"></p>
+<figcaption>Number of samples to find correct model as a function of inlier ratio.</figcaption>
+</figure>
+</div>
 <p>As you can see from the plot above, reducing the minimal sample size required for the model estimation even by 1 saves and order of magnitude of computation. In reality the benefit is a smaller, as modern RANSACs like GC-RANSAC and MAGSAC could estimate the correct model from the sample containing outliers, but it is still huge, especially for low inlier rate cases.</p>
 <section id="image-retrieval" class="level3">
 <h3 class="anchored" data-anchor-id="image-retrieval">Image retrieval</h3>
 <p>The ideal case would be to estimate a model from just a single sample and that is exactly what is done in spatial reranking paper “<strong>Object retrieval with large vocabularies and fast spatial matching</strong>” by Philbin et.al .</p>
 <p>Specifically, they are solving a particular object retrieval problem: given an image containing some object, return all the images from the database, which also containg the same object.</p>
 <p>The inital list of images is formed by the descriptor distance and then is reranked. The authors propose to approximate a perspective change between two images as an affine image transformation, and count number of feature points, which are reprojected inside the second image. This number produces better ranking that the original short-list.</p>
-<p><img src="2020-07-17-affine-correspondences_files/att_00012.png" title="Figure from Philbin et.al" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-07-17-affine-correspondences_files/att_00012.png" class="img-fluid figure-img"></p>
+<figcaption>Figure from Philbin et.al</figcaption>
+</figure>
+</div>
 </section>
 <section id="back-to-wide-baseline-stereo" class="level3">
 <h3 class="anchored" data-anchor-id="back-to-wide-baseline-stereo">Back to wide baseline stereo</h3>
 <p>While working for spatial re-ranking, 3-degrees of freedom camera model is too rough for the wide baseline stereo. Yet, going from 4 point correspondences (PC) to 2 affine correspondences (AC) for homogaphy and from 7 PC to 3 AC for the fundamental matrix would be huge benefit anyway for the robust model estimation.</p>
 <p>Various variant of RANSAC working for local features were proposed in the last 15 years: Perdoch et.al, Pritts et.al., Barath and Kukelova , Rodríguez et.al.</p>
 <p>Finally, the systematic study of using is presented by Barath et.al in “Making Affine Correspondences Work in Camera Geometry Computation” paper. Authors show that if used naively, affine correspondence lead to worse results, because they are more noisy than point correspondences. However, there is a bag of tricks presented in the paper, which allow to solve the noise issue and make the affine RANSAC working in practice, resulting in orders of magnitude faster computation.</p>
-<p><img src="2020-07-17-affine-correspondences_files/att_00013.png" title="Figure from Making Affine Correspondences Work in Camera Geometry Computation" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-07-17-affine-correspondences_files/att_00013.png" class="img-fluid figure-img"></p>
+<figcaption>Figure from Making Affine Correspondences Work in Camera Geometry Computation</figcaption>
+</figure>
+</div>
 <p>Moreover, for a special cases like autonomous driving, where the motion is mostly horizonal, one could even use 2 affine correspondes for both motion estimation and consistency check, significantly improving the efficiency of the outliers removal compared to the standard RANSAC loop.</p>
-<p><img src="2020-07-17-affine-correspondences_files/att_00001.png" title="Empirical cumulative error distributions for KITTI sequence 00. Figure from Relative Pose Estimation for Multi-Camera Systems from Affine Correspondences." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-07-17-affine-correspondences_files/att_00001.png" class="img-fluid figure-img"></p>
+<figcaption>Empirical cumulative error distributions for KITTI sequence 00. Figure from Relative Pose Estimation for Multi-Camera Systems from Affine Correspondences.</figcaption>
+</figure>
+</div>
 <p>Besides the special case considerations, additional contraints can also come from running other algorithms, like monocular depth estimation. Such a constraint could reduce the required number of matches from two affine correspondences to a single one for calibrated camera case.</p>
-<p><img src="2020-07-17-affine-correspondences_files/att_00002.png" title="Figure from Relative Pose from Deep Learned Depth and a Single Affine Correspondence" class="img-fluid"></p>
-<p><img src="2020-07-17-affine-correspondences_files/att_00003.png" title="Figure from Relative Pose from Deep Learned Depth and a Single Affine Correspondence" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-07-17-affine-correspondences_files/att_00002.png" class="img-fluid figure-img"></p>
+<figcaption>Figure from Relative Pose from Deep Learned Depth and a Single Affine Correspondence</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-07-17-affine-correspondences_files/att_00003.png" class="img-fluid figure-img"></p>
+<figcaption>Figure from Relative Pose from Deep Learned Depth and a Single Affine Correspondence</figcaption>
+</figure>
+</div>
 </section>
 </section>
 <section id="application-specific-benefits" class="level2">
@@ -259,14 +319,29 @@ N = \frac{\log{(1 - p)}}{\log{(1 - \nu^{m})}}
 <section id="image-rectification" class="level3">
 <h3 class="anchored" data-anchor-id="image-rectification">Image rectification</h3>
 <p>Instead of matching local features between two images one might match them within a single image. Why would someone do it? This allows finding repeated pattern: think about windows, doors and so on. Typically they have the same physical size, therefore the diffrence in local features around them could tell us about the geometry of the scene and lens distortion.</p>
-<p><img src="2020-07-17-affine-correspondences_files/att_00008.png" title="Repeated patterns detection with MSER andRootSIFT local features. Figure from the Minimal Solvers for Rectifying from Radially-Distorted Conjugate Translations, PAMI 2020 paper." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-07-17-affine-correspondences_files/att_00008.png" class="img-fluid figure-img"></p>
+<figcaption>Repeated patterns detection with MSER andRootSIFT local features. Figure from the Minimal Solvers for Rectifying from Radially-Distorted Conjugate Translations, PAMI 2020 paper.</figcaption>
+</figure>
+</div>
 <p>This is the idea of the series of works by Pritts and Chum.</p>
-<p><img src="2020-07-17-affine-correspondences_files/att_00007.png" title="Figure from the 'Minimal Solvers for Rectifying from Radially-Distorted Conjugate Translations', PAMI 2020 paper." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-07-17-affine-correspondences_files/att_00007.png" class="img-fluid figure-img"></p>
+<figcaption>Figure from the ‘Minimal Solvers for Rectifying from Radially-Distorted Conjugate Translations’, PAMI 2020 paper.</figcaption>
+</figure>
+</div>
 </section>
 <section id="surface-normals-estimation" class="level3">
 <h3 class="anchored" data-anchor-id="surface-normals-estimation">Surface normals estimation</h3>
 <p>Ivan Eichhardt and Levente Hajder have a series of works, exploiting the local affine correspondences for surface normals estimation</p>
-<p><img src="2020-07-17-affine-correspondences_files/att_00015.png" title="Estimated surface normals. Figure from Optimal Multi-View Surface Normal Estimation Using Affine Correspondences" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-07-17-affine-correspondences_files/att_00015.png" class="img-fluid figure-img"></p>
+<figcaption>Estimated surface normals. Figure from Optimal Multi-View Surface Normal Estimation Using Affine Correspondences</figcaption>
+</figure>
+</div>
 </section>
 </section>
 </section>

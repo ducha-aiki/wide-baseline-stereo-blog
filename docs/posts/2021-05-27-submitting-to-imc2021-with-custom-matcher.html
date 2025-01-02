@@ -195,7 +195,7 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 
 <section id="intro" class="level2">
 <h2 class="anchored" data-anchor-id="intro">Intro</h2>
-<p>In the <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/12/submitting-to-IMC2021-step-by-step.html">previous tutorial</a> we have created a pipeline for submitting to the IMC2021. However, we have not covered all the possibilities. First, we haven’t submissted custom matches, instead we just run a standard Lowe SNN test with cross-check. Second, we haven’t evaluate multiview (COLMAP) part. In this tutorial we will do both. I am assuming that you have completed the <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/12/submitting-to-IMC2021-step-by-step.html">previous part</a>. If not, please do, because we will be relying on the already extracted features. Let’s check if the feature are there</p>
+<p>In the <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2021-05-12-submitting-to-imc2021-step-by-step.html">previous tutorial</a> we have created a pipeline for submitting to the IMC2021. However, we have not covered all the possibilities. First, we haven’t submissted custom matches, instead we just run a standard Lowe SNN test with cross-check. Second, we haven’t evaluate multiview (COLMAP) part. In this tutorial we will do both. I am assuming that you have completed the <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2021-05-12-submitting-to-imc2021-step-by-step.html">previous part</a>. If not, please do, because we will be relying on the already extracted features. Let’s check if the feature are there</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> imc2021-sample-kornia-submission</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> extracted/cv2-dog-affnet-hardnet8/googleurban/edinburgh/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre><code>angles.h5  descriptors.h5  keypoints.h5  scales.h5  scores.h5</code></pre>
@@ -212,11 +212,11 @@ Warning
 <p>There is a subtle problem with previous tutorial, so we cannot use pre-extracted features.</p>
 </div>
 </div>
-<p>Specifically, because OpenCV SIFT does not exactly respect max_features parameter and can sometimes output 8002 features, instead of 8000. When we were importing the features alone, benchmark <code>import_features.py</code> script automatically re-sorted features based on the score and clip the extra 1-3 features. However, this functionality is not available for the importing custom matches. I have already corrected <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/12/submitting-to-IMC2021-step-by-step.html">previous post</a>, so you can use it for the re-extration. Or, if you are reading this whole tutorial after May 24, just ignore this.</p>
-<p>Now we will install <a href="https://arxiv.org/abs/2006.04250">AdaLAM</a> - <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/14/IMC2020-competition-recap.html">one of the winners of IMC2020 Challenge</a>. It uses keypoint geometry to filter out unreliable matches.</p>
+<p>Specifically, because OpenCV SIFT does not exactly respect max_features parameter and can sometimes output 8002 features, instead of 8000. When we were importing the features alone, benchmark <code>import_features.py</code> script automatically re-sorted features based on the score and clip the extra 1-3 features. However, this functionality is not available for the importing custom matches. I have already corrected <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2021-05-12-submitting-to-imc2021-step-by-step.html">previous post</a>, so you can use it for the re-extration. Or, if you are reading this whole tutorial after May 24, just ignore this.</p>
+<p>Now we will install <a href="https://arxiv.org/abs/2006.04250">AdaLAM</a> - <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2021-05-14-imc2020-competition-recap.html">one of the winners of IMC2020 Challenge</a>. It uses keypoint geometry to filter out unreliable matches.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install git+https://github.com/cavalli1234/AdaLAM.git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Let’s check if it works on the sample image pair. We will read the pre-extracted features for it.</p>
-<div id="cell-3" class="cell" data-execution_count="1">
+<div id="cell-3" class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> cv2</span>
@@ -250,7 +250,7 @@ Warning
 <span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>descs <span class="op">=</span> load_h5(os.path.join(PATH_TO_FEATS, <span class="st">'descriptors.h5'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>I have selected two images, which are matching:</p>
-<div id="cell-5" class="cell" data-execution_count="2">
+<div id="cell-5" class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>IMG_DIR <span class="op">=</span> <span class="st">'../imc-2021-data/googleurban/edinburgh/set_100/images/'</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>img1_key <span class="op">=</span> <span class="st">'2b5315968bc5468c995b978620879439'</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>img2_key <span class="op">=</span> <span class="st">'6264aee21d1b48b7985901c4bedfdbd4'</span></span>
@@ -267,7 +267,7 @@ Warning
 </div>
 </div>
 <p>We will start with matching and drawing the matches with OpenCV for sanity check.</p>
-<div id="cell-7" class="cell" data-execution_count="3">
+<div id="cell-7" class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> opencv_from_imc(kps, sizes, angles):</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [cv2.KeyPoint(kp[<span class="dv">0</span>], kp[<span class="dv">1</span>], <span class="bu">float</span>(s), <span class="bu">float</span>(a)) <span class="cf">for</span>  kp, s, a <span class="kw">in</span> <span class="bu">zip</span>(kps, sizes, angles)]</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -317,7 +317,7 @@ Warning
 </div>
 </div>
 <p>Everything seems to be working quite well. But, as you can see, we have some wrong matches among tentatives. Let’s try AdaLAM</p>
-<div id="cell-9" class="cell" data-execution_count="4">
+<div id="cell-9" class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> match_adalam(img1_key, img2_key, kps, angles, scales, descs):</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    kp1, s1, a1, descs1 <span class="op">=</span> get_data(kps, angles, scales, descs, img1_key)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    kp2, s2, a2, descs2 <span class="op">=</span> get_data(kps, angles, scales, descs, img2_key)</span>
@@ -354,7 +354,7 @@ Warning
 <p>We have significantly more matches, which are also cleaner, although not ideal. There is one more thing: if we are going to submit custom matches, we have to run RANSAC ourself (if needed), here is a quote from the <a href="https://www.cs.ubc.ca/research/image-matching-challenge/2021/submit/">competition rules</a>:</p>
 <pre><code>The "geom"/"method" field must be set to "cv2-8pt" if custom matches are enabled, as we assume you tune and run your favourite RANSAC algorithm, if applicable.</code></pre>
 <p>Thus, we need to merge RANSAC (we pick inlier threshold from the previous tutorial) and matching:</p>
-<div id="cell-11" class="cell" data-execution_count="6">
+<div id="cell-11" class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pydegensac</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> match_adalam_with_degensac(img1_key, img2_key, kps, angles, scales, descs, ds_name<span class="op">=</span><span class="st">'phototourism'</span>):</span>
@@ -501,7 +501,7 @@ Warning
 <h2 class="anchored" data-anchor-id="creating-config-json-file">Creating config json file</h2>
 <p>In addition to features and matches, we should submit a config file, which tells the benchmark, how the features should be matched and which RANSAC (no options, only <code>cv2-8pt</code> for using custom matches) we prefer. So, we will create two config files - one, which standard matcher and second one, which uses AdaLAM.</p>
 <p>First part of the config is <code>metadata</code> – information about the method and authors. If your method is under review, you may want to set flag <code>publish_anonymously</code> to <code>True</code>.</p>
-<div id="cell-18" class="cell" data-execution_count="1">
+<div id="cell-18" class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>metadata_dict <span class="op">=</span>  {</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"publish_anonymously"</span>: <span class="va">False</span>,</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"authors"</span>: <span class="st">"Dmytro Mishkin, Milan Pultar and kornia team"</span>,</span>
@@ -516,14 +516,14 @@ Warning
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Second part is <code>config_common</code>: it tells the benchmark, which keypoints and descriptors you use. We will also need this names when importing our features during tuning on the validation set.</p>
-<div id="cell-20" class="cell" data-execution_count="2">
+<div id="cell-20" class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>config_common_dict <span class="op">=</span>  {<span class="st">"json_label"</span>: <span class="st">"dog-affnet-hardnet8-degensac-adalam"</span>,</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"keypoint"</span>: <span class="st">"cv2dog"</span>,</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"descriptor"</span>: <span class="st">"affnethardnet8"</span>,</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"num_keypoints"</span>: <span class="dv">8000</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Finally, we have to specify robust geometry estimation method. We have no other choice than <code>cv2-8pt</code>, as pre-filtering with DEGENSAC is already performed.</p>
-<div id="cell-24" class="cell" data-execution_count="3">
+<div id="cell-24" class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> copy <span class="im">import</span> deepcopy</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -531,7 +531,7 @@ Warning
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>            }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s assemble and save our base config.</p>
-<div id="cell-26" class="cell" data-execution_count="4">
+<div id="cell-26" class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>base_config <span class="op">=</span>  {</span>
@@ -568,7 +568,7 @@ Warning
 <span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Finally, benchmark expects multiple configs, so we have to create a list, and then we can save our config</p>
-<div id="cell-28" class="cell" data-execution_count="5">
+<div id="cell-28" class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json </span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'base_config_adalam.json'</span>, <span class="st">'w'</span>) <span class="im">as</span> f:</span>
@@ -608,13 +608,13 @@ Warning
 <p>First, we come back to our <code>imc2021-sample-kornia-submission</code> directory:</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../imc2021-sample-kornia-submission</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Metric, which are used for the competition is mean average accuracy (mAA) at visibility threshold 0.1</p>
-<div id="cell-34" class="cell" data-execution_count="19">
+<div id="cell-34" class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="19">
+<div class="cell-output cell-output-display">
 <pre><code>{'mean': 0.0, 'std_scenes': 0.0, 'std_runs': 0.0}</code></pre>
 </div>
 </div>
-<div id="cell-35" class="cell" data-execution_count="15">
+<div id="cell-35" class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>hashname<span class="op">=</span><span class="st">'dog-affnet-hardnet8-degensac'</span></span>
@@ -643,7 +643,7 @@ CV-DoG-AffNet-HardNet8 (kornia) stereo mAA for googleurban is 0.3099
 CV-DoG-AffNet-HardNet8 (kornia) multiview mAA for googleurban is 0.0000</code></pre>
 </div>
 </div>
-<div id="cell-36" class="cell" data-execution_count="16">
+<div id="cell-36" class="cell">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>hashname<span class="op">=</span><span class="st">'dog-affnet-hardnet8-degensac-adalam'</span></span>
@@ -671,7 +671,7 @@ CV-DoG-AffNet-HardNet8-AdaLAM-DEGENSAC multiview mAA for googleurban is 0.1597</
 </div>
 </div>
 <p>We can also see results sequence-by-sequence</p>
-<div id="cell-38" class="cell" data-execution_count="22">
+<div id="cell-38" class="cell">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -701,7 +701,7 @@ CV-DoG-AffNet-HardNet8-AdaLAM-DEGENSAC multiview mAA for googleurban is 0.1597</
 <span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a>ax.legend([<span class="st">'SMNN'</span>, <span class="st">'AdaLAM'</span>])</span>
 <span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'mAA'</span>)</span>
 <span id="cb32-29"><a href="#cb32-29" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Sequence'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="22">
+<div class="cell-output cell-output-display">
 <pre><code>Text(0.5, 0, 'Sequence')</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -717,7 +717,7 @@ CV-DoG-AffNet-HardNet8-AdaLAM-DEGENSAC multiview mAA for googleurban is 0.1597</
 <section id="creating-final-submission" class="level2">
 <h2 class="anchored" data-anchor-id="creating-final-submission">Creating final submission</h2>
 <p>Its time to create our final submission!</p>
-<div id="cell-43" class="cell" data-execution_count="25">
+<div id="cell-43" class="cell">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>configs <span class="op">=</span> []</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>current_config <span class="op">=</span> deepcopy(base_config)</span>

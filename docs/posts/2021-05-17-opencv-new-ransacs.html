@@ -189,7 +189,12 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <section id="results" class="level2">
 <h2 class="anchored" data-anchor-id="results">Results</h2>
 <p>Here are results for all 3 datasets. The lefter and upper is curve, the better. Dashed vertical line marks 1/25 sec (“realtime”) and 0.5 sec (challenge limit) time budget. Legend shows the method name and the optimal inlier threshold for the datasets: Phototourism, GoogleUrban and PragueParks respectively.</p>
-<p><img src="2021-05-17-OpenCV-New-RANSACs_files/att_00004.png" title="Time-accuracy trade-off on all 3 datasets" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-05-17-OpenCV-New-RANSACs_files/att_00004.png" class="img-fluid figure-img"></p>
+<figcaption>Time-accuracy trade-off on all 3 datasets</figcaption>
+</figure>
+</div>
 <ol type="1">
 <li><p>The first and main message – <strong>all new flags are much better than the old OpenCV implementation (green curve, worst results), which still a default option</strong>.</p></li>
 <li><p>10k iterations and USAC_ACCURATE (red curve) gives you great results within 0.01 sec</p></li>
@@ -211,11 +216,21 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 </section>
 <section id="googleurban" class="level3">
 <h3 class="anchored" data-anchor-id="googleurban">GoogleUrban</h3>
-<p><img src="2021-05-17-OpenCV-New-RANSACs_files/att_00007.png" title="Time-accuracy trade-off on the GoogleUrban dataset" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-05-17-OpenCV-New-RANSACs_files/att_00007.png" class="img-fluid figure-img"></p>
+<figcaption>Time-accuracy trade-off on the GoogleUrban dataset</figcaption>
+</figure>
+</div>
 </section>
 <section id="pragueparks" class="level3">
 <h3 class="anchored" data-anchor-id="pragueparks">PragueParks</h3>
-<p><img src="2021-05-17-OpenCV-New-RANSACs_files/att_00008.png" title="Time-accuracy trade-off on the PragueParks dataset" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-05-17-OpenCV-New-RANSACs_files/att_00008.png" class="img-fluid figure-img"></p>
+<figcaption>Time-accuracy trade-off on the PragueParks dataset</figcaption>
+</figure>
+</div>
 </section>
 </section>
 <section id="why-do-i-tune-and-evaluate-on-the-same-set" class="level2">

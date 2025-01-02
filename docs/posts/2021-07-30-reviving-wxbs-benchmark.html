@@ -224,12 +224,22 @@ window.Quarto = {
 
 <section id="the-hardest-image-matching-benchmark" class="level2">
 <h2 class="anchored" data-anchor-id="the-hardest-image-matching-benchmark">The hardest image matching benchmark</h2>
-<p>Previously we have discussed <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/01/09/wxbs-in-simple-terms.html">what is WxBS in general</a>, <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2020/08/06/affine-view-synthesis.html">how to match images from a really different viewpoints</a> and also took a look into <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/14/IMC2020-competition-recap.html">Image Matching Challenge 2020</a>. Let’s now speak about how to measure progress on images, which are really hard to match even to human?</p>
+<p>Previously we have discussed <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2021-01-09-wxbs-in-simple-terms.html">what is WxBS in general</a>, <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2020-08-06-affine-view-synthesis.html">how to match images from a really different viewpoints</a> and also took a look into <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2021-05-14-IMC2020-competition-recap.html">Image Matching Challenge 2020</a>. Let’s now speak about how to measure progress on images, which are really hard to match even to human?</p>
 <p>For example, which have been taked in day-vs-night, years apart AND from different camera positions? One cannot register them to some 3d model, because they are too hard. And there is no 3D model either.</p>
-<p><img src="2021-07-28-Reviving-WxBS-benchmark_files/att_00001.png" title="Kyiv, Ukraine. Image pair from WxBS dataset" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-07-28-Reviving-WxBS-benchmark_files/att_00001.png" class="img-fluid figure-img"></p>
+<figcaption>Kyiv, Ukraine. Image pair from WxBS dataset</figcaption>
+</figure>
+</div>
 <p>Well, in that case one could go back to basics and <em>handlabel</em> the correspondences between the images. Such annotation is unlikely to be very precise, but it is going to be quite robust, if the labeler is careful.</p>
 <p>That is what I have done 6 years ago and published such a dataset at <a href="http://www.bmva.org/bmvc/2015/papers/paper012/index.html">BMVC 2015</a> together with a benchmark of popular image matchers of that time. None of them was able to successfully match even a fraction of the WxBS dataset.</p>
-<p><img src="2021-07-28-Reviving-WxBS-benchmark_files/att_00002.png" title="Handlabeled correspondences in pixelstitch. The image in the bottom shows the correspondences and epipolar lines induced by them." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-07-28-Reviving-WxBS-benchmark_files/att_00002.png" class="img-fluid figure-img"></p>
+<figcaption>Handlabeled correspondences in pixelstitch. The image in the bottom shows the correspondences and epipolar lines induced by them.</figcaption>
+</figure>
+</div>
 <p>However, as I was quite inexpereinced in product packaging, as well as in software engineering, the benchmark existed as dataset + bunch of bash and Matlab scripts. It is needless to say, that nobody evaluated their algorithms on it. That made me sad, however, I never found time to make this benchmark easy to use. Well, now I did it and want to share the evaluation of the recent agorithms on such a hard data.</p>
 </section>
 <section id="not-that-fast-problem-with-a-fundamental-matrix-and-how-to-solve-them" class="level2">
@@ -258,7 +268,7 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install wxbs_benchmark</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install kornia_moons</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now we will write a simple function using OpenCV RootSIFT and <a href="https://arxiv.org/abs/1912.05909">MAGSAC++</a>. RootSIFT is a gold standard handcrafted local feature and MAGSAC++ is a state-of-the-art RANSAC, which is not sensitive to an inlier threshold, as <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/17/OpenCV-New-RANSACs.html">my recent benchmark</a> shows. We will match then using mutual second nearest ratio, as implemented in <a href="https://github.com/kornia/kornia">kornia</a></p>
+<p>Now we will write a simple function using OpenCV RootSIFT and <a href="https://arxiv.org/abs/1912.05909">MAGSAC++</a>. RootSIFT is a gold standard handcrafted local feature and MAGSAC++ is a state-of-the-art RANSAC, which is not sensitive to an inlier threshold, as <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2021-05-17-OpenCV-New-RANSACs.html">my recent benchmark</a> shows. We will match then using mutual second nearest ratio, as implemented in <a href="https://github.com/kornia/kornia">kornia</a></p>
 <div id="cell-6" class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>

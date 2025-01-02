@@ -167,7 +167,12 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <section id="geometry-encoding-in-lightglue" class="level3">
 <h3 class="anchored" data-anchor-id="geometry-encoding-in-lightglue">Geometry encoding in LightGlue</h3>
 <p>Unlike modern keypoint detectors like SuperPoint or DISK, SIFT local feature has an orientation and scale part.</p>
-<p><img src="https://www.vlfeat.org/api/sift-frame.png" title="SIFT keypoint geometry. Image from VLFeat documentation" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.vlfeat.org/api/sift-frame.png" class="img-fluid figure-img"></p>
+<figcaption>SIFT keypoint geometry. Image from VLFeat documentation</figcaption>
+</figure>
+</div>
 <p>Should we just concatenate scale and orientation (LightGlue code does it) to (normalized) keypoint center, making a heterogenous vector, or should we try to preprocess the input somehow? Or maybe geometry does not help at all?</p>
 <p>To answer this question, I have trained (only the homography pretraining part) 5 LightGlue SIFT models, which differ only in the input feature geometry representation.</p>
 </section>
@@ -181,14 +186,29 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <li><p>The most homogenious is representation as 2 points - center and the one on the border: <code>(x,y, x2, y2)</code>. We call it <code>sift_laf2</code> in the graph.</p></li>
 <li><p>Finally, we are use LAF representation as in affine transformation matrix, used in, for example, <a href="https://github.com/kornia/kornia">kornia</a>: <code>(x,y, x2-x, y2-y) == (x,y, R * cos(angle), R * sin(angle))</code>. We call it <code>sift_laf</code> in the graph.</p></li>
 </ul>
-<p><img src="2023-11-20-Geometry-Encoding-SIFT-LightGlue_files/laf_representations.png" title="SIFT keypoint representations" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-11-20-Geometry-Encoding-SIFT-LightGlue_files/laf_representations.png" class="img-fluid figure-img"></p>
+<figcaption>SIFT keypoint representations</figcaption>
+</figure>
+</div>
 <p>And the baseline would be not using keypoint geometry, only center as for SuperPoint – <code>(x,y)</code>. We call it <code>sift_clean</code> in the graph.</p>
 <section id="results" class="level3">
 <h3 class="anchored" data-anchor-id="results">Results</h3>
 <p>At the beginning of the training it seems, that there is a considerable difference between keypoint geometry representation, <code>(x,y, x2, y2)</code> and <code>(x,y, angle, log(radius))</code> are clearly better than others.</p>
-<p><img src="2023-11-20-Geometry-Encoding-SIFT-LightGlue_files/Training_start.png" title="Match recall and precision for homography pretraining at the beginning. {x,y, x2, y2} and {x,y, angle, logradius} are among leaders" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-11-20-Geometry-Encoding-SIFT-LightGlue_files/Training_start.png" class="img-fluid figure-img"></p>
+<figcaption>Match recall and precision for homography pretraining at the beginning. {x,y, x2, y2} and {x,y, angle, logradius} are among leaders</figcaption>
+</figure>
+</div>
 <p>However, in the end of the training, the simplest and the most stupid <code>(x,y, angle, radius)</code> becomes the first.</p>
-<p><img src="2023-11-20-Geometry-Encoding-SIFT-LightGlue_files/training_end.png" title="Match recall and precision for homography pretraining at the end. {x,y, angle, radius} is the best" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-11-20-Geometry-Encoding-SIFT-LightGlue_files/training_end.png" class="img-fluid figure-img"></p>
+<figcaption>Match recall and precision for homography pretraining at the end. {x,y, angle, radius} is the best</figcaption>
+</figure>
+</div>
 <p>The difference is even more pronounced on MegaDepth-1500. Even more important thing is that ranking in match recall/precision on validation is different from the MegaDepth-1500 results. Do NOT compare these results to the LightGlue paper SIFT results, as it we haven’t done full training - only a homography pretraining.</p>
 <table class="caption-top table">
 <thead>
@@ -232,14 +252,34 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <section id="can-we-initialize-lightglue-for-features-x-from-lightglue-trained-for-features-y" class="level2">
 <h2 class="anchored" data-anchor-id="can-we-initialize-lightglue-for-features-x-from-lightglue-trained-for-features-y">Can we initialize LightGlue for features X from LightGlue trained for features Y?</h2>
 <p>Recently I have accidentally run ALIKED-LightGlue with DISK features. To my surprise, result was quite good.</p>
-<p><img src="2023-11-20-Geometry-Encoding-SIFT-LightGlue_files/disk-aliked-easy.jpg" title="For easy image pairs, LightGlue trained for ALIKED features works for DISK features as well." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-11-20-Geometry-Encoding-SIFT-LightGlue_files/disk-aliked-easy.jpg" class="img-fluid figure-img"></p>
+<figcaption>For easy image pairs, LightGlue trained for ALIKED features works for DISK features as well.</figcaption>
+</figure>
+</div>
 <p>Unfortunately, that works only for simple image pairs, not harder ones.</p>
-<p><img src="2023-11-20-Geometry-Encoding-SIFT-LightGlue_files/disk-aliked-hard.jpg" title="For hard image pairs, LightGlue trained for ALIKED features does not work for DISK features" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-11-20-Geometry-Encoding-SIFT-LightGlue_files/disk-aliked-hard.jpg" class="img-fluid figure-img"></p>
+<figcaption>For hard image pairs, LightGlue trained for ALIKED features does not work for DISK features</figcaption>
+</figure>
+</div>
 <p>On the second though, that kind of makes sense - once (in intial layers) we went far from original descriptors, then the attention and positional encoding are kind of similar.</p>
 <p>This begs for the question - can we initialize LightGlue for new local features with previous ones, and train faster or better?</p>
 <p>I have initialized the LightGlue with SuperPoint LightGlue and started training for <a href="https://github.com/Parskatt/DeDoDe">DeDoDe features</a>. <code>as_sift</code> here stands for the hyperparameters setup, ignore it.</p>
-<p><img src="2023-11-20-Geometry-Encoding-SIFT-LightGlue_files/dedode_pretraining.png" title="Initializing DeDoDe LightGlue with SuperPoint weights seemingly significantly helps for the pretraining." class="img-fluid"></p>
-<p><img src="2023-11-20-Geometry-Encoding-SIFT-LightGlue_files/dedode_megadepth.png" title="The advantage of initializing from pretrained other features seemingly holds on MegaDepth training" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-11-20-Geometry-Encoding-SIFT-LightGlue_files/dedode_pretraining.png" class="img-fluid figure-img"></p>
+<figcaption>Initializing DeDoDe LightGlue with SuperPoint weights seemingly significantly helps for the pretraining.</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-11-20-Geometry-Encoding-SIFT-LightGlue_files/dedode_megadepth.png" class="img-fluid figure-img"></p>
+<figcaption>The advantage of initializing from pretrained other features seemingly holds on MegaDepth training</figcaption>
+</figure>
+</div>
 <p>Unfotunately, one cannot rely on the match recall/precision validation metric. When I have evaluated on MegaDepth-1500, the model initialized from SuperPoint was worse.</p>
 <table class="caption-top table">
 <thead>

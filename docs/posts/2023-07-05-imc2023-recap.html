@@ -171,7 +171,7 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <section id="example-solution" class="level3">
 <h3 class="anchored" data-anchor-id="example-solution">Example solution</h3>
 <p>To provide the participants a headstart, we have worked with Kaggle engineers to include the <a href="https://github.com/colmap/pycolmap">pycolmap</a> into the default Kaggle kernels. Based on it, we have provided an example submission, which uses local features included in <a href="link">kornia</a> library: <a href="https://zju3dv.github.io/loftr/">LoFTR</a>, <a href="https://github.com/cvlab-epfl/disk">DISK</a>, and <a href="https://kornia-tutorials.readthedocs.io/en/latest/_nbs/image_matching_adalam.html">KeyNet-AffNet-HardNet</a>.</p>
-<p>All of them have Apache 2 license, and has shown a good performance in one of the previous IMCs: LoFTR was a part of <a href="https://www.kaggle.com/competitions/image-matching-challenge-2022/discussion/328854">top solutions in 2022</a>, <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2022/07/05/IMC2022-Recap.html">recap</a>, DISK - in <a href="https://www.cs.ubc.ca/research/image-matching-challenge/2020/leaderboard/">2020</a>, <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/14/IMC2020-competition-recap.html">recap</a> and <a href="https://www.cs.ubc.ca/research/image-matching-challenge/2021/leaderboard/">2021</a>, and KeyNet-AffNet-HardNet - one of the leaders in the <a href="https://arxiv.org/abs/2003.01587">original IJCV-2020 publication</a>.</p>
+<p>All of them have Apache 2 license, and has shown a good performance in one of the previous IMCs: LoFTR was a part of <a href="https://www.kaggle.com/competitions/image-matching-challenge-2022/discussion/328854">top solutions in 2022</a>, <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2022-07-05-IMC2022-Recap.html">recap</a>, DISK - in <a href="https://www.cs.ubc.ca/research/image-matching-challenge/2020/leaderboard/">2020</a>, <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2021-05-14-IMC2020-competition-recap.html">recap</a> and <a href="https://www.cs.ubc.ca/research/image-matching-challenge/2021/leaderboard/">2021</a>, and KeyNet-AffNet-HardNet - one of the leaders in the <a href="https://arxiv.org/abs/2003.01587">original IJCV-2020 publication</a>.</p>
 <p>The LoFTR example, however, was so heavy, that was causing time-out error without the modifications.</p>
 </section>
 </section>
@@ -185,11 +185,21 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <ul>
 <li>large scale change (up to 20x), from that overview photo to the close-up of the small detail, together with in-plane rotation</li>
 </ul>
-<p><img src="2023-07-05-IMC2023-Recap_files/Dioscuri.png" title="Images of the Dioscuri temple from Heritage dataset" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-07-05-IMC2023-Recap_files/Dioscuri.png" class="img-fluid figure-img"></p>
+<figcaption>Images of the Dioscuri temple from Heritage dataset</figcaption>
+</figure>
+</div>
 <ul>
 <li><a href="https://dev.epicgames.com/community/learning/tutorials/1xM4/capturing-reality-banana-effect-what-to-do-if-my-model-is-bent">“banana effect”</a>, when the flat surface is often reconstructed as curved due to low overlap between consecutive frames and slight misalignments, which accumulate altogether.</li>
 </ul>
-<p><img src="2023-07-05-IMC2023-Recap_files/wall.png" title="3D model of the `wall` from Heritage dataset" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-07-05-IMC2023-Recap_files/wall.png" class="img-fluid figure-img"></p>
+<figcaption>3D model of the <code>wall</code> from Heritage dataset</figcaption>
+</figure>
+</div>
 <ul>
 <li>high-resolution image processing. See above about the computational challenges of bundle adjustment and then multiply that by high resolution AND large image number. Also, the most of deep learning features (DISK, LoFTR) can easily give you CUDA OOM error when run on 20 Mp image pair.</li>
 </ul>
@@ -197,7 +207,12 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <section id="haiper" class="level3">
 <h3 class="anchored" data-anchor-id="haiper">Haiper</h3>
 <p>Haiper (training) dataset is similar to captures for NERFs - layered “dome” of cameras, going around some object. The object itself is often thin (bicycle) or textureless (statue). The test part of the dataset has very small number of images, making the viewpoint difference the biggest challenge.</p>
-<p><img src="2023-07-05-IMC2023-Recap_files/att_00000.png" title="3D model 'bike' from the Haiper dataset" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-07-05-IMC2023-Recap_files/att_00000.png" class="img-fluid figure-img"></p>
+<figcaption>3D model ‘bike’ from the Haiper dataset</figcaption>
+</figure>
+</div>
 <p>If IMC-2023 have discovered and used “<a href="https://research.nianticlabs.com/mapfree-reloc-benchmark">Map-free Visual Relocalization</a>” for training their pipelines, that would likely help them with Haiper dataset as well. However, everyone has missed this opportunity, including us - organizers.</p>
 </section>
 <section id="urban" class="level3">
@@ -211,7 +226,12 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 </figure>
 </div>
 <p>In addition to the day-night photos, the hidden part of the dataset features highly symmetrical objects, such as the photo I took yesterday in Český Krumlov. The camera poses are actually look into each other, so visual overlap is zero. The only chance of non-wrongly-matching them, is either considering all the photos altogether, or utilizing the background. None of the existing feature matching solutions does this, as far as I know.</p>
-<p><img src="2023-07-05-IMC2023-Recap_files/IMG_4345_IMG_4352_matches.png" title="SuperGlue matches for symmetrical structures, photo from Český Krumlov to illustrate the challenges of the Urban dataset" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-07-05-IMC2023-Recap_files/IMG_4345_IMG_4352_matches.png" class="img-fluid figure-img"></p>
+<figcaption>SuperGlue matches for symmetrical structures, photo from Český Krumlov to illustrate the challenges of the Urban dataset</figcaption>
+</figure>
+</div>
 </section>
 </section>
 <section id="findings-from-the-competition" class="level2">
@@ -233,12 +253,22 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <h3 class="anchored" data-anchor-id="pixelsfm-is-good-idea-but-needs-improvements">PixelSfM is good idea, but needs improvements</h3>
 <p>Many participants has tried to improve the initial SfM camera poses by utilizing <a href="https://github.com/cvg/pixel-perfect-sfm">PixelPerfectSfM</a> – the feature-metric bundle adjustment. While it improves results, it took a lot of time and especially memory, which rendered it unpractical for many teams. Another challenge is the package compilation itself, which is not easy either.</p>
 <p><a href="https://www.kaggle.com/competitions/image-matching-challenge-2023/discussion/417407">1st-place team</a> proposed a novel version of the correspondence and poses refinement instead - called <a href="https://zju3dv.github.io/DetectorFreeSfM/">Detector-Free Structure from Motion</a>.</p>
-<p><img src="2023-07-05-IMC2023-Recap_files/inbox-14597895-2b2b6c045d8a2dfa0a536090f025db02-main_fig.png" title="1st place solution, multiview refinement." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-07-05-IMC2023-Recap_files/inbox-14597895-2b2b6c045d8a2dfa0a536090f025db02-main_fig.png" class="img-fluid figure-img"></p>
+<figcaption>1st place solution, multiview refinement.</figcaption>
+</figure>
+</div>
 </section>
 <section id="rotation-invariance-is-important-but-easy-to-achieve-for-superglue-and-loftr" class="level3">
 <h3 class="anchored" data-anchor-id="rotation-invariance-is-important-but-easy-to-achieve-for-superglue-and-loftr">Rotation-invariance is important, but easy to achieve for SuperGlue and LoFTR</h3>
 <p>Just rotate one of the images 4 times and select the best matches. Here is the image of the <a href="https://www.kaggle.com/competitions/image-matching-challenge-2023/discussion/416918">3rd place solution</a>, explaining it all.</p>
-<p><img src="2023-07-05-IMC2023-Recap_files/inbox-9249230-1036693590b6655d8d48d588bfd69e9c-IMC-solution.png" title="3rd place solution, brute-force rotation estimation, high-res image tiling" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-07-05-IMC2023-Recap_files/inbox-9249230-1036693590b6655d8d48d588bfd69e9c-IMC-solution.png" class="img-fluid figure-img"></p>
+<figcaption>3rd place solution, brute-force rotation estimation, high-res image tiling</figcaption>
+</figure>
+</div>
 </section>
 <section id="initial-image-pair-setup-in-colmap-is-suboptimal" class="level3">
 <h3 class="anchored" data-anchor-id="initial-image-pair-setup-in-colmap-is-suboptimal">Initial image pair setup in Colmap is suboptimal</h3>
@@ -250,15 +280,30 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 </section>
 <section id="old-features-are-not-done-yet---keynetaffnet-hardnet-solution." class="level3">
 <h3 class="anchored" data-anchor-id="old-features-are-not-done-yet---keynetaffnet-hardnet-solution.">“Old” features are not done yet - KeyNetAffNet-HardNet solution.</h3>
-<p>5th place actually end up in money by using an modified <a href="https://github.com/ducha-aiki/imc2023-kornia-starter-pack/blob/main/keynetaffnet-adalam-pycolmap-3dreconstruction.ipynb">example submission</a> with a classical pipeline using such ancient local features as DoG, Harris and GFTT, together with KeyNet (2019), coupled together with <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2020/07/17/affine-correspondences.html">local affine shape estimation</a> by AffNet, patch descriptor HardNet and handcrafted AdaLAM matcher.</p>
+<p>5th place actually end up in money by using an modified <a href="https://github.com/ducha-aiki/imc2023-kornia-starter-pack/blob/main/keynetaffnet-adalam-pycolmap-3dreconstruction.ipynb">example submission</a> with a classical pipeline using such ancient local features as DoG, Harris and GFTT, together with KeyNet (2019), coupled together with <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2020-07-17-affine-correspondences.html">local affine shape estimation</a> by AffNet, patch descriptor HardNet and handcrafted AdaLAM matcher.</p>
 <p>Basically, that is cleverly engineered submission of the off-the-shelf local features, available in <a href="https://kornia.readthedocs.io/en/latest/feature.html">kornia</a>.</p>
-<p><img src="2023-07-05-IMC2023-Recap_files/inbox-3964695-051e9413d0ce9cd8357723ba7efab1be-full_pipeline.png" title="5th place solution, classical affine features, off-the-shelf kornia. Candidate for 1st money prize" class="img-fluid"></p>
-<p><img src="2023-07-05-IMC2023-Recap_files/7rlp3j.jpg" title="Clever engineering is all you need sometimes" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-07-05-IMC2023-Recap_files/inbox-3964695-051e9413d0ce9cd8357723ba7efab1be-full_pipeline.png" class="img-fluid figure-img"></p>
+<figcaption>5th place solution, classical affine features, off-the-shelf kornia. Candidate for 1st money prize</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-07-05-IMC2023-Recap_files/7rlp3j.jpg" class="img-fluid figure-img"></p>
+<figcaption>Clever engineering is all you need sometimes</figcaption>
+</figure>
+</div>
 </section>
 <section id="permissive-license-and-faster-superglue-is-out---lightglue" class="level3">
 <h3 class="anchored" data-anchor-id="permissive-license-and-faster-superglue-is-out---lightglue">Permissive license and faster SuperGlue is out - LightGlue</h3>
 <p><a href="https://arxiv.org/pdf/2306.13643.pdf">LightGlue</a> - the solution by 7th place team and likely 2nd money prize, presents a SuperGlue-like architecture with early-stopping for easy image pairs and bunch of training recipes. It also uses somewhat unpopular, but well-performing <a href="https://github.com/Shiaoming/ALIKED">ALIKED local feature</a></p>
-<p><img src="2023-07-05-IMC2023-Recap_files/att_00003.png" title="The LightGlue architecture from the paper" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-07-05-IMC2023-Recap_files/att_00003.png" class="img-fluid figure-img"></p>
+<figcaption>The LightGlue architecture from the paper</figcaption>
+</figure>
+</div>
 <p>Here is the quite from the paper about tricks that matter:</p>
 <blockquote class="blockquote">
 <p>Since the depth maps of MegaDepth are often incomplete, we also label points with a large epipolar error as unmatch- able. Carefully tuning and annealing the learning rate boosts the accuracy. Training with more points also does: we use 2k per image instead of 1k. The batch size matters: we use gradient checkpointing [10] and mixed-precision to fit 32 image pairs on a single GPU with 24GB VRAM.</p>
@@ -285,11 +330,16 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <section id="urban-1" class="level3">
 <h3 class="anchored" data-anchor-id="urban-1">Urban</h3>
 <p>Because the main Urban dataset challenge – repeated patterns and symmetrical structures – cannot be even theoretically addressed by better two-view feature matching, it is the hardest dataset. No single team tried to work on this part, so surprise it is hard.</p>
-<p><img src="2023-07-05-IMC2023-Recap_files/att_00006.png" title="Urban dataset is the hardest among 2023 ones" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2023-07-05-IMC2023-Recap_files/att_00006.png" class="img-fluid figure-img"></p>
+<figcaption>Urban dataset is the hardest among 2023 ones</figcaption>
+</figure>
+</div>
 </section>
 <section id="haiper-1" class="level3">
 <h3 class="anchored" data-anchor-id="haiper-1">Haiper</h3>
-<p>The Haiper results are either hit or miss w/o much difference between methods. <img src="2023-07-05-IMC2023-Recap_files/att_00005.png" title="Haiper scenes are like meeting the dinosaur: you either meet it, or not" class="img-fluid"></p>
+<p>The Haiper results are either hit or miss w/o much difference between methods. <img src="2023-07-05-IMC2023-Recap_files/att_00005.png" class="img-fluid" alt="Haiper scenes are like meeting the dinosaur: you either meet it, or not"></p>
 </section>
 </section>
 <section id="conclusion-sfm-is-far-from-solved" class="level2">

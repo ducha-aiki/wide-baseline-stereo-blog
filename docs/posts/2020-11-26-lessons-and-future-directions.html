@@ -188,9 +188,9 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <p>For example, in image retrieval, one does not really care about precise localization, the robustness is much more important. For the 3d reconstruction one would like to have a lot of 3d points to get the reasonable reconstruction. On the other hand, for the SLAM/relocalization application, sparse features would be more advantageous because of smaller memory footprint and computational cost.</p>
 <p>There are, actually, some steps in that direction. Let me name a few.</p>
 <ol type="1">
-<li><p><a href="https://arxiv.org/pdf/2007.13172.pdf">HOW local features</a> designed for the image retrieval <img src="2020-11-26-lessons-and-future-directions_files/att_00000.png" title="Robust, but poorly localized HOW local features for imare retrieval, from 'Learning and aggregating deep local descriptors for instance-level recognition' paper" class="img-fluid"></p></li>
-<li><p><a href="http://rpg.ifi.uzh.ch/docs/3DV19_Cieslewski.pdf">SIPs: Succinct Interest Points from Unsupervised Inlierness Probability Learning</a> sparse local features for the SLAM. <!--![](2020-11-26-lessons-and-future-directions_files/att_00001.png "A small number of keypoints might be enough for estimating the camera pose. Figure from SIPs paper") --></p></li>
-<li><p><a href="https://arxiv.org/abs/1912.00623">Reinforced Feature Points: Optimizing Feature Detection and Description for a High-Level Task</a> <img src="2020-11-26-lessons-and-future-directions_files/att_00002.png" title="Optimizing local features for non-differentiable high-level task, Figure from Reinforced Feature Points" class="img-fluid"></p></li>
+<li><p><a href="https://arxiv.org/pdf/2007.13172.pdf">HOW local features</a> designed for the image retrieval <img src="2020-11-26-lessons-and-future-directions_files/att_00000.png" class="img-fluid" alt="Robust, but poorly localized HOW local features for imare retrieval, from ‘Learning and aggregating deep local descriptors for instance-level recognition’ paper"></p></li>
+<li><p><a href="http://rpg.ifi.uzh.ch/docs/3DV19_Cieslewski.pdf">SIPs: Succinct Interest Points from Unsupervised Inlierness Probability Learning</a> sparse local features for the SLAM. <!--![A small number of keypoints might be enough for estimating the camera pose. Figure from SIPs paper](2020-11-26-lessons-and-future-directions_files/att_00001.png) --></p></li>
+<li><p><a href="https://arxiv.org/abs/1912.00623">Reinforced Feature Points: Optimizing Feature Detection and Description for a High-Level Task</a> <img src="2020-11-26-lessons-and-future-directions_files/att_00002.png" class="img-fluid" alt="Optimizing local features for non-differentiable high-level task, Figure from Reinforced Feature Points"></p></li>
 </ol>
 <p>I believe, that it is only beginning and we are yet to experience AlphaZero moment for the local features.</p>
 </section>
@@ -199,7 +199,7 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <p>It is often perceived, that image matching across the unordered collection of the images is a task with quadratic complexity w.r.t. number of images. Some operations can be done separately, e.g.&nbsp;feature detection, but others, like feature matching and RANSAC cannot. Right?</p>
 <p>Not necessarily. It turns out, that one can avoid running feature matching and RANSAC for more than 90% of image pairs with clever preprocessing, ordering and re-using results from the previous matching. Moreover, in order to do the whole task faster (matching image collections), one may need to introduce additional steps, which are not necessary, or slowing things down for the two images case.</p>
 <p>That’s what we done for the <a href="https://arxiv.org/abs/2011.11986">intial pose estimation for the global SfM</a> in our paper, which reduced the matching runtime from 200 hours to 29.</p>
-<!-- ![](2020-11-26-lessons-and-future-directions_files/att_00003.png "Table from the Efficient Initial Pose-graph Generation for Global SfM") -->
+<!-- ![Table from the Efficient Initial Pose-graph Generation for Global SfM](2020-11-26-lessons-and-future-directions_files/att_00003.png) -->
 <p>Another example would be “<a href="https://arxiv.org/abs/1911.11763">SuperGlue: Learning Feature Matching with Graph Neural Networks</a>”, where authors abandoned traditional descriptor matching and instead leveraged all the information for keypoint and descriptors from both images altogether.</p>
 </section>
 <section id="rethinking-and-improving-the-process-of-training-data-generation-for-the-wbs" class="level2">
@@ -217,7 +217,7 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 </section>
 <section id="matching-with-on-demand-view-synthesis-revisited" class="level2">
 <h2 class="anchored" data-anchor-id="matching-with-on-demand-view-synthesis-revisited">4. Matching with On-Demand View Synthesis revisited</h2>
-<p>I like the “on-demand” principle a lot and I think we can explore it much more that we are now. So far we have either <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2020/08/06/affine-view-synthesis.html">affine view synthesis (ASIFT, MODS)</a>, or <a href="https://people.ee.ethz.ch/~timofter/publications/Anoosheh-ICRA-2019.pdf">GAN-based stylizations</a> for the day-night matching.</p>
+<p>I like the “on-demand” principle a lot and I think we can explore it much more that we are now. So far we have either <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2020-08-06-affine-view-synthesis.html">affine view synthesis (ASIFT, MODS)</a>, or <a href="https://people.ee.ethz.ch/~timofter/publications/Anoosheh-ICRA-2019.pdf">GAN-based stylizations</a> for the day-night matching.</p>
 <p>That is why I am glad to see papers like <a href="https://arxiv.org/abs/2008.09497">Single-Image Depth Prediction Makes Feature Matching Easier</a>, which generate normalized views based on depth in order to help the matching.</p>
 <p>Why not go further? Combine viewpoint, illumination, season, sensor synthesis?</p>
 </section>

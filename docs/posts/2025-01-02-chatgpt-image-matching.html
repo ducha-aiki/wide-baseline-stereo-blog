@@ -163,7 +163,12 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <h2 class="anchored" data-anchor-id="image-co-visibility-as-a-proxy-task">Image co-visibility as a proxy task</h2>
 <p>Given the recent success of <a href="https://arcprize.org/blog/oai-o3-pub-breakthrough">OpenAI o3 in ARC Challenge</a>, I decided to check the performace of the currently available <code>o1</code> and <code>4o</code> models in image matching.</p>
 <p>However, asking LLMs to find relative pose or pixel-wise correspondences is pretty stupid (of course, I have tried to do this as well, see the end of this post), that’s why I have focused on the simpler classification task – given two images, tell if they depict covisible areas, or not.</p>
-<p><img src="2025-01-02-ChatGPT-Image-Matching_files/att_00000.png" title="Despite the visual similarity, this image pair depicts two opposite sides of the building" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2025-01-02-ChatGPT-Image-Matching_files/att_00000.png" class="img-fluid figure-img"></p>
+<figcaption>Despite the visual similarity, this image pair depicts two opposite sides of the building</figcaption>
+</figure>
+</div>
 <p>Despite the simiplicity of the task formulation, it is a yet unsolved task, being one of the hardest things in the <a href="https://cmp.felk.cvut.cz/~mishkdmy/slides/eccv2024_mishkin_imc_history.pdf">Image Matching Challenge 2024</a>, because it take a single misregistered pair to ruin your 3D reconstruction.</p>
 <p>In a nutshell, methods, based on the global descriptor (such as ArcGeM, DINOv2 + pooling, etc) usually lack in recall and fail under zoom/viewpoint change. And the methods, based on the local descriptor similarity, even with learned matching like LightGlue or RoMA lack in precision and fail for repeated patterns and symmetries.</p>
 <p>Recently, there were works tackling a specific instance of this problem - <a href="https://arxiv.org/abs/2309.02420">Doppelgangers</a>, and <a href="https://doppelgangers25.github.io/doppelgangers_plusplus/">Doppelgangers++</a> with a task-specific training and the dataset. But this post of not about them.</p>
@@ -172,12 +177,17 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
 <p>Both ChatGPTs are surprisingly good at image co-visibility, although the specialised models like <a href="https://github.com/naver/mast3r">MASt3R</a> and based on it <a href="https://doppelgangers25.github.io/doppelgangers_plusplus/">Doppelgangers++</a> seem to be better at the moment.</p>
 <p>The most impressive things to me are the fact that ChatGPT is likely to be never trained for that task, yet exhibiliting very strong performance.</p>
-<p>Moreover, its explanations are very human-like, reminding me my own attempt to <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/01/09/wxbs-in-simple-terms.html">explain image matching in simple terms</a></p>
+<p>Moreover, its explanations are very human-like, reminding me my own attempt to <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2021-01-09-wxbs-in-simple-terms.html">explain image matching in simple terms</a></p>
 <p>The prompt I gave it, was quite simple:</p>
 <pre><code>Hi, 
 Let's do the following thing - I will give you two images 
 and you will tell me if they share some common part of the scene, or not. </code></pre>
-<p><img src="2025-01-02-ChatGPT-Image-Matching_files/petrzin.jpg" title="Input images. They are concatenated for the display purposes, ChatGPT saw them as two separate files." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2025-01-02-ChatGPT-Image-Matching_files/petrzin.jpg" class="img-fluid figure-img"></p>
+<figcaption>Input images. They are concatenated for the display purposes, ChatGPT saw them as two separate files.</figcaption>
+</figure>
+</div>
 <p>The 4o answer is:</p>
 <pre><code>Based on the two images provided, it appears that they do share a common part of the scene. Both images include:
 - A waterfall-like feature in the background with a stone or rock wall surrounding it.
@@ -195,7 +205,12 @@ While the weather and lighting conditions differ between the two images (one has
 <section id="famous-landmarks" class="level3">
 <h3 class="anchored" data-anchor-id="famous-landmarks">Famous landmarks</h3>
 <p>When the location is known to the model, ChatGPT directly uses its information:</p>
-<p><img src="2025-01-02-ChatGPT-Image-Matching_files/kyiv.jpg" title="Prompt: And these two?" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2025-01-02-ChatGPT-Image-Matching_files/kyiv.jpg" class="img-fluid figure-img"></p>
+<figcaption>Prompt: And these two?</figcaption>
+</figure>
+</div>
 <p>4o answer:</p>
 <pre><code>These two images do not depict the same location or share common parts of a scene.
 
@@ -207,19 +222,39 @@ While both are landmarks in Kyiv, they are distinct locations with no overlappin
 <section id="real-photo-versus-miniature-model" class="level3">
 <h3 class="anchored" data-anchor-id="real-photo-versus-miniature-model">Real photo versus miniature model</h3>
 <p>Both, o1 and 4o are able match the real object to its miniature, but also point out their different nature:</p>
-<p><img src="2025-01-02-ChatGPT-Image-Matching_files/maidan_mini.jpg" title="Prompt: These two?" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2025-01-02-ChatGPT-Image-Matching_files/maidan_mini.jpg" class="img-fluid figure-img"></p>
+<figcaption>Prompt: These two?</figcaption>
+</figure>
+</div>
 <p>o1 answer:</p>
 <pre><code>Thought about co-visible parts in images for 11 seconds
 
 They depict the same place—Kyiv’s Independence Square (Maidan Nezalezhnosti)—but in two very different forms. The first is a real, full-scale photo looking down on the square, and the second is a scale model or miniature re-creation of that same layout (including the central column with the statue, fountain domes, and the surrounding buildings).</code></pre>
 <p>This kind of distinction is impossible with classical local feature matching pipeline. Here is DISK-LightGlue-RANSAC, and RoMA-RANSAC matching result, run using <a href="https://huggingface.co/spaces/Realcat/image-matching-webui">Realcat image matching demo</a>.</p>
-<p><img src="2025-01-02-ChatGPT-Image-Matching_files/disk-lightglue-mini.jpg" title="DISK-LightGlue matches after RANSAC, run via image-matching-webui" class="img-fluid"></p>
-<p><img src="2025-01-02-ChatGPT-Image-Matching_files/roma.jpg" title="RoMA matches after RANSAC, run via image-matching-webui" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2025-01-02-ChatGPT-Image-Matching_files/disk-lightglue-mini.jpg" class="img-fluid figure-img"></p>
+<figcaption>DISK-LightGlue matches after RANSAC, run via image-matching-webui</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2025-01-02-ChatGPT-Image-Matching_files/roma.jpg" class="img-fluid figure-img"></p>
+<figcaption>RoMA matches after RANSAC, run via image-matching-webui</figcaption>
+</figure>
+</div>
 </section>
 <section id="objects" class="level3">
 <h3 class="anchored" data-anchor-id="objects">Objects</h3>
 <p>The next thing I have tried, were the objects from Google Scanned Objects dataset.</p>
-<p><img src="2025-01-02-ChatGPT-Image-Matching_files/box.jpg" title="Prompt: and these two?" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2025-01-02-ChatGPT-Image-Matching_files/box.jpg" class="img-fluid figure-img"></p>
+<figcaption>Prompt: and these two?</figcaption>
+</figure>
+</div>
 <p>o1 gave me the following answer</p>
 <pre><code>It looks like both photos show the same bundle of plain brown bags, just viewed from different angles. The label and overall shape match, so they are likely the same object.
 
@@ -266,7 +301,12 @@ image2_with_overlay.save(output_image2_path)
 
 output_image1_path, output_image2_path</code></pre>
 <p>Then I have it a squirrel:</p>
-<p><img src="2025-01-02-ChatGPT-Image-Matching_files/squirrel.jpg" title="Prompt: and these two?" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2025-01-02-ChatGPT-Image-Matching_files/squirrel.jpg" class="img-fluid figure-img"></p>
+<figcaption>Prompt: and these two?</figcaption>
+</figure>
+</div>
 <p>Here is conversation with 4o:</p>
 <pre><code>These two images depict what appears to be the same object (a stuffed animal), but from different angles.
 
@@ -304,7 +344,12 @@ The viewpoints are partially overlapping, as they show some shared features (e.g
 <section id="actually-difficult-examples-from-wxbs-evd-and-imc-2024" class="level2">
 <h2 class="anchored" data-anchor-id="actually-difficult-examples-from-wxbs-evd-and-imc-2024">Actually difficult examples from WxBS, EVD and IMC-2024</h2>
 <p>Now I am going to the some difficult image pairs. The IMC-2024 example was too hard</p>
-<p><img src="2025-01-02-ChatGPT-Image-Matching_files/church.jpg" title="Prompt: and these two?" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2025-01-02-ChatGPT-Image-Matching_files/church.jpg" class="img-fluid figure-img"></p>
+<figcaption>Prompt: and these two?</figcaption>
+</figure>
+</div>
 <p>o1 answer:</p>
 <pre><code>They’re definitely photos of the same building (a distinctive white-and-dark-brick façade with statues and that large clock tower). The first shot is a closer, more front-facing view of the façade, while the second steps back and off to the side so you can see the tower and circular window. You can still spot common elements in both—like the rectangular “niches” with statues and the pattern of bricks—just viewed from different angles.
 
@@ -329,7 +374,12 @@ These images partially overlap in their view of the building's facade and overal
 <p>So, both model fail here. Cannot blame them though, all image matching methods fail as well.</p>
 <section id="wall-with-graffity-is-easy-for-chatgpt" class="level3">
 <h3 class="anchored" data-anchor-id="wall-with-graffity-is-easy-for-chatgpt">Wall with graffity is easy for ChatGPT</h3>
-<p><img src="2025-01-02-ChatGPT-Image-Matching_files/evd1.jpg" title="Prompt: and these two?" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2025-01-02-ChatGPT-Image-Matching_files/evd1.jpg" class="img-fluid figure-img"></p>
+<figcaption>Prompt: and these two?</figcaption>
+</figure>
+</div>
 <p>4o:</p>
 <pre><code>
 These two images appear to show the same wall of a building, but from different perspectives.
@@ -350,7 +400,12 @@ These images are not fully disjoint, as the mural is covisible in both. However,
 
 Thought about co-visible areas in images for 13 seconds
 They do show the same painted crest on the same façade—just photographed from two different angles. In the first image, you see the crest at an angle (with a parking sign in the foreground), and in the second shot you’re looking almost straight up at that same crest. So yes, there is a co‐visible area: the mural/coat of arms and the surrounding wall are present in both.</code></pre>
-<p><img src="2025-01-02-ChatGPT-Image-Matching_files/evd2.jpg" title="Prompt: and these two?" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2025-01-02-ChatGPT-Image-Matching_files/evd2.jpg" class="img-fluid figure-img"></p>
+<figcaption>Prompt: and these two?</figcaption>
+</figure>
+</div>
 <p>It didn’t fall for the non-matching image pair as well.</p>
 <p>o1:</p>
 <pre><code>
@@ -360,7 +415,12 @@ They appear to be two different graffiti walls or surfaces rather than two angle
 <section id="zoom-is-a-still-a-problem" class="level3">
 <h3 class="anchored" data-anchor-id="zoom-is-a-still-a-problem">Zoom is a still a problem</h3>
 <p>Now I went for the IMC-2024 training set, quite hard image pair, showing zoomed-in night versus zoomed out day</p>
-<p><img src="2025-01-02-ChatGPT-Image-Matching_files/lizard.jpg" title="You are doing really well, I am proud of you! How about these two?" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2025-01-02-ChatGPT-Image-Matching_files/lizard.jpg" class="img-fluid figure-img"></p>
+<figcaption>You are doing really well, I am proud of you! How about these two?</figcaption>
+</figure>
+</div>
 <p>o1:</p>
 <pre><code>Thought about co-visible areas in images for 7 seconds
 They appear to be entirely different subjects/scenes:
@@ -415,7 +475,12 @@ The two images are related and depict the same lizard sculpture. The first image
 <section id="image-pair-humans-have-problem-with" class="level3">
 <h3 class="anchored" data-anchor-id="image-pair-humans-have-problem-with">Image pair, humans have problem with</h3>
 <p>I have shown this image pair to the members of my family, and, unless the person I asked, was there, they fail to match these images. However, it wasn’t an issue for the ChatGPT</p>
-<p><img src="2025-01-02-ChatGPT-Image-Matching_files/zanky.jpg" title="Prompt: These two?" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2025-01-02-ChatGPT-Image-Matching_files/zanky.jpg" class="img-fluid figure-img"></p>
+<figcaption>Prompt: These two?</figcaption>
+</figure>
+</div>
 <p>4o:</p>
 <pre><code>These two images depict the same location, but under different lighting and atmospheric conditions.
 
@@ -448,7 +513,7 @@ These are two views of the same location taken at different times of the day and
 <p>P.S. The images used in the post come from:</p>
 <ul>
 <li><a href="https://www.kaggle.com/competitions/image-matching-challenge-2024/leaderboard">Image Matching Challenge 2024</a></li>
-<li><a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/07/30/Reviving-WxBS-benchmark.html">WxBS dataset</a></li>
+<li><a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2021-07-30-Reviving-WxBS-benchmark.html">WxBS dataset</a></li>
 <li><a href="https://cmp.felk.cvut.cz/wbs/">EVD dataset</a></li>
 <li><a href="https://ua.igotoworld.com/ua/poi_object/2138_park-muzey-kiev-v-miniatyure.htm">IGoToWorld Київ в мініатюрі</a></li>
 <li><a href="https://research.google/blog/scanned-objects-by-google-research-a-dataset-of-3d-scanned-common-household-items/">Google Scanned Objects dataset</a></li>
@@ -456,7 +521,12 @@ These are two views of the same location taken at different times of the day and
 <p>Special thanks to <a href="https://huggingface.co/spaces/Realcat/image-matching-webui">image-matching-webui</a></p>
 <section id="bonus-chatgpt-as-homography-estimator" class="level3">
 <h3 class="anchored" data-anchor-id="bonus-chatgpt-as-homography-estimator">Bonus: ChatGPT as homography estimator</h3>
-<p><img src="2025-01-02-ChatGPT-Image-Matching_files/graffity.jpg" title="Prompt: Hi, Please, write down the homography, transforming one image into another. You can use chain of thoughts, or write/use the python code, but do not explain to me what I can do in order to estimate homography. Just end up with 3x3 homography matrix for this specific case" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2025-01-02-ChatGPT-Image-Matching_files/graffity.jpg" class="img-fluid figure-img"></p>
+<figcaption>Prompt: Hi, Please, write down the homography, transforming one image into another. You can use chain of thoughts, or write/use the python code, but do not explain to me what I can do in order to estimate homography. Just end up with 3x3 homography matrix for this specific case</figcaption>
+</figure>
+</div>
 <section id="o1-response" class="level4">
 <h4 class="anchored" data-anchor-id="o1-response">o1 response</h4>
 <pre class="python3"><code># Thought about homography matrix for 31 seconds
@@ -474,9 +544,19 @@ H = np.array([
 
 print(H)</code></pre>
 <p>And resulting warp was wrong, but in a correct direction:</p>
-<p><img src="2025-01-02-ChatGPT-Image-Matching_files/1o_graf.jpg" title="image 1 reprojected by o1 homography, and overlayed with GT image 2" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2025-01-02-ChatGPT-Image-Matching_files/1o_graf.jpg" class="img-fluid figure-img"></p>
+<figcaption>image 1 reprojected by o1 homography, and overlayed with GT image 2</figcaption>
+</figure>
+</div>
 <p>The guess process is not stable though, here is another attempt with exactly same prompt:</p>
-<p><img src="2025-01-02-ChatGPT-Image-Matching_files/1o_graf2.jpg" title="image 1 reprojected by o1 homography, and overlayed with GT image 2" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2025-01-02-ChatGPT-Image-Matching_files/1o_graf2.jpg" class="img-fluid figure-img"></p>
+<figcaption>image 1 reprojected by o1 homography, and overlayed with GT image 2</figcaption>
+</figure>
+</div>
 <p>After I have asked it, how it end up with it, o1 was kind of avoiding the answer,</p>
 <pre><code>&gt;Have you generated it just looking at images, or were you using some coding?
 
@@ -527,7 +607,12 @@ H = np.array([
     [-0.208395367, -0.944791621, 370.672629],
     [-0.000139310557, -0.00286464375, 1.00000000]
 ])</code></pre>
-<p><img src="2025-01-02-ChatGPT-Image-Matching_files/4o_graf.jpg" title="image 1 reprojected by 4o homography, and overlayed with GT image 2" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2025-01-02-ChatGPT-Image-Matching_files/4o_graf.jpg" class="img-fluid figure-img"></p>
+<figcaption>image 1 reprojected by 4o homography, and overlayed with GT image 2</figcaption>
+</figure>
+</div>
 <p>After I have asked it, how it end up with it, 4o said, that it was using ORB matching.</p>
 <pre><code>&gt;Have you generated it just looking at images, or were you using some coding?
 ChatGPT

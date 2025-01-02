@@ -205,26 +205,41 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="top-solutions-2020-and-follow-ups">Top solutions-2020 and follow-ups</h2>
 <section id="superglue" class="level3">
 <h3 class="anchored" data-anchor-id="superglue">SuperGlue</h3>
-<p><img src="2021-05-14-IMC2020-competition-recap_files/att_00001.png" title="SuperGlue pipeline" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-05-14-IMC2020-competition-recap_files/att_00001.png" class="img-fluid figure-img"></p>
+<figcaption>SuperGlue pipeline</figcaption>
+</figure>
+</div>
 <p><a href="https://psarlin.com/superglue/">SuperGlue</a> is an attention-based graph neural network for matching local features, taking into account both geometry (keypoint location) and appearance (descriptor). Unlike previous works, e.g.&nbsp;<a href="https://arxiv.org/abs/1711.05971">CNe</a>, or OANet below, it does not “scoring-and-cleaning” already established tentative correspondences. Instead, it establishes the correpondences given the local features from two images. SuperGlue won IMC-2020, as well as two other competitions at CVPR 2020. Its inference implementation is available <a href="https://github.com/magicleap/SuperGluePretrainedNetwork">here</a>.</p>
 </section>
 <section id="oanet" class="level3">
 <h3 class="anchored" data-anchor-id="oanet">OANet</h3>
-<p><img src="2021-05-14-IMC2020-competition-recap_files/att_00002.png" title="OANet architecture" class="img-fluid"> <a href="https://arxiv.org/pdf/1908.04964.pdf">OANet</a> is an specialized neural network architecture for “scoring-and-cleaning” already established tentative correspondences. OANet was run on top of DoG-HardNet local features. Pytorch version of OANet is available <a href="https://github.com/zjhthu/OANet">here</a></p>
+<p><img src="2021-05-14-IMC2020-competition-recap_files/att_00002.png" class="img-fluid" alt="OANet architecture"> <a href="https://arxiv.org/pdf/1908.04964.pdf">OANet</a> is an specialized neural network architecture for “scoring-and-cleaning” already established tentative correspondences. OANet was run on top of DoG-HardNet local features. Pytorch version of OANet is available <a href="https://github.com/zjhthu/OANet">here</a></p>
 </section>
 <section id="adalam" class="level3">
 <h3 class="anchored" data-anchor-id="adalam">AdaLAM</h3>
-<p><img src="2021-05-14-IMC2020-competition-recap_files/att_00003.png" title="AdaLAM stages, from original paper" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-05-14-IMC2020-competition-recap_files/att_00003.png" class="img-fluid figure-img"></p>
+<figcaption>AdaLAM stages, from original paper</figcaption>
+</figure>
+</div>
 <p><a href="https://arxiv.org/abs/2006.04250">AdaLAM</a> is a <em>handcrafted</em> algorithm for tentative correspondence cleaning, which work comparably or even better than a learning-based approaches. It is based on two core assumptions:</p>
 <ul>
 <li>Keypoints, which are near from each other are probably corresponding to the neaighboring keypoints in the other images</li>
-<li>If keypoints are in correspondence, it means that their orientation and scale are also in correspondence. Check my post <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2020/07/17/affine-correspondences.html">Local affine features: useful side product</a> for an explanation</li>
+<li>If keypoints are in correspondence, it means that their orientation and scale are also in correspondence. Check my post <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2020-07-17-affine-correspondences.html">Local affine features: useful side product</a> for an explanation</li>
 </ul>
 <p>The implementation is avilable <a href="https://github.com/cavalli1234/AdaLAM">here</a>. As DoG+HardNet were used as a local features.</p>
 </section>
 <section id="disk" class="level3">
 <h3 class="anchored" data-anchor-id="disk">DISK</h3>
-<p><img src="2021-05-14-IMC2020-competition-recap_files/att_00004.png" title="DISK training objectives" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-05-14-IMC2020-competition-recap_files/att_00004.png" class="img-fluid figure-img"></p>
+<figcaption>DISK training objectives</figcaption>
+</figure>
+</div>
 <p><a href="https://arxiv.org/pdf/2006.13566.pdf">DISK</a> is local feature, which has two main differences from the rest of competitors (SuperPoint, R2D2):</p>
 <ol type="1">
 <li>DISK is trained with a reinforcement-learning objective</li>
@@ -234,17 +249,27 @@ window.Quarto = {
 </section>
 <section id="hynet" class="level3">
 <h3 class="anchored" data-anchor-id="hynet">HyNet</h3>
-<p><img src="2021-05-14-IMC2020-competition-recap_files/att_00005.png" title="HyNet architecture" class="img-fluid"> <a href="https://arxiv.org/pdf/2006.10202.pdf">HyNet</a> is an next stage in the L2Net-HardNet-SOSNet series of local patch descriptors. It is different from the previous works in two ways:</p>
+<p><img src="2021-05-14-IMC2020-competition-recap_files/att_00005.png" class="img-fluid" alt="HyNet architecture"> <a href="https://arxiv.org/pdf/2006.10202.pdf">HyNet</a> is an next stage in the L2Net-HardNet-SOSNet series of local patch descriptors. It is different from the previous works in two ways:</p>
 <ol type="1">
 <li>BatchNorm and ReLU in the HardNet architecture are replaced with FRN and TLU respecively.</li>
 <li>During training, distance to the negative (non-matching) <span class="math inline">\(d(\theta)\)</span> and positive (matching) <span class="math inline">\(s(\theta)\)</span> samples are calculated in a different way for better learning, see image below. <em>u</em> and <em>v</em> denote descriptors is</li>
 </ol>
-<p><img src="2021-05-14-IMC2020-competition-recap_files/att_00006.png" title="Positive and negative distances used fro HyNet training" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-05-14-IMC2020-competition-recap_files/att_00006.png" class="img-fluid figure-img"></p>
+<figcaption>Positive and negative distances used fro HyNet training</figcaption>
+</figure>
+</div>
 <p>HyNet submission also used semantic segmentation network to remove the keypoints from the non-matchable areas, such as sky and water.</p>
 </section>
 <section id="hardnet8" class="level3">
 <h3 class="anchored" data-anchor-id="hardnet8">HardNet8</h3>
-<p><img src="2021-05-14-IMC2020-competition-recap_files/att_00008.png" title="HardNet8 architecture" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-05-14-IMC2020-competition-recap_files/att_00008.png" class="img-fluid figure-img"></p>
+<figcaption>HardNet8 architecture</figcaption>
+</figure>
+</div>
 <p><a href="https://arxiv.org/abs/2007.09699">HardNet8</a> is another improvement of the HardNet architecture:</p>
 <ol type="1">
 <li>Deeper and wider network</li>
@@ -259,13 +284,23 @@ window.Quarto = {
 <p>This year challenge brings 2 new datasets: PragueParks and GoogleUrban.</p>
 <section id="the-pragueparks-dataset" class="level3">
 <h3 class="anchored" data-anchor-id="the-pragueparks-dataset">The PragueParks dataset</h3>
-<p><img src="2021-05-14-IMC2020-competition-recap_files/att_00009.png" title="PragueParks dataset samples" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-05-14-IMC2020-competition-recap_files/att_00009.png" class="img-fluid figure-img"></p>
+<figcaption>PragueParks dataset samples</figcaption>
+</figure>
+</div>
 <p>The PragueParks dataset contains images from video sequences captured by the organizers with an iPhone 11, in 2021. The iPhone 11 has two cameras, with normal and wide lenses, both of which were used. Note that while the video is high quality, some of the frames suffer from motion blur. These videos were then processed by the commercial 3D reconstruction software <a href="https://www.capturingreality.com/">RealityCapture</a>, which is orders of magnitude faster than COLMAP, while delivering a comparable output in terms of accuracy. Similarly to we did for the “PhotoTourism” dataset, this data is then subsampled in order to generate the subsets used for evaluation.</p>
 <p>The dataset contains small-scale scenes like tree, pond, wooden and metal sculptures with different level of zoom, lots of vegetation, and no people. The distribution of its camera poses differs from Phototourism.</p>
 </section>
 <section id="the-googleurban-dataset" class="level3">
 <h3 class="anchored" data-anchor-id="the-googleurban-dataset">The GoogleUrban dataset</h3>
-<p><img src="2021-05-14-IMC2020-competition-recap_files/att_00010.png" title="GoogleUrban dataset samples" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-05-14-IMC2020-competition-recap_files/att_00010.png" class="img-fluid figure-img"></p>
+<figcaption>GoogleUrban dataset samples</figcaption>
+</figure>
+</div>
 <p>The GoogleUrban dataset contains images used by Google to evaluate localization algorithms, such as those in Google’s Visual Positioning System, which powers Live View on millions on mobile devices. They are obtained from videos collected from different cell phones, on many countries all over the world, often years apart. They contain poses, but not depth maps. Please note that due to legal reasons, this data is released with a restricted license, and must be deleted by the end of the challenge.</p>
 </section>
 </section>

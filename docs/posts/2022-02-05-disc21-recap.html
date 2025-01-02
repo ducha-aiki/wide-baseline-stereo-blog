@@ -162,18 +162,38 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <section id="what-is-image-similarity-challenge" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-image-similarity-challenge">What is Image Similarity Challenge?</h2>
 <p>Image Similarity Challenge is benchmark of the methods, which should find the original in the database (if any) by the edited query image. The main difference to the classical instance retrieval task (datasets <a href="https://www.robots.ox.ac.uk/~vgg/data/oxbuildings/">Oxford5k</a>, <a href="https://github.com/cvdfoundation/google-landmark">GLD</a>, etc) is that we should NOT retrieve the different photos of the given instance. Instead only version of the same photos are valid. In other words, we are looking for the image forgery and copyright infringement.</p>
-<p><img src="2022-02-05-DISC21-recap_files/att_00000.png" title="Example of the query and reference images in the ISC" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-02-05-DISC21-recap_files/att_00000.png" class="img-fluid figure-img"></p>
+<figcaption>Example of the query and reference images in the ISC</figcaption>
+</figure>
+</div>
 <section id="image-similarity-dataset-disc" class="level3">
 <h3 class="anchored" data-anchor-id="image-similarity-dataset-disc">Image Similarity Dataset (DISC)</h3>
 <p>The dataset is described in the “<a href="https://arxiv.org/pdf/2106.09672.pdf">The 2021 Image Similarity Dataset and Challenge</a>” paper. It is created by processing YCC100M and DeepFake Detection Challenge images with manually in GIMP editor and automatically with help of <a href="https://arxiv.org/abs/2201.06494">AugLy</a> library.</p>
-<p><img src="2022-02-05-DISC21-recap_files/att_00001.png" title="More example of the image transformations used in DISC. Taken from DISC paper" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-02-05-DISC21-recap_files/att_00001.png" class="img-fluid figure-img"></p>
+<figcaption>More example of the image transformations used in DISC. Taken from DISC paper</figcaption>
+</figure>
+</div>
 <p>Besides the public part of the test set (Phase I of the competition), there is also final test set (Phase II) was also composed with use of adversarial attack methods and so-called “air-gap attack”. Air-gap, according to the paper is</p>
 <blockquote class="blockquote">
 <p>We asked manual editors to perform “air-gap” transformations, where the picture is displayed or printed out, and re-captured with a camera or mobile phone. It is a quite common image attack, that is hard to reproduce automatically or even with an image editor like the GIMP. Figure 8 shows an example air-gap augmentation (the zebra). The effect is a combination of over-exposure, geometric framing and blurriness on the picture.</p>
 </blockquote>
-<p><img src="2022-02-05-DISC21-recap_files/att_00002.png" title="Test set Phase 2 transformations. Taken from DISC paper" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-02-05-DISC21-recap_files/att_00002.png" class="img-fluid figure-img"></p>
+<figcaption>Test set Phase 2 transformations. Taken from DISC paper</figcaption>
+</figure>
+</div>
 <p>The paper also provides several baselines, mostly based on global and local descriptors</p>
-<p><img src="2022-02-05-DISC21-recap_files/att_00003.png" title="Baselines, provided by the challenge organizers" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-02-05-DISC21-recap_files/att_00003.png" class="img-fluid figure-img"></p>
+<figcaption>Baselines, provided by the challenge organizers</figcaption>
+</figure>
+</div>
 </section>
 </section>
 <section id="tracks-descriptor-track-and-matching-track" class="level2">
@@ -185,14 +205,39 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 </ol>
 <p>Below I will overview the winning solutions, presented at the <a href="https://sites.google.com/view/isc2021">NeurIPS2021 workshop</a>. But first let me show you a couple of slides from the <a href="https://drive.google.com/file/d/1Jcw9NWpBJ65A3RM5MaHB9-AKG_rM6-Wt/view">organizer’s analisys</a>.</p>
 <p>The easiest image transformations are geometrical ones, except cropping the image to a very small size. The hardest ones are those, which involve combination of several images. The global descriptors are very sensitive to image rotatio and vertical flip (not really surprising).</p>
-<p><img src="2022-02-05-DISC21-recap_files/att_00004.png" title="Easy-to-hard transformations. From organaizer's analysis" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-02-05-DISC21-recap_files/att_00004.png" class="img-fluid figure-img"></p>
+<figcaption>Easy-to-hard transformations. From organaizer’s analysis</figcaption>
+</figure>
+</div>
 <p>The models are more or less reasonably robust to adversarial attacks, except really strong ones.</p>
-<p><img src="2022-02-05-DISC21-recap_files/att_00005.png" title="Models sensitivity to the adversarial attacks" class="img-fluid"></p>
-<p><img src="2022-02-05-DISC21-recap_files/att_00006.png" title="Examples of the adversarial attacks" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-02-05-DISC21-recap_files/att_00005.png" class="img-fluid figure-img"></p>
+<figcaption>Models sensitivity to the adversarial attacks</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-02-05-DISC21-recap_files/att_00006.png" class="img-fluid figure-img"></p>
+<figcaption>Examples of the adversarial attacks</figcaption>
+</figure>
+</div>
 <p>Finally organizers found that have not done enough de-duplication in the dataset, meaning that models were able to discover the duplicates in the dataset. While some of this annotation errors were genuine, others were in the gray zone.</p>
 <p>For example, images, which were taken from the different positions, but the background object DOES look identical. Another example is the camera burst, where the part of the content, which is not the same across the burst images ended up cropped out by annotators or automatic procedure.</p>
-<p><img src="2022-02-05-DISC21-recap_files/att_00007.png" title="Images taken from different position, but with the object far away" class="img-fluid"></p>
-<p><img src="2022-02-05-DISC21-recap_files/att_00008.png" title="Image bursts, which are not de-duplicated" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-02-05-DISC21-recap_files/att_00007.png" class="img-fluid figure-img"></p>
+<figcaption>Images taken from different position, but with the object far away</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-02-05-DISC21-recap_files/att_00008.png" class="img-fluid figure-img"></p>
+<figcaption>Image bursts, which are not de-duplicated</figcaption>
+</figure>
+</div>
 </section>
 <section id="descriptor-track" class="level2">
 <h2 class="anchored" data-anchor-id="descriptor-track">Descriptor track</h2>
@@ -200,8 +245,18 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <h3 class="anchored" data-anchor-id="st-place-contrastive-learning-with-large-memory-bank-and-negative-embedding-subtraction-for-accurate-copy-detection">1st place: Contrastive Learning with Large Memory Bank and Negative Embedding Subtraction for Accurate Copy Detection</h3>
 <p>by Shuhei Yokoo aka lyakaap.</p>
 <p>The method takes ImageNet-21k-pretrained EfficientNetv2 from <a href="https://fastai.github.io/timmdocs/">timm</a> and trains it with contrastive loss, gradually increasing the augmentations intensity, as well as image size. Final augmentations are quite strong, see the image below. The loss is the simple constrastive loss with memory bank for the hard negatives.</p>
-<p><img src="2022-02-05-DISC21-recap_files/att_00009.png" title="Examples of augnentations by lyakaap team" class="img-fluid"></p>
-<p><img src="2022-02-05-DISC21-recap_files/att_00010.png" title="Ablation study of the different steps" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-02-05-DISC21-recap_files/att_00009.png" class="img-fluid figure-img"></p>
+<figcaption>Examples of augnentations by lyakaap team</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-02-05-DISC21-recap_files/att_00010.png" class="img-fluid figure-img"></p>
+<figcaption>Ablation study of the different steps</figcaption>
+</figure>
+</div>
 <p>Finally, Shuhei Yokoo proposes novel postprocessing technique - to subtract hard negative embedding from all database image embeddings. It added nice final boost to the submission.</p>
 <p><a href="https://arxiv.org/pdf/2112.04323.pdf">arXiv</a> <a href="https://github.com/lyakaap/ISC21-Descriptor-Track-1st">github</a></p>
 </section>
@@ -209,7 +264,12 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <h3 class="anchored" data-anchor-id="nd-place-producing-augmentation-invariant-embeddings-from-real-life-imagery">2nd place: Producing augmentation-invariant embeddings from real-life imagery</h3>
 <p>by Sergio Manuel Papadakis and Sanjay Addicam</p>
 <p>The method relies on the GeM descriptors ( trained EfficientNetv1, EfficientNetv2, NfNet) with ArcFace loss. ArcFace loss assumes classification, not contrastive setup and hard to train with &gt;1M classes. That is why the method gradually increases the number of classes (images used to train) and the classifier head is re-initialized with centroids, obtained from backbone descriptors from the previous stage. Multiple models are combined by Concat -&gt; PCA -&gt; L2Norm.</p>
-<p><img src="2022-02-05-DISC21-recap_files/att_00011.png" title="2nd place model architecture" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-02-05-DISC21-recap_files/att_00011.png" class="img-fluid figure-img"></p>
+<figcaption>2nd place model architecture</figcaption>
+</figure>
+</div>
 <p>Finally, the embeddings are modified, to take into account the most similar images from the database, similar to the 1st place, but in a bit more complicated way.</p>
 <p><a href="https://arxiv.org/pdf/2112.03415.pdf">arXiv</a>, <a href="https://github.com/socom20/facebook-image-similarity-challenge-2021">github</a></p>
 </section>
@@ -217,9 +277,19 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <h3 class="anchored" data-anchor-id="rd-place-bag-of-tricks-and-a-strong-baseline-for-image-copy-detection">3rd place: Bag of Tricks and A Strong baseline for Image Copy Detection</h3>
 <p>by Wenhao Wang, Weipu Zhang, Yifan Sun, Yi Yang</p>
 <p>The method uses ResNet50 backbone, pretrained in augmentation-supervised fashion (<a href="https://arxiv.org/abs/2103.03230">BarlowTwins</a>, unlike 1st and 2nd place, which used supervised pretrained EfficientNetv2. The model is trained with a combination of triplet and cross entropy losses with GeM pooling and WaveBlock. Finally, authors also present hard-negative aware embedding de-normalization called “descriptor stretching” – different variant of the similar idea, also used in 1st and 2nd place post-processing.</p>
-<p><img src="2022-02-05-DISC21-recap_files/att_00013.png" title="Training pipeline of the 3rd place in descriptor track" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-02-05-DISC21-recap_files/att_00013.png" class="img-fluid figure-img"></p>
+<figcaption>Training pipeline of the 3rd place in descriptor track</figcaption>
+</figure>
+</div>
 <p>Note that before descriptor stretching, results are much weaker than in 1st and 2nd place, but after the post-processing, the margin shrinks</p>
-<p><img src="2022-02-05-DISC21-recap_files/att_00014.png" title="The ablation studye. Supervised or Unsupervised denotes the supervised pre-training or unsupervised pre-training is used, respectively. Des-Str denotes adding descriptor stretching strategy. Det denotes adding overlay detection YOLOv5. Multi denotes using multi-scale testing." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-02-05-DISC21-recap_files/att_00014.png" class="img-fluid figure-img"></p>
+<figcaption>The ablation studye. Supervised or Unsupervised denotes the supervised pre-training or unsupervised pre-training is used, respectively. Des-Str denotes adding descriptor stretching strategy. Det denotes adding overlay detection YOLOv5. Multi denotes using multi-scale testing.</figcaption>
+</figure>
+</div>
 <p><a href="https://arxiv.org/abs/2111.08004">arXiv</a>, <a href="https://github.com/WangWenhao0716/ISC-Track2-Submission">github</a></p>
 </section>
 </section>
@@ -233,8 +303,18 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <li>Training specialist models on the different augmentations, e.g.&nbsp;“basic”, “basic+superdark”, “basic+superblur”, etc.</li>
 <li>Different ways of splitting the image into the subparts: by YOLOv5 object detection, by 4x4 even split, by rotating the original image, etc, each of which is then “matched” by the global descriptor similarity to the right-hand image. Local-to-global means “we aplit query and match vs reference image”, whereas “global-to-local” - - “we match whole query image to splitted reference”.</li>
 </ul>
-<p><img src="2022-02-05-DISC21-recap_files/att_00015.png" title="Winning solution pipeline" class="img-fluid"></p>
-<p><img src="2022-02-05-DISC21-recap_files/att_00016.png" title="The ablation study D2LV. Supervised and Unsupervised denotes the supervised pre-training or unsupervised pre-training is used, respectively. Global-local -- using global-local matching strategy, and Both denotes using global-local and local-global matching strategy. Adv Aug denotes using different kinds of advanced augmentations. Multi-Tricks denotes using multi-scale testing and other men- tioned tricks." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-02-05-DISC21-recap_files/att_00015.png" class="img-fluid figure-img"></p>
+<figcaption>Winning solution pipeline</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-02-05-DISC21-recap_files/att_00016.png" class="img-fluid figure-img"></p>
+<figcaption>The ablation study D2LV. Supervised and Unsupervised denotes the supervised pre-training or unsupervised pre-training is used, respectively. Global-local – using global-local matching strategy, and Both denotes using global-local and local-global matching strategy. Adv Aug denotes using different kinds of advanced augmentations. Multi-Tricks denotes using multi-scale testing and other men- tioned tricks.</figcaption>
+</figure>
+</div>
 <p><a href="https://arxiv.org/pdf/2111.07090.pdf">arXiv</a> <a href="https://github.com/WangWenhao0716/ISC-Track1-Submission">github</a></p>
 </section>
 <section id="nd-place-2nd-place-solution-to-facebook-ai-image-similarity-challenge-matching-track" class="level3">
@@ -243,14 +323,24 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <p>The paper uses a simple approach of concatenating query and reference image and feeding such collage into the vision transformer (ViT).</p>
 <p>ViT embeddings are also used to create a short-list for the matching, trained with contrastive loss (SimCLR).</p>
 <p>Similarly to the 1st place, SeungKee Jeon also used image-to-sub-images (1 -&gt; 2x2, 1-&gt;3x3) splitting technique at test time.</p>
-<p><img src="2022-02-05-DISC21-recap_files/att_00017.png" title="Matching Track model training pipeline. Reference and query image is concatenated to form as one image and ask ViT network to predict if query image used the reference image. Label is 1 if train image A is used as reference image and its augmented image is used as query image. Label is 0 if train image A is used as reference image and augmented version of other train image C is used as query image." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-02-05-DISC21-recap_files/att_00017.png" class="img-fluid figure-img"></p>
+<figcaption>Matching Track model training pipeline. Reference and query image is concatenated to form as one image and ask ViT network to predict if query image used the reference image. Label is 1 if train image A is used as reference image and its augmented image is used as query image. Label is 0 if train image A is used as reference image and augmented version of other train image C is used as query image.</figcaption>
+</figure>
+</div>
 <p><a href="https://arxiv.org/abs/2111.09113">arXiv</a> <a href="https://github.com/seungkee/2nd-place-solution-to-Facebook-Image-Similarity-Matching-Track">github</a></p>
 </section>
 <section id="rd-place-a-global-and-local-dual-retrieval-solution-to-facebook-ai-image-similarity-challenge" class="level3">
 <h3 class="anchored" data-anchor-id="rd-place-a-global-and-local-dual-retrieval-solution-to-facebook-ai-image-similarity-challenge">3rd place: A Global and Local Dual Retrieval Solution to Facebook AI Image Similarity Challenge</h3>
 <p>by Xinlong Sun, Yangyang Qin, Xuyuan Xu, Guoping Gong, Yang Fang, Yexin Wang</p>
 <p>This method is probably the most hand-engineered.</p>
-<p><img src="2022-02-05-DISC21-recap_files/att_00018.png" title="Overall pipeline, which consist of separate overlay-detection step, image retrieval with global EsViT and local descriptors - SIFT and finally their combination" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-02-05-DISC21-recap_files/att_00018.png" class="img-fluid figure-img"></p>
+<figcaption>Overall pipeline, which consist of separate overlay-detection step, image retrieval with global EsViT and local descriptors - SIFT and finally their combination</figcaption>
+</figure>
+</div>
 <ol type="1">
 <li>The images are pre-processed with overlay-detection – out-of-the-box YOLOv5. Detected overlays are treated as a separate images.</li>
 <li>The global descriptor EsViT (Swin-B) is pretrained in self-supervised fashion on ImageNet, then with contrastive loss on the challange dataset, with hard-negative memory bank.</li>
@@ -260,7 +350,12 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <li>Resize images to 300px -&gt; SIFT features (~600 per image) -&gt; 600M descriptors. Use brute-force search in faiss with fp16 precision. That takes 165Gb memory, fit with 8 V100 GPUs. Threshold the descriptor distance first, the number of matched features second.</li>
 </ol>
 <p>According to the ablation study, SIFT was significantly worse, than global EsViT descriptor in Phase I, but significantly boosted overall score in Phase 2.</p>
-<p><img src="2022-02-05-DISC21-recap_files/att_00020.png" title="Ablation study. G-emb means global embedding, F means finetune, and P means using Preprocessing Module." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-02-05-DISC21-recap_files/att_00020.png" class="img-fluid figure-img"></p>
+<figcaption>Ablation study. G-emb means global embedding, F means finetune, and P means using Preprocessing Module.</figcaption>
+</figure>
+</div>
 <p><a href="https://arxiv.org/abs/2112.02373">arXiv</a>, <a href="https://github.com/sun-xl/ISC2021">github</a></p>
 </section>
 </section>

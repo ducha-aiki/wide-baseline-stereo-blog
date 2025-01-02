@@ -202,14 +202,24 @@ window.Quarto = {
 <p>By <strong>wide baseline stereo</strong> we understand the process of establishing two or multi-view correspondences <span class="math inline">\(C_o\)</span> from observations <span class="math inline">\(O_i\)</span> and images <span class="math inline">\(V_{j}\)</span> and recovering the missing information about the views and estimatting the unknown parameters of the world model.</p>
 <p>Most often in the current thesis we will be using the the following world model. The scene consists of 3 dimentional elements, and is rigid and static. The observations are the 2D projections to the camera plane by the projectice pinhole camera. The relationship between observations in different views is either epipolar geometry, or projective transform. Any moving object does not satisty the world model and therefore is considered an occlusion. We will call the “baseline” the distance between the camera centers.</p>
 <p>For example, on image below, observations <span class="math inline">\(O_i\)</span> are blue circles and the correspondences <span class="math inline">\(c_{jk}\)</span> are shown as lines. The assumed object <span class="math inline">\(X_i\)</span> is a red circle.</p>
-<p><img src="imgs/WxBS_house.jpeg" title="Example of multimodal wide baseline stereo" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs/WxBS_house.jpeg" class="img-fluid figure-img"></p>
+<figcaption>Example of multimodal wide baseline stereo</figcaption>
+</figure>
+</div>
 <p>We will call “<strong>wide multiple baseline stereo</strong>” or <strong>WxBS</strong> if the observations have different nature or the conditions under which observation were made are different.</p>
 <p>The different between <strong>wide baseline stereo</strong> and <strong>short baseline stereo</strong>, or, simply <strong>stereo</strong> is the follwing. In <strong>stereo</strong> the baseline is small – less then 1 meter – and typically known and fixed. The task is to establish correspondences, which can be done by 1D search along the known epipolar lines.</p>
 <p>In contrast, in <strong>wide baseline stereo</strong> the baseline is unknown, mostly unconstrained and the viewpoints of the cameras can vary drastically.</p>
 <p>The wide baseline stereo, which also outputs the estimation of the latent objects, e.g.&nbsp;in form of 3d point world coordinates we would call <strong>rigid structure-from-motion</strong> (rigid SfM) or <strong>3D reconstruction</strong>. We do not consider object shape approximation with voxels, meshes, etc in the current thesis. Nor we consider the recovery of scene albedo, illumination, and other appearance properties.</p>
 <p>While the difference between <strong>SfM</strong> and <strong>WBS</strong> is often blurred and the terms are used interchangeably, we would consider WBS as a part of SfM pipeline prior to recovering 3d point cloud.</p>
 <p>Other correspondence problems, as tracking, optical flow or establishing semantic correspondences could be defined using the terminilogy we established.</p>
-<p><img src="imgs/wxbs_problems.png" title="Example of WxBS problems" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imgs/wxbs_problems.png" class="img-fluid figure-img"></p>
+<figcaption>Example of WxBS problems</figcaption>
+</figure>
+</div>
 </section>
 <section id="references" class="level1">
 <h1>References</h1>

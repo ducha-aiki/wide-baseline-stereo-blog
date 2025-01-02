@@ -163,27 +163,42 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <h2 class="anchored" data-anchor-id="what-has-been-changed-in-the-challenge-itself-kaggle">What has been changed in the challenge itself? Kaggle!</h2>
 <p>Yes, it is the main change, compared to previous years. How it works: - Participants submit notebooks that run offline - Test set remains private (not visible to participants) : very difficult to cheat (big concern at Kaggle) - Allows for quick iterations</p>
 <p>That allowed us to get 25x more participants and 150x more submissions</p>
-<p><img src="2022-06-29-IMC2022_files/att_00001.png" title="We have 14 186 submissions from 642 teams this year" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-06-29-IMC2022_files/att_00001.png" class="img-fluid figure-img"></p>
+<figcaption>We have 14 186 submissions from 642 teams this year</figcaption>
+</figure>
+</div>
 <p>There are other differences compared to the previous years.</p>
 <ol type="1">
 <li><p>No multiview track. Unlike previous competitions with multivew and stereo tracks, this year we focused on stereo only. There are many reasons for it, but the main is technical difficulty - to run and evaluate this under reasonable time limit. Having a pair of images as an input also could potentially broaden the family of methods used by participants.</p></li>
 <li><p>New dataset and new metric. Unlike previous years, where our GT data was scale-less, now we have a metric ground truth, so we can evaluate translation error more in line with visual re-localization literature. We also used non-public dataset from Google, not available anywhere online. This was also only possible because of <a href="https://www.kaggle.com/docs/competitions#notebooks-only-FAQ">Kaggle Code competition</a> nature.</p></li>
 <li><p>Time limit. I have mentioned this already, but it is important. The submission should finish in 9 hours on Kaggle GPU virtual instance. This forced teams to think, what to add, and what not. Simple example would be a semantic segmentation masking - teams decided that benefit is not worth computational overhead it brings.</p></li>
 </ol>
-<p><img src="2022-06-29-IMC2022_files/att_00002.png" title="Inliers from LoFTR and KeyNetAffNetHardnet from kornia on one of 3 image pairs" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-06-29-IMC2022_files/att_00002.png" class="img-fluid figure-img"></p>
+<figcaption>Inliers from LoFTR and KeyNetAffNetHardnet from kornia on one of 3 image pairs</figcaption>
+</figure>
+</div>
 </section>
 <section id="top-solutions-2022-overview" class="level2">
 <h2 class="anchored" data-anchor-id="top-solutions-2022-overview">Top solutions-2022 overview</h2>
 <p>Unlike previous competitions, almost all the top-performing teams have converged to almost the same pipeline, although different in implementation details, but based on the same ideas. Let me condence it is for you, and if you are interested in participants own write-ups, just scroll down, I will provide all the links after the post.</p>
 <p>The only top-participant, who did not apply any pre/post-processing is 2nd place winner hkchkc. It is based on novel matcher (let’s call it LoFTR 2.0), which he did not want to disclose yet. Anyway, check <a href="https://www.kaggle.com/competitions/image-matching-challenge-2022/discussion/329317">his write-up here</a>.</p>
 <p>So, the general pipeline is shown below. The following steps are present in the most of solutions:</p>
-<p><img src="2022-06-29-IMC2022_files/general-scheme-1c.png" title="Common pipeline among the top-performers of IMC-2022" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-06-29-IMC2022_files/general-scheme-1c.png" class="img-fluid figure-img"></p>
+<figcaption>Common pipeline among the top-performers of IMC-2022</figcaption>
+</figure>
+</div>
 <ol type="1">
 <li><p>Obtaining initial pool of matches, using a combination of off-the-shelf models. Such models are LoFTR, SuperGlue, QuadTree Attention LoFTR and DKM. Some of the teams also applied test-time scale augmentation (TTA) and concatenated tentative correspondence, which came from matching differently-resize images.</p></li>
 <li><p>The next step is an estimation of the co-visible area between two images, similar to <a href="https://arxiv.org/abs/2112.04846">ScaleNet</a> idea, but totally handcrafted and based on tentative matches. The approach is to cluster the matches using K-means or DBSCAN and then find the bounding box in each image, which contains the most of the matches. This can lead to potentially several “co-visible areas”. One may take a step further and estimate the homography between each matching region. An alternative to clustering (from 9th place) is to use MAGSAC++ with few iterations and coarse threshold to reject the most of outliers, and get the bounding box .</p></li>
 <li><p>Each of such co-visible and matching regions is then cropped and resized to a predefined image size. Then the base-matcher, or other set of matching algorithms are applied for this “zoomed-in” image pair. All the correspondences are then reprojected into original image pair coordinates and contatenated with original correspondences. <strong>Important</strong>: “zoomed-in” is used to entend original tentative correspondences, not replace them, otherwise first failure would kill the matching process.</p></li>
 <li><p>The correspondences are (optionally) filtered with some kind of non-maxima-suppression, like <a href="https://github.com/BAILOOL/ANMS-Codes">ANMS</a> or radius-based NMS. The intuition here is to select the fewer set of more precise matches. It is interesting, that no team run any kind of filtering network as OANet.</p></li>
-<li><p>MAGSAC++ from OpenCV (as recommended in <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/17/OpenCV-New-RANSACs.html">my evaluation</a>) is applied to find fundamental matrix.</p></li>
+<li><p>MAGSAC++ from OpenCV (as recommended in <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2021-05-17-OpenCV-New-RANSACs.html">my evaluation</a>) is applied to find fundamental matrix.</p></li>
 </ol>
 </section>
 <section id="tricks-which-improve-results" class="level2">
@@ -198,7 +213,12 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <ol type="1">
 <li>Some teams successfully used <a href="https://arxiv.org/abs/2003.08348">two-view keypoint refinement</a>, while others <a href="https://www.kaggle.com/competitions/image-matching-challenge-2022/discussion/328982">didn’t make it work</a>.</li>
 </ol>
-<p><img src="2022-06-29-IMC2022_files/att_00005.png" title="Illustration from Multi-View Optimization of Local Feature Geometry" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-06-29-IMC2022_files/att_00005.png" class="img-fluid figure-img"></p>
+<figcaption>Illustration from Multi-View Optimization of Local Feature Geometry</figcaption>
+</figure>
+</div>
 <ol start="2" type="1">
 <li>Unlike <a href="https://ieeexplore.ieee.org/abstract/document/9511155">MAGSAC++</a>, which works out of the box, <a href="https://arxiv.org/abs/2106.10240v2">VSAC</a> could bring significant time improvements, but needs a lot of hyperparameter tuning, otherwise epipolar geometry quality suffers.</li>
 </ol>
@@ -211,7 +231,12 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <li><p>Resize method matters a little bit: <a href="https://www.kaggle.com/competitions/image-matching-challenge-2022/discussion/328803#1809862">Lanczos</a> seems to work the best.</p></li>
 <li><p>Coordinates refinement by ECO-TR (improved fast version of <a href="https://github.com/ubc-vision/COTR">COTR</a>, not yet available online)</p></li>
 </ol>
-<p><img src="2022-06-29-IMC2022_files/att_00006.png" title="Refinement by ECO-TR" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-06-29-IMC2022_files/att_00006.png" class="img-fluid figure-img"></p>
+<figcaption>Refinement by ECO-TR</figcaption>
+</figure>
+</div>
 </section>
 <section id="does-not-work" class="level2">
 <h2 class="anchored" data-anchor-id="does-not-work">Does not work</h2>

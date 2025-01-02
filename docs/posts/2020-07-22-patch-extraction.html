@@ -160,20 +160,35 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 
 
 <p>When working with local features one needs to pay attention to even a smallest details, or the whole process can be ruined. One of such details is how to extract the patch, which will be described by local descriptor such as SIFT or HardNet.</p>
-<p><img src="2020-07-22-patch-extraction_files/att_00000.png" title="In order to describe the local patch one first has to extract it. Figure from A Few Things One Should Know About Feature Extraction, Description and Matching" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-07-22-patch-extraction_files/att_00000.png" class="img-fluid figure-img"></p>
+<figcaption>In order to describe the local patch one first has to extract it. Figure from A Few Things One Should Know About Feature Extraction, Description and Matching</figcaption>
+</figure>
+</div>
 <p>Unfortunately, we cannot just extract patch from the image by cropping the patch and then resizing it. Or can we? Let’s check. We will use two versions of image: original and 4x smaller one and would like to extract same-looking fixed size patch from both of them. The patch we want to crop is showed by oriented red circle.</p>
-<p><img src="2020-07-22-patch-extraction_files/both_imgs.png" title="Two versions of the same image: original and 4x smaller" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-07-22-patch-extraction_files/both_imgs.png" class="img-fluid figure-img"></p>
+<figcaption>Two versions of the same image: original and 4x smaller</figcaption>
+</figure>
+</div>
 <section id="aliasing" class="level2">
 <h2 class="anchored" data-anchor-id="aliasing">Aliasing</h2>
 <p>And here what we get by doing a simple crop and resize to 32x32 pixels.</p>
-<p><img src="2020-07-22-patch-extraction_files/naive_patches.png" title="Patches, which are extracted from images of different sizes look different, if extraction done in a naive way" class="img-fluid"></p>
-<p>Doesn’t look good. It is called “<a href="https://en.wikipedia.org/wiki/Aliasing">aliasing</a>” - a problem, which arise when we are trying to downscale big images into small resolution. Specifically: the original image contains finer details, than we could represent in thumbnail, which leads to artifacts. <img src="2020-07-22-patch-extraction_files/ep.jpg" title="One does not simply extract patch from the image" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-07-22-patch-extraction_files/naive_patches.png" class="img-fluid figure-img"></p>
+<figcaption>Patches, which are extracted from images of different sizes look different, if extraction done in a naive way</figcaption>
+</figure>
+</div>
+<p>Doesn’t look good. It is called “<a href="https://en.wikipedia.org/wiki/Aliasing">aliasing</a>” - a problem, which arise when we are trying to downscale big images into small resolution. Specifically: the original image contains finer details, than we could represent in thumbnail, which leads to artifacts. <img src="2020-07-22-patch-extraction_files/ep.jpg" class="img-fluid" alt="One does not simply extract patch from the image"></p>
 </section>
 <section id="the-solution-anti-aliasing" class="level2">
 <h2 class="anchored" data-anchor-id="the-solution-anti-aliasing">The solution: anti-aliasing</h2>
 <p>The solution, which follows out of <a href="https://en.wikipedia.org/wiki/Nyquist%E2%80%93Shannon_sampling_theorem">sampling theorem</a> is known: remove the details, which cannot be seens in small image first, then resample image to small size.</p>
 <p>The simplest way to remove the fine details is to blur image with the Gaussian kernel.</p>
-<p>Lets do it and compare the results. <img src="2020-07-22-patch-extraction_files/all_patches.png" title="When extracted properly, patches look same" class="img-fluid"></p>
+<p>Lets do it and compare the results. <img src="2020-07-22-patch-extraction_files/all_patches.png" class="img-fluid" alt="When extracted properly, patches look same"></p>
 <p>By the way, you can try for yourself, all the required code is <a href="https://github.com/kornia/kornia-examples/blob/master/aliased-and-not-aliased-patch-extraction.ipynb">here, in kornia-examples</a></p>
 </section>
 <section id="performance" class="level2">
@@ -181,14 +196,24 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <p>The problem is solved. Or is it?</p>
 <p>The problem with properly antialiased patch extraction is that it is quite slow for two reasons. First, blurring a whole image is a costly operation. But, the worst part is that the required amount of blur depends on the patch size in the original image, or, in other words, keypoint scale. So for extracting, say 8000 patches, one needs to perform blurring 8000 times. Moreover, if one wants to extract elongated region and warp it to the square patch, the amount of blur in vertical and horizontal directions should be different!</p>
 <p>What can be done? Well, instead of doing blurring 8000 times, one could create so called scale pyramid and then pick the level, which is the closest to optimal one, predicted by theorem.</p>
-<p><img src="2020-07-22-patch-extraction_files/Image_pyramid.png" title="Image from Wikimedia by wiki-user Cmglee https://en.wikipedia.org/wiki/File:Image_pyramid.svg" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-07-22-patch-extraction_files/Image_pyramid.png" class="img-fluid figure-img"></p>
+<figcaption>Image from Wikimedia by wiki-user Cmglee https://en.wikipedia.org/wiki/File:Image_pyramid.svg</figcaption>
+</figure>
+</div>
 <p>This is exactly, what kornia function <a href="https://kornia.readthedocs.io/en/latest/feature.html#kornia.feature.extract_patches_from_pyramid">extract_patches_from_pyramid</a> does.</p>
 <p>Also - I have a bit cheated with you above: the “anti-aliased” patches were actually extracted using the function above.</p>
 </section>
 <section id="how-it-impacts-local-descriptor-matching" class="level2">
 <h2 class="anchored" data-anchor-id="how-it-impacts-local-descriptor-matching">How it impacts local descriptor matching?</h2>
 <p>Let’s do the toy example first - describe four patches we have in the example above with HardNet descriptor and calculate the distance between them.</p>
-<p><img src="2020-07-22-patch-extraction_files/att_00001.png" title="Descriptor difference between antialiased patches is 0.09 and between naively extracted -- 0.44" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-07-22-patch-extraction_files/att_00001.png" class="img-fluid figure-img"></p>
+<figcaption>Descriptor difference between antialiased patches is 0.09 and between naively extracted – 0.44</figcaption>
+</figure>
+</div>
 <p>So the descriptor difference between antialiased patches is 0.09 and between naively extracted – 0.44. 0.09 is not a big deal, but 0.44 is a lot, actually.</p>
 <p>Let’s move to the non-toy example from the paper devoted to this topic: “<a href="http://cmp.felk.cvut.cz/~mishkdmy/lenc-2014-features-cvww.pdf">A Few Things One Should Know About Feature Extraction, Description and Matching</a>”.</p>
 <p>The original data is lost I am too lazy to redo the experiments for the post, so I will just copy-past images with results. Here are abbrevations used in the paper:</p>
@@ -200,7 +225,12 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 </ul>
 <p>As you can see, doing things optimally is quite slow. <img src="2020-07-22-patch-extraction_files/att_00003.png" title="Time spent on a various stages of local feature extraction" class="img-fluid" alt="image.png"></p>
 <p>Now let’s see how it influences performance.</p>
-<p><img src="2020-07-22-patch-extraction_files/att_00005.png" title="Number of matches for MSER and Hessian-Affine + SIFT on Grffity sequence of Oxford-Affine dataset for different patch extraction methods" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-07-22-patch-extraction_files/att_00005.png" class="img-fluid figure-img"></p>
+<figcaption>Number of matches for MSER and Hessian-Affine + SIFT on Grffity sequence of Oxford-Affine dataset for different patch extraction methods</figcaption>
+</figure>
+</div>
 <p>It looks like that influence is smaller than we thought. But recall that the experiment above is for SIFT descriptor only. Doing pyramid helps for the small viewpoint change almost as good, as going fully optimal, but with increasing the viewpoint difference, such approximation degrades. Moreover, it influnces MSER detector much more that than Hessian-Affine.</p>
 <p>How does it work with deep descriptors like HardNet or SoSNet? That is the question which not answered yet. Drop me a message if you want to do it yourself and we can do the follow-up post together.</p>
 </section>

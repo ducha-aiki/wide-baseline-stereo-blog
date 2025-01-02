@@ -160,7 +160,12 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 
 
 <p>I would like to share my thoughts on 3DV 2020 paper “<a href="https://arxiv.org/pdf/2011.11946.pdf">Benchmarking Image Retrieval for Visual Localization</a>” by Pion et.al.</p>
-<p><img src="2020-11-25-review-of-retrieval-for-localization_files/att_00000.png" title="Overview of the benchmark pipeline" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-11-25-review-of-retrieval-for-localization_files/att_00000.png" class="img-fluid figure-img"></p>
+<figcaption>Overview of the benchmark pipeline</figcaption>
+</figure>
+</div>
 <section id="what-is-the-paper-about" class="level1">
 <h1>What is the paper about?</h1>
 <p>How one would approach visual localization? The most viable way to do it is hierarchical approach, similar to image retrieval with spatial verification.</p>
@@ -186,7 +191,7 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <li><a href="https://arxiv.org/abs/2001.05027">DELG</a></li>
 </ul>
 <p>What is important (and adequately mentioned in the paper, although I would prefer the disclamer in the each figure) is that <strong>all CNN-based methods have different architectures AND training data</strong>. Basically, the paper uses author-released models. Thus one cannot say if APGeM is better or worse than NetVLAD as method, because they were trained on the very different data. However, I also understand that one cannot easily afford to re-implement and re-train everything.</p>
-<p>As the sanity check paper provides the results on the <a href="http://cmp.felk.cvut.cz/revisitop/">Revisited Oxford and Paris</a> image retrieval benchmark. <img src="2020-11-25-review-of-retrieval-for-localization_files/att_00001.png" title="Retrieval metrics on Revised Oxford and Paris" class="img-fluid"></p>
+<p>As the sanity check paper provides the results on the <a href="http://cmp.felk.cvut.cz/revisitop/">Revisited Oxford and Paris</a> image retrieval benchmark. <img src="2020-11-25-review-of-retrieval-for-localization_files/att_00001.png" class="img-fluid" alt="Retrieval metrics on Revised Oxford and Paris"></p>
 </section>
 <section id="summary-of-results" class="level1">
 <h1>Summary of results</h1>

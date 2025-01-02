@@ -200,8 +200,13 @@ window.Quarto = {
 <section id="really-quick-intro-into-local-patch-descriptors" class="level2">
 <h2 class="anchored" data-anchor-id="really-quick-intro-into-local-patch-descriptors">Really quick intro into local patch descriptors</h2>
 <p>Local patch descriptor is the thing, which helps you to automatically decide, if two patches in the pair of images correspond to the same point in a real world, or not. It should be robust to illumination, viewpoint and other changes.</p>
-<p><img src="2020-09-16-local-descriptors-validation_files/att_00003.png" title="The task of local descriptor, neural network here, is to decide if two patches belong to the same point, or nor. Image taken from SoSNet decriptor blogpost by Vassileios Balntas https://medium.com/scape-technologies/mapping-the-world-part-4-sosnet-to-the-rescue-5383671713e7" class="img-fluid"></p>
-<p>There are lots of ways how to implement a local patch descriptor: engineered and learned. Local patch descriptor is the crucial component of the <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2020/03/27/intro.html">wide baseline stereo pipeline</a> and a popular computer vision research topic.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-09-16-local-descriptors-validation_files/att_00003.png" class="img-fluid figure-img"></p>
+<figcaption>The task of local descriptor, neural network here, is to decide if two patches belong to the same point, or nor. Image taken from SoSNet decriptor blogpost by Vassileios Balntas https://medium.com/scape-technologies/mapping-the-world-part-4-sosnet-to-the-rescue-5383671713e7</figcaption>
+</figure>
+</div>
+<p>There are lots of ways how to implement a local patch descriptor: engineered and learned. Local patch descriptor is the crucial component of the <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2020-03-27-intro.html">wide baseline stereo pipeline</a> and a popular computer vision research topic.</p>
 </section>
 <section id="why-do-you-need-development-set" class="level2">
 <h2 class="anchored" data-anchor-id="why-do-you-need-development-set">Why do you need development set?</h2>
@@ -213,7 +218,12 @@ window.Quarto = {
 <p>So, what are the development set options for local patch descriptors?</p>
 <section id="brown-phototourism." class="level3">
 <h3 class="anchored" data-anchor-id="brown-phototourism.">Brown PhotoTourism.</h3>
-<p><img src="2020-09-16-local-descriptors-validation_files/brown_patches.png" title="Patches from 3 subsets of Brown Phototourism dataset" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-09-16-local-descriptors-validation_files/brown_patches.png" class="img-fluid figure-img"></p>
+<figcaption>Patches from 3 subsets of Brown Phototourism dataset</figcaption>
+</figure>
+</div>
 <p>The most commonly and successfully used dataset for local descriptor learning is PhotoTourism, created in 2008. Here is its <a href="http://matthewalunbrown.com/patchdata/patchdata.html">description by authors</a>:</p>
 <blockquote class="blockquote">
 <p>The dataset consists of corresponding patches sampled from 3D reconstructions of the Statue of Liberty (New York), Notre Dame (Paris) and Half Dome (Yosemite).</p>
@@ -236,7 +246,7 @@ window.Quarto = {
 <p><a href="https://github.com/hpatches/hpatches-dataset">HPatches</a>, where H stands for the “<a href="https://en.wikipedia.org/wiki/Homography">homography</a>” was proposed to overcome the problem of unrealisting metric and, seemingly, too easy data, used in Phototourism dataset.</p>
 <p>It was constructed in a different way than a Phototourism. First, local features were detected in the “reference” image and then reprojected to other images in sequences. Reprojection is prossible, because all the images are photographies of the planes – graffity, drawing, print, etc, or are all taken from the same position. After the reprojection, some amount of geometrical noise – rotation, translation, scaling, was added to the local features and the patches were extracted.</p>
 <p>This process is illustration on the picture below (both taken from the <a href="https://github.com/hpatches/hpatches-dataset">HPatches website</a>).</p>
-<p><img src="2020-09-16-local-descriptors-validation_files/images_hard.png" title="Visualization of the hard patches locations in the target images." class="img-fluid"> <img src="2020-09-16-local-descriptors-validation_files/patches_hard.png" title="Extracted hard patches from the example sequence." class="img-fluid"></p>
+<p><img src="2020-09-16-local-descriptors-validation_files/images_hard.png" class="img-fluid" alt="Visualization of the hard patches locations in the target images."> <img src="2020-09-16-local-descriptors-validation_files/patches_hard.png" class="img-fluid" alt="Extracted hard patches from the example sequence."></p>
 <p>HPAtches also provide 3 testing protocol, evaluating mean average precision (mAP) for 3 different tasks: patch verification – similar to Brown Phototourism, image matching and patch retrieval. The variable, used to build mAP is descriptor distance between two patches.</p>
 <p>Advantages:</p>
 <ul>
@@ -259,7 +269,7 @@ window.Quarto = {
 <section id="amospatches" class="level3">
 <h3 class="anchored" data-anchor-id="amospatches">AMOSPatches</h3>
 <p><a href="https://github.com/pultarmi/AMOS_patches">AMOS patches</a> is “HPatches illumination on steroids, without geometrical noise”. It has the same advantanges and disadvantages, as HPatches and is mostly focused on illumination and weather changes.</p>
-<p><img src="2020-09-16-local-descriptors-validation_files/att_00002.png" title="Some images, contributing to AMOSPatches" class="img-fluid"> <img src="2020-09-16-local-descriptors-validation_files/amos_patches_small.png" title="Some patches from AMOS Patches dataset" class="img-fluid"></p>
+<p><img src="2020-09-16-local-descriptors-validation_files/att_00002.png" class="img-fluid" alt="Some images, contributing to AMOSPatches"> <img src="2020-09-16-local-descriptors-validation_files/amos_patches_small.png" class="img-fluid" alt="Some patches from AMOS Patches dataset"></p>
 </section>
 <section id="photosynth" class="level3">
 <h3 class="anchored" data-anchor-id="photosynth">PhotoSynth</h3>
@@ -285,7 +295,12 @@ window.Quarto = {
 <p>Classical local descriptor matching consists of two parts: finding nearest neighbors and filtering unreliable ones based on some criterion. I have wrote a <a href="https://medium.com/@ducha.aiki/how-to-match-to-learn-or-not-to-learn-part-2-1ab52ede2022">blogpost, describing the matching strategies in details</a>.</p>
 <p>The most used in practice criterion is the first to second nearest neighbor distance (Lowe’s) ratio threshold for filtering false positive matches. It is shown in the figure below.</p>
 <p>The intuition is simple: if two candidates are too similar, then the match is unreliable and it is better to drop it.</p>
-<p><img src="2020-09-16-local-descriptors-validation_files/att_00004.png" title="Second nearest ratio strategy. Features from img1 -- blue circles -- are matched to features from img2 -- red squares. For each point in img1 we calculate two nearest neighbors and check their distance ratio . If both are too similar, i.e. >0.8, bottom at Figure, then the match is discarded. Only confident matches are kept. Right graph is from SIFT paper, justification of such strategy." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-09-16-local-descriptors-validation_files/att_00004.png" class="img-fluid figure-img"></p>
+<figcaption>Second nearest ratio strategy. Features from img1 – blue circles – are matched to features from img2 – red squares. For each point in img1 we calculate two nearest neighbors and check their distance ratio . If both are too similar, i.e.&nbsp;&gt;0.8, bottom at Figure, then the match is discarded. Only confident matches are kept. Right graph is from SIFT paper, justification of such strategy.</figcaption>
+</figure>
+</div>
 <p>Somehow, none of the local patch evaluation protocols does not take such filtering criterion in mind, although it greatly influences the overall performance.</p>
 <p>So, let’s do the following:</p>
 <ol type="1">
@@ -394,7 +409,12 @@ Kornia RootSIFTPCA 3 60.73  60.64        50.80  50.24        52.46  52.02
 MKD-concat-lw-32 32p 72.27  71.95        60.88  58.78        60.68  59.10
 ------------------------------------------------------------------------------</code></pre>
 <p>So far - in agreement with IMC benchmark: SIFT and RootSIFT are good, but not the best, SOSNet and HardNet are the leaders, but within tens of percents, not by orders of magnitude.</p>
-<p><img src="2020-09-16-local-descriptors-validation_files/att_00005.png" title="Image Matching Benchmark results, from https://arxiv.org/abs/2003.01587" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2020-09-16-local-descriptors-validation_files/att_00005.png" class="img-fluid figure-img"></p>
+<figcaption>Image Matching Benchmark results, from https://arxiv.org/abs/2003.01587</figcaption>
+</figure>
+</div>
 <section id="disclaimer-1-dont-trust-this-tables-fully" class="level3">
 <h3 class="anchored" data-anchor-id="disclaimer-1-dont-trust-this-tables-fully">Disclaimer 1: don’t trust this tables fully</h3>
 <p>I haven’t (yet!) checked if all the deep descriptors models, trained on Brown, were trained with flip-rotation 90 degrees augmentation. In the code below I assume that they were, however, it might not be true – and the comparison might not be completely fair. I will do my best to check it, but if you know that I have used wrong weights - please <a href="https://github.com/ducha-aiki/brown_phototour_revisited/issues">open an issue</a>. Thank you.</p>

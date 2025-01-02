@@ -163,25 +163,45 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <h2 class="anchored" data-anchor-id="super-starts-with-magic">Super starts with Magic</h2>
 <p>If you work in image matching, you know <a href="https://arxiv.org/abs/1712.07629">SuperPoint</a>. If you don’t - that is one of the most successful modern local feature, developed by Daniel DeTone, Tomasz Malisiewicz and Andrew Rabinovich in 2017.</p>
 <p>Idea was simple and genious: we know that corners are good keypoints. Let’s train a basic corner (in wide meaning) on unlimited synthetic data. Then we somehow adapt it to realworld images.</p>
-<p><img src="2022-12-31-UnsuperPoint-family_files/att_00001.png" title="SuperPoint starts with MagicPoint - corner/junctions detector supervised by synthetically rendered cube scenes." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-12-31-UnsuperPoint-family_files/att_00001.png" class="img-fluid figure-img"></p>
+<figcaption>SuperPoint starts with MagicPoint - corner/junctions detector supervised by synthetically rendered cube scenes.</figcaption>
+</figure>
+</div>
 <p>The adaptation is done under augmentation supervision. In other word - we believe that our detector is already good, but noisy and we will cancel this noise by running the same detector on multiple augmented version of the same image, which gives us pseudo-ground truth. The training is done via optimizing cross-entropy loss, which leads to very peaky response map compared to other alternatives such as R2D2.</p>
-<p><img src="2022-12-31-UnsuperPoint-family_files/att_00002.png" title="MagicPoint becomes SuperPoint after being finetuned on real images with augmentation supervision." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-12-31-UnsuperPoint-family_files/att_00002.png" class="img-fluid figure-img"></p>
+<figcaption>MagicPoint becomes SuperPoint after being finetuned on real images with augmentation supervision.</figcaption>
+</figure>
+</div>
 <p>That’s it. The resulting detector (and descriptor) was fast enough on GPU and great for SLAM purposes. It was especially good on indoor images with lots of textureless areas.</p>
-<p>On outdoor images it was not so great, however, as it was shown later, the problem was more in descriptor and matching, not detector. <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/14/IMC2020-competition-recap.html">SuperGlue matching</a> on top of SuperPoint local features won 3 competitions at CVPR 2020, including our <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/14/IMC2020-competition-recap.html">Image Matching Challenge</a>.</p>
+<p>On outdoor images it was not so great, however, as it was shown later, the problem was more in descriptor and matching, not detector. <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2021-05-14-IMC2020-competition-recap.html">SuperGlue matching</a> on top of SuperPoint local features won 3 competitions at CVPR 2020, including our <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2021-05-14-IMC2020-competition-recap.html">Image Matching Challenge</a>.</p>
 <p>So, it was huge success. However, not without drawbacks. The main drawback is that training code was never released. That is why people tried independently re-implement SuperPoint, as well as present new, supposedly better versions of it.</p>
 <p>Unfortunately, none of this version was properly evaluated, so we have no idea how they work in reality. Let me fill this gap and present a small eval of the SuperPoint children.</p>
 <p>I’ll first do a short review of how are they different, and the benchmark will be in the last section.</p>
 <section id="original-superpoint" class="level3">
 <h3 class="anchored" data-anchor-id="original-superpoint">Original SuperPoint</h3>
 <p>Besides the description, I will show how the detections are different between implementations. I will use two images. One is realworld photo taken by myself on Xiaomi phone, and another one is synthetic from <a href="https://learnopencv.com/blob-detection-using-opencv-python-c/">OpenCV Blob detection tutorial</a>. It is kind of adversarial, as SuperPoint is not designed to fire or not fire on circular patterns. Well, that is exactly why I added that image. So here are the original SP detections:</p>
-<p><img src="2022-12-31-UnsuperPoint-family_files/sp_dets1.png" title="MagicLeap SuperPoint detections" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-12-31-UnsuperPoint-family_files/sp_dets1.png" class="img-fluid figure-img"></p>
+<figcaption>MagicLeap SuperPoint detections</figcaption>
+</figure>
+</div>
 </section>
 <section id="rd-party-superpoint-implementations" class="level3">
 <h3 class="anchored" data-anchor-id="rd-party-superpoint-implementations">3rd party SuperPoint implementations</h3>
 <p>There are two main 3rd party SuperPoint implementations. <a href="https://github.com/rpautrat/SuperPoint">One of them</a> is in Tensorflow, by Rémi Pautrat and Paul-Edouard Sarlin. I will skip this one, because I am too lazy to install TF on my M1 machine. So I will show another - Pytorch - implementation, which is based on Tensorflow one, and is developed by <a href="https://github.com/eric-yyjau/pytorch-superpoint">You-Yi Jau and Rui Zhu</a>.</p>
 <p>Besides being 3rd party implementation, this one also has architectural changes. They are: - <a href="https://github.com/eric-yyjau/pytorch-superpoint/blob/master/models/SuperPointNet_gauss2.py#L31">adding BatchNorm</a>. - using <a href="https://github.com/eric-yyjau/pytorch-superpoint/blob/master/models/model_utils.py#L118">SoftArgMax2d from torchgeometry</a> (early version of <a href="https://github.com/kornia/kornia">kornia</a>) to achieve subpixel accuracy.</p>
 <p>Here are the detections by this version and original.</p>
-<p><img src="2022-12-31-UnsuperPoint-family_files/sp.gif" title="Pytorch-SuperPoint and MagicLeap SuperPoint detections" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-12-31-UnsuperPoint-family_files/sp.gif" class="img-fluid figure-img"></p>
+<figcaption>Pytorch-SuperPoint and MagicLeap SuperPoint detections</figcaption>
+</figure>
+</div>
 <p>Here is also a short report by one of the authors: <a href="https://eric-yyjau.medium.com/what-have-i-learned-from-the-implementation-of-deep-learning-paper-365ee3253a89">What have I learned from the implementation of deep learning paper?</a></p>
 </section>
 </section>
@@ -190,10 +210,20 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <section id="reinforced-superpoint" class="level3">
 <h3 class="anchored" data-anchor-id="reinforced-superpoint">Reinforced SuperPoint</h3>
 <p>This is a paper by Aritra Bhowmik et al, named <a href="https://arxiv.org/pdf/1912.00623.pdf">Reinforced Feature Points: Optimizing Feature Detection and Description for a High-Level Task</a>. The main idea is that one can use reinforcement learning to optimize non-differentiable downstream metric such as camera pose accuracy through RANSAC.</p>
-<p><img src="2022-12-31-UnsuperPoint-family_files/att_00007.png" title="Reinforced SuperPoint training pipeline" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-12-31-UnsuperPoint-family_files/att_00007.png" class="img-fluid figure-img"></p>
+<figcaption>Reinforced SuperPoint training pipeline</figcaption>
+</figure>
+</div>
 <p>The idea is very cool, but the final result is not so. Specifically, the main thing end up optimized is keypoint score function. Which can increase a precision of the keypoint detector, but not the recall. See the image below for the illustration. The synthetic image at the right clearly benefits, but the realworld image - not so much, because of loosing many keypoints on the ground.</p>
 <p>This also can explain a bit worse performance of the Reinforced SuperPoint in our evaluation - we don’t set the confidence threshold, but instead take top-2048 keypoints whatsoever.</p>
-<p><img src="2022-12-31-UnsuperPoint-family_files/sp_reinf.gif" title="SuperPoint vs its finetuned version via Reinforcement learning. One can see that keypoint map is cleaner, but there are no new keypoints appearing" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-12-31-UnsuperPoint-family_files/sp_reinf.gif" class="img-fluid figure-img"></p>
+<figcaption>SuperPoint vs its finetuned version via Reinforcement learning. One can see that keypoint map is cleaner, but there are no new keypoints appearing</figcaption>
+</figure>
+</div>
 </section>
 <section id="unsuperpoint" class="level3">
 <h3 class="anchored" data-anchor-id="unsuperpoint">UnsuperPoint</h3>
@@ -210,38 +240,73 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <h3 class="anchored" data-anchor-id="kp2d-aka-keypointnet-aka-ionet">KP2D aka KeypointNet aka IONet</h3>
 <p>Despite no implementation, UnsuperPoint inspired other people to make a follow-up, which was published at ICLR 2020. The paper name is “<a href="https://openreview.net/pdf?id=Skx82ySYPH">Neural Outlier Rejection for Self-Supervised Keypoint Learning</a>” by Jiexiong Tang et al.</p>
 <p>It made two contributions. First, paper argues that cell-based approach (SuperPoint and friends have 1 keypoint per 8x8 px cell) is unstable for training when keypoints are near the cell border. Second, it introduced yet another loss function, similar to CNe and other outlier rejection methods.</p>
-<p><img src="2022-12-31-UnsuperPoint-family_files/att_00005.png" title="Cross-border detection in KP2D network" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-12-31-UnsuperPoint-family_files/att_00005.png" class="img-fluid figure-img"></p>
+<figcaption>Cross-border detection in KP2D network</figcaption>
+</figure>
+</div>
 <p>Here are the KP2D detections for all versions. Note that on realworld image it detects corners nicely, despite not being training for it specifically. On the synthetic blob image it mostly work as dark-to-light (or light-to-dark for V0 and V2) edge detector, no idea why.</p>
-<p><img src="2022-12-31-UnsuperPoint-family_files/kp2d.gif" title="KeypointNet aka KP2D detections." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-12-31-UnsuperPoint-family_files/kp2d.gif" class="img-fluid figure-img"></p>
+<figcaption>KeypointNet aka KP2D detections.</figcaption>
+</figure>
+</div>
 </section>
 <section id="lanet" class="level3">
 <h3 class="anchored" data-anchor-id="lanet">LANet</h3>
 <p>It is the most recent paper of the SP family, published at ACCV2022 – “<a href="https://openaccess.thecvf.com/content/ACCV2022/html/Wang_Rethinking_Low-level_Features_for_Interest_Point_Detection_and_Description_ACCV_2022_paper.html">Rethinking Low-level Features for Interest Point Detection and Description</a>” by Changhao Wang et al.</p>
-<p><img src="2022-12-31-UnsuperPoint-family_files/att_00006.png" title="LANet architecture" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-12-31-UnsuperPoint-family_files/att_00006.png" class="img-fluid figure-img"></p>
+<figcaption>LANet architecture</figcaption>
+</figure>
+</div>
 <p>It is based on KP2D and presents mostly architectural changes into description branch. Second, it has two versions. <code>v0</code> is similar to the SuperPoint original architecture – lightweight VGG-like network, trained from scratch. <code>v1</code> is uses <code>vgg16_bn</code>, pretrained on the ImageNet as feature encoder. <code>v1</code> is like 2-3x slower than <code>v0</code>.</p>
 <p>Here are the detections:</p>
-<p><img src="2022-12-31-UnsuperPoint-family_files/lanet.gif" title="LANet detections" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-12-31-UnsuperPoint-family_files/lanet.gif" class="img-fluid figure-img"></p>
+<figcaption>LANet detections</figcaption>
+</figure>
+</div>
 </section>
 </section>
 <section id="benchmark-on-imc-phototourism" class="level1">
 <h1>Benchmark on IMC PhotoTourism</h1>
-<p>I have benchmarked all the variants, using my own tutorial on <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/12/submitting-to-IMC2021-step-by-step.html">how to submit to IMC-2021</a>. The code for feature extraction is <a href="https://github.com/ubc-vision/image-matching-benchmark-baselines">here</a> (uncommented yet). All the images were resized to have 1024 px by large size (which explains the slight diffefences compared to <a href="https://arxiv.org/abs/2003.01587">original SuperPoint results in the paper</a>, where 1200 was used. I have also circumvented confidence threshold and pick top-2048 keypoints instead for all images. Then I have tuned everything on the validation set (see table with optimal params in the end of the post) - such as matching threshold, RANSAC threshold and method-specific things, like “version” for KP2D and LANet, etc. Unlike for the IMC paper, I haven’t tuned anything for multiview setup. Specifically, matching threshold might be suboptimal. Anyway.</p>
+<p>I have benchmarked all the variants, using my own tutorial on <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2021-05-12-submitting-to-IMC2021-step-by-step.html">how to submit to IMC-2021</a>. The code for feature extraction is <a href="https://github.com/ubc-vision/image-matching-benchmark-baselines">here</a> (uncommented yet). All the images were resized to have 1024 px by large size (which explains the slight diffefences compared to <a href="https://arxiv.org/abs/2003.01587">original SuperPoint results in the paper</a>, where 1200 was used. I have also circumvented confidence threshold and pick top-2048 keypoints instead for all images. Then I have tuned everything on the validation set (see table with optimal params in the end of the post) - such as matching threshold, RANSAC threshold and method-specific things, like “version” for KP2D and LANet, etc. Unlike for the IMC paper, I haven’t tuned anything for multiview setup. Specifically, matching threshold might be suboptimal. Anyway.</p>
 <p>Finally I have run all features with found optimal parameters on the test set (GT is released now!). Here are the results.</p>
 <section id="stereo-task" class="level3">
 <h3 class="anchored" data-anchor-id="stereo-task">Stereo task</h3>
-<p><img src="2022-12-31-UnsuperPoint-family_files/map_stereo_pp_pt_2k.png" title="Stereo task results. MagicLeap SuperPoint results are shown with dashed line." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-12-31-UnsuperPoint-family_files/map_stereo_pp_pt_2k.png" class="img-fluid figure-img"></p>
+<figcaption>Stereo task results. MagicLeap SuperPoint results are shown with dashed line.</figcaption>
+</figure>
+</div>
 <p>First, as you can see, 3rd part SuperPoint implementation is way worse: ~2x than MagicLeap one. Reinforced SuperPoint also is slightly worse. KP2D is better on PhotoTourism, but worse on the PragueParks. <a href="https://www.cs.ubc.ca/research/image-matching-challenge/2021/data/">PragueParks</a> is easier dataset than PhotoTourism, however it features different scenes. While PhotoTourism is mostly buildings, PragueParks contains natural scenes such as trees and pond. Thus I may argue that original SP is more general.</p>
 <p>LANet works considerably better on Phototourism and on par on PragueParks. If considering adding to kornia, I would select LANet. It is interesting though, if it is performing well because of detector, or descriptor. The latter is worse, because training SuperGlue/OpenGlue would fix descriptor issues, but less of detector.</p>
 </section>
 <section id="multiview-task" class="level3">
 <h3 class="anchored" data-anchor-id="multiview-task">Multiview task</h3>
-<p><img src="2022-12-31-UnsuperPoint-family_files/map_mv_pp_pt_2k.png" title="Multiview task results. MagicLeap SuperPoint results are shown with dashed line." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-12-31-UnsuperPoint-family_files/map_mv_pp_pt_2k.png" class="img-fluid figure-img"></p>
+<figcaption>Multiview task results. MagicLeap SuperPoint results are shown with dashed line.</figcaption>
+</figure>
+</div>
 <p>Multiview results are similar to stereo, with slight differences: Reinforced SP is slightly better than original on PragueParks, and LANet v0 is exactly as good as original SP.</p>
 </section>
 <section id="why-eval-only-on-hpatches-is-meaningless." class="level2">
 <h2 class="anchored" data-anchor-id="why-eval-only-on-hpatches-is-meaningless.">Why eval only on HPatches is meaningless.</h2>
 <p>KP2D and 3rd party SuperPoint eval themselves on HPatches only. Let’s look at them. According to KP2D paper, it is slightly better than Superpoint on homography estimation and 2x better on matching score. Which we haven’t seen on realworld IMC data.</p>
-<p><img src="2022-12-31-UnsuperPoint-family_files/att_00009.png" title="Evaluation on HPatches from KP2D paper. KP2D seems to be much better" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-12-31-UnsuperPoint-family_files/att_00009.png" class="img-fluid figure-img"></p>
+<figcaption>Evaluation on HPatches from KP2D paper. KP2D seems to be much better</figcaption>
+</figure>
+</div>
 <p>And here is <a href="https://github.com/eric-yyjau/pytorch-superpoint/tree/master">eval from 3rd part SuperPoint</a>. According to it, Superpoint-coco is almost as good as SP MagicLeap on homography estimation, better on detector metrics and slightle worse on descriptor metrics. Which, again, doesn’t correspond to our results.</p>
 <table class="caption-top table">
 <colgroup>
@@ -318,7 +383,12 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <li>Subpixel with soft-argmax helps 3rd party SuperPoint. One may try to apply it to original model as well. The difference is: <code>mAA = 0.2965</code> for subpixel vs <code>mAA = 0.2789</code> no-subpixel on PhotoTourism and <code>0.3567</code> vs <code>0.3274</code> on PragueParks.</li>
 <li>The <code>v2</code> model of the KP2D is much better than then rest. <code>v0</code> and <code>v1</code> might be bugged, or require code changes to be run properly maybe?</li>
 </ol>
-<p><img src="2022-12-31-UnsuperPoint-family_files/map_stereo_pt_2k_val_kp2d.png" title="KP2D versions comparison on validation set." class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-12-31-UnsuperPoint-family_files/map_stereo_pt_2k_val_kp2d.png" class="img-fluid figure-img"></p>
+<figcaption>KP2D versions comparison on validation set.</figcaption>
+</figure>
+</div>
 </section>
 <section id="optimal-hyperparamers" class="level2">
 <h2 class="anchored" data-anchor-id="optimal-hyperparamers">Optimal hyperparamers</h2>
@@ -422,10 +492,30 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <section id="bonus-more-visualizations" class="level2">
 <h2 class="anchored" data-anchor-id="bonus-more-visualizations">Bonus: more visualizations</h2>
 <p>Legend: - blue points: COLMAP reconstructed 3D points - red point: non-matched keypoints .</p>
-<p><img src="2022-12-31-UnsuperPoint-family_files/tree1.gif" title="Matched and non-matched keypoints from PragueParks Tree scene" class="img-fluid"></p>
-<p><img src="2022-12-31-UnsuperPoint-family_files/ll.gif" title="Matched and non-matched keypoints from PhotoTourism Lincoln memorial statue scene" class="img-fluid"></p>
-<p><img src="2022-12-31-UnsuperPoint-family_files/flo.gif" title="Matched and non-matched keypoints from PhotoTourism Florence cathedral side scene" class="img-fluid"></p>
-<p><img src="2022-12-31-UnsuperPoint-family_files/pond1.gif" title="Matched and non-matched keypoints from PragueParks Pond scene" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-12-31-UnsuperPoint-family_files/tree1.gif" class="img-fluid figure-img"></p>
+<figcaption>Matched and non-matched keypoints from PragueParks Tree scene</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-12-31-UnsuperPoint-family_files/ll.gif" class="img-fluid figure-img"></p>
+<figcaption>Matched and non-matched keypoints from PhotoTourism Lincoln memorial statue scene</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-12-31-UnsuperPoint-family_files/flo.gif" class="img-fluid figure-img"></p>
+<figcaption>Matched and non-matched keypoints from PhotoTourism Florence cathedral side scene</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2022-12-31-UnsuperPoint-family_files/pond1.gif" class="img-fluid figure-img"></p>
+<figcaption>Matched and non-matched keypoints from PragueParks Pond scene</figcaption>
+</figure>
+</div>
 <section id="acknowledgements." class="level3">
 <h3 class="anchored" data-anchor-id="acknowledgements.">Acknowledgements.</h3>
 <p>This blogpost is supported by CTU in Prague RCI computing cluster from <code>OP VVV funded project CZ.02.1.01/0.0/0.0/16 019/0000765 “Research Center for Informatics”</code> grant. Really, it took ~2 compute days to tune all those hyperparams and do tests.</p>

@@ -175,11 +175,16 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <h1>What is the paper about?</h1>
 <p>The idea of the paper is very simple and yet nobody asked its main question before. When we benchmark our image matching or camera relocalization algorithms, we do not really have ground truth data for the camera pose, as we just recaped. Instead we rely on some sort of known-to-be-reliable algorithm to infer this information from (many) images. This process is called “pseudo Ground Truth (pGT)” in the paper.</p>
 <p><em>Does it affect results to be in favor of the (family of) methods, which were used to generate the pseugo GT?</em></p>
-<p><img src="2021-09-04-review-of-pseudoGT-limitations_files/att_00000.png" title="Figure 1 from paper. Visualisation of the same scene reconstructed by two different reference algorithms" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-09-04-review-of-pseudoGT-limitations_files/att_00000.png" class="img-fluid figure-img"></p>
+<figcaption>Figure 1 from paper. Visualisation of the same scene reconstructed by two different reference algorithms</figcaption>
+</figure>
+</div>
 <section id="case-study-image-matching-challenge" class="level3">
 <h3 class="anchored" data-anchor-id="case-study-image-matching-challenge">Case-study: Image Matching Challenge</h3>
 <p>Let me give you an example.</p>
-<p>Our Image Matching Challenge 2019, <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/14/IMC2020-competition-recap.html">2020</a> <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/12/submitting-to-IMC2021-step-by-step.html">2021</a> does exactly this: the camera pose are reconstructed with <a href="https://colmap.github.io">COLMAP</a> 3d reconstruction software given thousands of images. COLMAP is based on SIFT local features and LO-RANSAC for the pose stimation. <img src="2021-09-04-review-of-pseudoGT-limitations_files/att_00001.png" title="Pseudo-ground truth generation and benchmark pipeline for the Image Matching Challenge" class="img-fluid"></p>
+<p>Our Image Matching Challenge 2019, <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2021-05-14-IMC2020-competition-recap.html">2020</a> <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2021-05-12-submitting-to-IMC2021-step-by-step.html">2021</a> does exactly this: the camera pose are reconstructed with <a href="https://colmap.github.io">COLMAP</a> 3d reconstruction software given thousands of images. COLMAP is based on SIFT local features and LO-RANSAC for the pose stimation. <img src="2021-09-04-review-of-pseudoGT-limitations_files/att_00001.png" class="img-fluid" alt="Pseudo-ground truth generation and benchmark pipeline for the Image Matching Challenge"></p>
 <p>Can we use it to benchmark other local features and RANSACs in a fair way? That is the question, reviewers of our paper asked us. We answered this question by running the 3d reconstruction with very different local features: <a href="https://arxiv.org/abs/1906.06195">R2D2</a>, <a href="https://www.cs.ubc.ca/~lowe/papers/ijcv04.pdf">SIFT</a>, DoG-<a href="https://arxiv.org/abs/1705.10872.pdf">HardNet</a>, <a href="https://arxiv.org/abs/1712.07629">SuperPoint</a>. Then we compared the difference in the poses produced by the different methods is very small and much smaller than the accuracy threshold we used for evaluation.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -194,10 +199,20 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <h1>SfM versus Dense SLAM</h1>
 <p>The “<a href="https://arxiv.org/abs/2109.00524">On the Limits…</a>” asks the different question, than the one we have answered in IMC paper. <em>While, the GT might be not biased towards specific local feature, it can be biased towards the higher-level algorithm – Structure-from-Motion (SfM)</em>. But the (sparse) SfM is not the only way how we can obtain camera poses from the collection of images – one could use (dense) Depth-based SLAM. Are the poses we got from them the same?</p>
 <p>The answer is: <strong>no</strong>, they are not the same!</p>
-<p><img src="2021-09-04-review-of-pseudoGT-limitations_files/att_00003.png" title="Camera trajectory of the training set, estimated by SfM and RGB-D-SLAM" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-09-04-review-of-pseudoGT-limitations_files/att_00003.png" class="img-fluid figure-img"></p>
+<figcaption>Camera trajectory of the training set, estimated by SfM and RGB-D-SLAM</figcaption>
+</figure>
+</div>
 <p>The paper, however, does not stop here, it studies the following question: if the camera poses (think of them as “labels”) of the <em>training</em> set were obtained with a different family of algorithms, does it influence their performance?</p>
 <p>The answer is <strong>yes</strong>. Look at the image below, which shows the trajectories, estimated by the relocalization methods, depending on the (pseudo) ground truth source.</p>
-<p><img src="2021-09-04-review-of-pseudoGT-limitations_files/Sge18CpO.jpg" title="Camera trajectory of the test set, estimated by visual relocalization methods" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="2021-09-04-review-of-pseudoGT-limitations_files/Sge18CpO.jpg" class="img-fluid figure-img"></p>
+<figcaption>Camera trajectory of the test set, estimated by visual relocalization methods</figcaption>
+</figure>
+</div>
 <section id="my-take-on-the-paper." class="level2">
 <h2 class="anchored" data-anchor-id="my-take-on-the-paper.">My take on the paper.</h2>
 <p>The paper asks a great question and provides good answers. It is also well-written and the experiments done with rigor. OK, time to stop “CVPR-review” mode and provide my thoughts.</p>
