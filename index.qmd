@@ -1,8 +1,10 @@
 ---
 title: "Wide Baseline Stereo Blog"
+description: "Wide baseline stereo, local features, RANSAC, image matching benchmarks and challenges — notes by Dmytro Mishkin."
 listing:
   contents: posts
   sort: "date desc"
+  feed: true
   type: default
   categories: false
   sort-ui: false

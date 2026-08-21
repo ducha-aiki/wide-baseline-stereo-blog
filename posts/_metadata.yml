@@ -6,3 +6,6 @@ freeze: true
 
 # Enable banner style title blocks
 title-block-banner: true
+
+# Byline / author metadata (shows up in the title block and in og:/twitter: tags)
+author: "Dmytro Mishkin"
