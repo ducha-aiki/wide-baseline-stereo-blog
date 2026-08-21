@@ -1,5 +1,8 @@
 ---
 title: "About Me"
+description: "Dmytro Mishkin, computer vision researcher and consultant, on wide baseline stereo and image matching."
+aliases:
+  - /about
 image: profile.jpg
 about:
   template: jolla

@@ -7,6 +7,11 @@ _site
 .jekyll-cache
 .jekyll-metadata
 *.xml
+# ...but the generated sitemap and feeds must be committed: GitHub Pages
+# serves this site from master/docs, so anything not committed is not published.
+!docs/sitemap.xml
+!docs/index.xml
+!docs/feed.xml
 vendor
 _notebooks/.ipynb_checkpoints
 # Local Netlify folder
@@ -15,3 +20,4 @@ _notebooks/.ipynb_checkpoints
 __pycache__
 
 /.quarto/
+.ipynb_checkpoints/

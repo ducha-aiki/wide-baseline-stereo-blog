@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Dmytro Mishkin">
 <meta name="dcterms.date" content="2020-07-22">
 <meta name="description" content="How to be smooth and fast">
 
@@ -80,6 +81,16 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 
 
 <link rel="stylesheet" href="../styles.css">
+<meta property="og:title" content="Patch extraction: devil in details – Wide baseline stereo meets deep learning">
+<meta property="og:description" content="How to be smooth and fast">
+<meta property="og:image" content="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/images/ep.jpg">
+<meta property="og:site_name" content="Wide baseline stereo meets deep learning">
+<meta name="twitter:title" content="Patch extraction: devil in details – Wide baseline stereo meets deep learning">
+<meta name="twitter:description" content="How to be smooth and fast">
+<meta name="twitter:image" content="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/images/ep.jpg">
+<meta name="twitter:creator" content="@ducha_aiki">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2020-07-22-patch-extraction.html">
 </head>
 
 <body class="nav-fixed fullcontent">
@@ -104,7 +115,7 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <span class="menu-text">About Me</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/ducha_aiki"> <i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/ducha-aiki"> <i class="bi bi-github" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -136,6 +147,12 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
   
   <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Dmytro Mishkin </p>
+            </div>
+    </div>
       
       <div>
       <div class="quarto-title-meta-heading">Published</div>
@@ -332,7 +349,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp("https:\/\/ducha-aiki\.github\.io\/wide-baseline-stereo-blog");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }

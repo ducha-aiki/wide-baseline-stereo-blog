@@ -1,14 +1,25 @@
 project:
   type: website
   output-dir: docs
+  resources:
+    - robots.txt
+  post-render:
+    - scripts/post_render.py
 
 website:
   title: "Wide baseline stereo meets deep learning"
+  site-url: "https://ducha-aiki.github.io/wide-baseline-stereo-blog"
+  repo-url: "https://github.com/ducha-aiki/wide-baseline-stereo-blog"
+  description: "Everything you (didn't) want to know about image matching: wide baseline stereo, local features, RANSAC and the image matching challenges."
+  open-graph: true
+  twitter-card:
+    creator: "@ducha_aiki"
+    card-style: summary_large_image
   navbar:
     right:
       - about.qmd
       - icon: github
-        href: https://github.com/ducha_aiki
+        href: https://github.com/ducha-aiki
       - icon: twitter
         href: https://twitter.com/ducha_aiki
   body-footer: | 
@@ -17,4 +28,5 @@ website:
 format:
   html:
     theme: cosmo
+    canonical-url: true
     css: styles.css
