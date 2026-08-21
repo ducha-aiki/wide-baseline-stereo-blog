@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Dmytro Mishkin">
 <meta name="dcterms.date" content="2023-07-05">
 <meta name="description" content="3D reconstruction is harder than two view matching">
 
@@ -80,6 +81,16 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 
 
 <link rel="stylesheet" href="../styles.css">
+<meta property="og:title" content="Image Matching Challenge 2023: The Unbearable Weight of the Bundle Adjustment – Wide baseline stereo meets deep learning">
+<meta property="og:description" content="3D reconstruction is harder than two view matching">
+<meta property="og:image" content="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/images/pascal-cage.jpg">
+<meta property="og:site_name" content="Wide baseline stereo meets deep learning">
+<meta name="twitter:title" content="Image Matching Challenge 2023: The Unbearable Weight of the Bundle Adjustment – Wide baseline stereo meets deep learning">
+<meta name="twitter:description" content="3D reconstruction is harder than two view matching">
+<meta name="twitter:image" content="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/images/pascal-cage.jpg">
+<meta name="twitter:creator" content="@ducha_aiki">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2023-07-05-imc2023-recap.html">
 </head>
 
 <body class="nav-fixed fullcontent">
@@ -104,7 +115,7 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 <span class="menu-text">About Me</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/ducha_aiki"> <i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/ducha-aiki"> <i class="bi bi-github" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -136,6 +147,12 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
   
   <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Dmytro Mishkin </p>
+            </div>
+    </div>
       
       <div>
       <div class="quarto-title-meta-heading">Published</div>
@@ -170,7 +187,7 @@ gtag('config', 'G-GE2NZRSZBN', { 'anonymize_ip': true});
 </section>
 <section id="example-solution" class="level3">
 <h3 class="anchored" data-anchor-id="example-solution">Example solution</h3>
-<p>To provide the participants a headstart, we have worked with Kaggle engineers to include the <a href="https://github.com/colmap/pycolmap">pycolmap</a> into the default Kaggle kernels. Based on it, we have provided an example submission, which uses local features included in <a href="link">kornia</a> library: <a href="https://zju3dv.github.io/loftr/">LoFTR</a>, <a href="https://github.com/cvlab-epfl/disk">DISK</a>, and <a href="https://kornia-tutorials.readthedocs.io/en/latest/_nbs/image_matching_adalam.html">KeyNet-AffNet-HardNet</a>.</p>
+<p>To provide the participants a headstart, we have worked with Kaggle engineers to include the <a href="https://github.com/colmap/pycolmap">pycolmap</a> into the default Kaggle kernels. Based on it, we have provided an example submission, which uses local features included in <a href="https://github.com/kornia/kornia">kornia</a> library: <a href="https://zju3dv.github.io/loftr/">LoFTR</a>, <a href="https://github.com/cvlab-epfl/disk">DISK</a>, and <a href="https://kornia-tutorials.readthedocs.io/en/latest/_nbs/image_matching_adalam.html">KeyNet-AffNet-HardNet</a>.</p>
 <p>All of them have Apache 2 license, and has shown a good performance in one of the previous IMCs: LoFTR was a part of <a href="https://www.kaggle.com/competitions/image-matching-challenge-2022/discussion/328854">top solutions in 2022</a>, <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2022-07-05-imc2022-recap.html">recap</a>, DISK - in <a href="https://www.cs.ubc.ca/research/image-matching-challenge/2020/leaderboard/">2020</a>, <a href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/2021-05-14-imc2020-competition-recap.html">recap</a> and <a href="https://www.cs.ubc.ca/research/image-matching-challenge/2021/leaderboard/">2021</a>, and KeyNet-AffNet-HardNet - one of the leaders in the <a href="https://arxiv.org/abs/2003.01587">original IJCV-2020 publication</a>.</p>
 <p>The LoFTR example, however, was so heavy, that was causing time-out error without the modifications.</p>
 </section>
@@ -440,7 +457,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp("https:\/\/ducha-aiki\.github\.io\/wide-baseline-stereo-blog");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }

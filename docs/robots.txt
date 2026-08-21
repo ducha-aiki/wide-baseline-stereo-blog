@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ducha-aiki.github.io/wide-baseline-stereo-blog/sitemap.xml

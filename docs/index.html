@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Wide baseline stereo, local features, RANSAC, image matching benchmarks and challenges — notes by Dmytro Mishkin.">
 
 <title>Wide Baseline Stereo Blog – Wide baseline stereo meets deep learning</title>
 <style>
@@ -138,6 +139,16 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="styles.css">
+<link rel="alternate" type="application/rss+xml" title="Wide baseline stereo meets deep learning" href="index.xml" data-external="1"><meta property="og:title" content="Wide Baseline Stereo Blog – Wide baseline stereo meets deep learning">
+<meta property="og:description" content="Wide baseline stereo, local features, RANSAC, image matching benchmarks and challenges — notes by Dmytro Mishkin.">
+<meta property="og:image" content="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/images/same-image.jpg">
+<meta property="og:site_name" content="Wide baseline stereo meets deep learning">
+<meta name="twitter:title" content="Wide Baseline Stereo Blog – Wide baseline stereo meets deep learning">
+<meta name="twitter:description" content="Wide baseline stereo, local features, RANSAC, image matching benchmarks and challenges — notes by Dmytro Mishkin.">
+<meta name="twitter:image" content="https://ducha-aiki.github.io/wide-baseline-stereo-blog/posts/images/same-image.jpg">
+<meta name="twitter:creator" content="@ducha_aiki">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ducha-aiki.github.io/wide-baseline-stereo-blog/">
 </head>
 
 <body class="nav-fixed">
@@ -162,7 +173,7 @@ window.Quarto = {
 <span class="menu-text">About Me</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/ducha_aiki"> <i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/ducha-aiki"> <i class="bi bi-github" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -183,7 +194,12 @@ window.Quarto = {
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-page">
       <h1 class="title">Wide Baseline Stereo Blog</h1>
-                      </div>
+                  <div>
+        <div class="description">
+          Wide baseline stereo, local features, RANSAC, image matching benchmarks and challenges — notes by Dmytro Mishkin.
+        </div>
+      </div>
+                </div>
   </div>
     
   
@@ -213,7 +229,7 @@ window.Quarto = {
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1735772400000" data-listing-file-modified-sort="1735852104760" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3337">
+<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1735772400000" data-listing-file-modified-sort="1787334326063" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3337">
 <div class="thumbnail">
 <p><a href="./posts/2025-01-02-chatgpt-image-matching.html" class="no-external"></a></p><a href="./posts/2025-01-02-chatgpt-image-matching.html" class="no-external">
 <p><img loading="lazy" src="./posts/images/same-image.jpg" class="thumbnail-image"></p>
@@ -235,10 +251,13 @@ window.Quarto = {
 <div class="listing-date">
 Jan 2, 2025
 </div>
+<div class="listing-author">
+Dmytro Mishkin
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-listing-date-sort="1701558000000" data-listing-file-modified-sort="1735851266884" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="876">
+<div class="quarto-post image-right" data-index="1" data-listing-date-sort="1701558000000" data-listing-file-modified-sort="1787334326062" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="876">
 <div class="thumbnail">
 <p><a href="./posts/2023-12-03-geometry-encoding-sift-lightglue.html" class="no-external"></a></p><a href="./posts/2023-12-03-geometry-encoding-sift-lightglue.html" class="no-external">
 <p><img loading="lazy" src="./posts/images/lightglue-sift-normal-meme.jpg" class="thumbnail-image"></p>
@@ -260,10 +279,13 @@ Jan 2, 2025
 <div class="listing-date">
 Dec 3, 2023
 </div>
+<div class="listing-author">
+Dmytro Mishkin
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-listing-date-sort="1688508000000" data-listing-file-modified-sort="1735851423827" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1620">
+<div class="quarto-post image-right" data-index="2" data-listing-date-sort="1688508000000" data-listing-file-modified-sort="1787334326063" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1620">
 <div class="thumbnail">
 <p><a href="./posts/2023-07-05-imc2023-recap.html" class="no-external"></a></p><a href="./posts/2023-07-05-imc2023-recap.html" class="no-external">
 <p><img loading="lazy" src="./posts/images/pascal-cage.jpg" class="thumbnail-image"></p>
@@ -285,10 +307,13 @@ Dec 3, 2023
 <div class="listing-date">
 Jul 5, 2023
 </div>
+<div class="listing-author">
+Dmytro Mishkin
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-listing-date-sort="1672786800000" data-listing-file-modified-sort="1735851266910" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2210">
+<div class="quarto-post image-right" data-index="3" data-listing-date-sort="1672786800000" data-listing-file-modified-sort="1787334326062" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2210">
 <div class="thumbnail">
 <p><a href="./posts/2023-01-04-unsuperpoint-family.html" class="no-external"></a></p><a href="./posts/2023-01-04-unsuperpoint-family.html" class="no-external">
 <p><img loading="lazy" src="./posts/images/eval-on-IMC-vs-Hpatches.png" class="thumbnail-image"></p>
@@ -310,10 +335,13 @@ Jul 5, 2023
 <div class="listing-date">
 Jan 4, 2023
 </div>
+<div class="listing-author">
+Dmytro Mishkin
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-listing-date-sort="1656972000000" data-listing-file-modified-sort="1735851266885" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1039">
+<div class="quarto-post image-right" data-index="4" data-listing-date-sort="1656972000000" data-listing-file-modified-sort="1787334326061" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1039">
 <div class="thumbnail">
 <p><a href="./posts/2022-07-05-imc2022-recap.html" class="no-external"></a></p><a href="./posts/2022-07-05-imc2022-recap.html" class="no-external">
 <p><img loading="lazy" src="./posts/images/loftrs_sg_everywhere_small.jpeg" class="thumbnail-image"></p>
@@ -335,10 +363,13 @@ Jan 4, 2023
 <div class="listing-date">
 Jul 5, 2022
 </div>
+<div class="listing-author">
+Dmytro Mishkin
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-listing-date-sort="1644015600000" data-listing-file-modified-sort="1735851266846" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1545">
+<div class="quarto-post image-right" data-index="5" data-listing-date-sort="1644015600000" data-listing-file-modified-sort="1787334326061" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1545">
 <div class="thumbnail">
 <p><a href="./posts/2022-02-05-disc21-recap.html" class="no-external"></a></p><a href="./posts/2022-02-05-disc21-recap.html" class="no-external">
 <p><img loading="lazy" src="./posts/images/spiderman-meme.jpg" class="thumbnail-image"></p>
@@ -360,10 +391,13 @@ Jul 5, 2022
 <div class="listing-date">
 Feb 5, 2022
 </div>
+<div class="listing-author">
+Dmytro Mishkin
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-listing-date-sort="1630706400000" data-listing-file-modified-sort="1735851266911" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1302">
+<div class="quarto-post image-right" data-index="6" data-listing-date-sort="1630706400000" data-listing-file-modified-sort="1787334326060" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1302">
 <div class="thumbnail">
 <p><a href="./posts/2021-09-04-review-of-pseudogt-limitations.html" class="no-external"></a></p><a href="./posts/2021-09-04-review-of-pseudogt-limitations.html" class="no-external">
 <p><img loading="lazy" src="./posts/images/get_better_data.png" class="thumbnail-image"></p>
@@ -385,10 +419,13 @@ Feb 5, 2022
 <div class="listing-date">
 Sep 4, 2021
 </div>
+<div class="listing-author">
+Dmytro Mishkin
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="7" data-listing-date-sort="1627596000000" data-listing-file-modified-sort="1735851266912" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1360">
+<div class="quarto-post image-right" data-index="7" data-listing-date-sort="1627596000000" data-listing-file-modified-sort="1787334326060" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1360">
 <div class="thumbnail">
 <p><a href="./posts/2021-07-30-reviving-wxbs-benchmark.html" class="no-external"></a></p><a href="./posts/2021-07-30-reviving-wxbs-benchmark.html" class="no-external">
 <p><img loading="lazy" src="./posts/images/loftr_match.png" class="thumbnail-image"></p>
@@ -410,10 +447,13 @@ Sep 4, 2021
 <div class="listing-date">
 Jul 30, 2021
 </div>
+<div class="listing-author">
+Dmytro Mishkin
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="8" data-listing-date-sort="1622066400000" data-listing-file-modified-sort="1735851266881" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1085">
+<div class="quarto-post image-right" data-index="8" data-listing-date-sort="1622066400000" data-listing-file-modified-sort="1787334326046" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1085">
 <div class="thumbnail">
 <p><a href="./posts/2021-05-27-submitting-to-imc2021-with-custom-matcher.html" class="no-external"></a></p><a href="./posts/2021-05-27-submitting-to-imc2021-with-custom-matcher.html" class="no-external">
 <p><img loading="lazy" src="./posts/images/wooden_lady.png" class="thumbnail-image"></p>
@@ -435,10 +475,13 @@ Jul 30, 2021
 <div class="listing-date">
 May 27, 2021
 </div>
+<div class="listing-author">
+Dmytro Mishkin
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="9" data-listing-date-sort="1621202400000" data-listing-file-modified-sort="1735851266887" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="781">
+<div class="quarto-post image-right" data-index="9" data-listing-date-sort="1621202400000" data-listing-file-modified-sort="1787334326029" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="781">
 <div class="thumbnail">
 <p><a href="./posts/2021-05-17-opencv-new-ransacs.html" class="no-external"></a></p><a href="./posts/2021-05-17-opencv-new-ransacs.html" class="no-external">
 <p><img loading="lazy" src="./posts/images/ransac_small.png" class="thumbnail-image"></p>
@@ -460,10 +503,13 @@ May 27, 2021
 <div class="listing-date">
 May 17, 2021
 </div>
+<div class="listing-author">
+Dmytro Mishkin
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="10" data-listing-date-sort="1620943200000" data-listing-file-modified-sort="1735851266918" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="735">
+<div class="quarto-post image-right" data-index="10" data-listing-date-sort="1620943200000" data-listing-file-modified-sort="1787334326029" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="735">
 <div class="thumbnail">
 <p><a href="./posts/2021-05-14-imc2020-competition-recap.html" class="no-external"></a></p><a href="./posts/2021-05-14-imc2020-competition-recap.html" class="no-external">
 <p><img loading="lazy" src="./posts/images/trevi_small.png" class="thumbnail-image"></p>
@@ -485,10 +531,13 @@ May 17, 2021
 <div class="listing-date">
 May 14, 2021
 </div>
+<div class="listing-author">
+Dmytro Mishkin
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="11" data-listing-date-sort="1620770400000" data-listing-file-modified-sort="1735851266902" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1287">
+<div class="quarto-post image-right" data-index="11" data-listing-date-sort="1620770400000" data-listing-file-modified-sort="1787334326025" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1287">
 <div class="thumbnail">
 <p><a href="./posts/2021-05-12-submitting-to-imc2021-step-by-step.html" class="no-external"></a></p><a href="./posts/2021-05-12-submitting-to-imc2021-step-by-step.html" class="no-external">
 <p><img loading="lazy" src="./posts/images/wooden_lady.png" class="thumbnail-image"></p>
@@ -510,10 +559,13 @@ May 14, 2021
 <div class="listing-date">
 May 12, 2021
 </div>
+<div class="listing-author">
+Dmytro Mishkin
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="12" data-listing-date-sort="1612998000000" data-listing-file-modified-sort="1735851266911" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="818">
+<div class="quarto-post image-right" data-index="12" data-listing-date-sort="1612998000000" data-listing-file-modified-sort="1787334326019" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="818">
 <div class="thumbnail">
 <p><a href="./posts/2021-02-11-wxbs-step-by-step.html" class="no-external"></a></p><a href="./posts/2021-02-11-wxbs-step-by-step.html" class="no-external">
 <p><img loading="lazy" src="./posts/images/matching-filtering_small.png" class="thumbnail-image"></p>
@@ -535,10 +587,13 @@ May 12, 2021
 <div class="listing-date">
 Feb 11, 2021
 </div>
+<div class="listing-author">
+Dmytro Mishkin
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="13" data-listing-date-sort="1610146800000" data-listing-file-modified-sort="1735851266915" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="482">
+<div class="quarto-post image-right" data-index="13" data-listing-date-sort="1610146800000" data-listing-file-modified-sort="1787334326018" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="482">
 <div class="thumbnail">
 <p><a href="./posts/2021-01-09-wxbs-in-simple-terms.html" class="no-external"></a></p><a href="./posts/2021-01-09-wxbs-in-simple-terms.html" class="no-external">
 <p><img loading="lazy" src="./posts/images/doll-theater.jpg" class="thumbnail-image"></p>
@@ -560,10 +615,13 @@ Feb 11, 2021
 <div class="listing-date">
 Jan 9, 2021
 </div>
+<div class="listing-author">
+Dmytro Mishkin
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="14" data-listing-date-sort="1606345200000" data-listing-file-modified-sort="1735851266904" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1237">
+<div class="quarto-post image-right" data-index="14" data-listing-date-sort="1606345200000" data-listing-file-modified-sort="1787334326018" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1237">
 <div class="thumbnail">
 <p><a href="./posts/2020-11-26-lessons-and-future-directions.html" class="no-external"></a></p><a href="./posts/2020-11-26-lessons-and-future-directions.html" class="no-external">
 <p><img loading="lazy" src="./posts/images/yoy_cat.jpg" class="thumbnail-image"></p>
@@ -585,10 +643,13 @@ Jan 9, 2021
 <div class="listing-date">
 Nov 26, 2020
 </div>
+<div class="listing-author">
+Dmytro Mishkin
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="15" data-listing-date-sort="1606258800000" data-listing-file-modified-sort="1735851266850" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="823">
+<div class="quarto-post image-right" data-index="15" data-listing-date-sort="1606258800000" data-listing-file-modified-sort="1787334326018" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="823">
 <div class="thumbnail">
 <p><a href="./posts/2020-11-25-review-of-retrieval-for-localization.html" class="no-external"></a></p><a href="./posts/2020-11-25-review-of-retrieval-for-localization.html" class="no-external">
 <p><img loading="lazy" src="./posts/images/retrieval-for-loc.png" class="thumbnail-image"></p>
@@ -610,10 +671,13 @@ Nov 26, 2020
 <div class="listing-date">
 Nov 25, 2020
 </div>
+<div class="listing-author">
+Dmytro Mishkin
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="16" data-listing-date-sort="1600812000000" data-listing-file-modified-sort="1735851266914" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3084">
+<div class="quarto-post image-right" data-index="16" data-listing-date-sort="1600812000000" data-listing-file-modified-sort="1787334326017" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3084">
 <div class="thumbnail">
 <p><a href="./posts/2020-09-23-local-descriptors-validation.html" class="no-external"></a></p><a href="./posts/2020-09-23-local-descriptors-validation.html" class="no-external">
 <p><img loading="lazy" src="./posts/images/brown_phototour_revisited.jpg" class="thumbnail-image"></p>
@@ -635,10 +699,13 @@ Nov 25, 2020
 <div class="listing-date">
 Sep 23, 2020
 </div>
+<div class="listing-author">
+Dmytro Mishkin
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="17" data-listing-date-sort="1596664800000" data-listing-file-modified-sort="1735851266887" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1474">
+<div class="quarto-post image-right" data-index="17" data-listing-date-sort="1596664800000" data-listing-file-modified-sort="1787334326017" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1474">
 <div class="thumbnail">
 <p><a href="./posts/2020-08-06-affine-view-synthesis.html" class="no-external"></a></p><a href="./posts/2020-08-06-affine-view-synthesis.html" class="no-external">
 <p><img loading="lazy" src="./posts/images/transition.png" class="thumbnail-image"></p>
@@ -660,10 +727,13 @@ Sep 23, 2020
 <div class="listing-date">
 Aug 6, 2020
 </div>
+<div class="listing-author">
+Dmytro Mishkin
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="18" data-listing-date-sort="1595368800000" data-listing-file-modified-sort="1735851266917" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="813">
+<div class="quarto-post image-right" data-index="18" data-listing-date-sort="1595368800000" data-listing-file-modified-sort="1787334326016" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="813">
 <div class="thumbnail">
 <p><a href="./posts/2020-07-22-patch-extraction.html" class="no-external"></a></p><a href="./posts/2020-07-22-patch-extraction.html" class="no-external">
 <p><img loading="lazy" src="./posts/images/ep.jpg" class="thumbnail-image"></p>
@@ -685,10 +755,13 @@ Aug 6, 2020
 <div class="listing-date">
 Jul 22, 2020
 </div>
+<div class="listing-author">
+Dmytro Mishkin
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="19" data-listing-date-sort="1594936800000" data-listing-file-modified-sort="1735851266916" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2073">
+<div class="quarto-post image-right" data-index="19" data-listing-date-sort="1594936800000" data-listing-file-modified-sort="1787334326016" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2073">
 <div class="thumbnail">
 <p><a href="./posts/2020-07-17-affine-correspondences.html" class="no-external"></a></p><a href="./posts/2020-07-17-affine-correspondences.html" class="no-external">
 <p><img loading="lazy" src="./posts/images/affine_matches.png" class="thumbnail-image"></p>
@@ -710,10 +783,13 @@ Jul 22, 2020
 <div class="listing-date">
 Jul 17, 2020
 </div>
+<div class="listing-author">
+Dmytro Mishkin
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="20" data-listing-date-sort="1594245600000" data-listing-file-modified-sort="1735851266843" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="730">
+<div class="quarto-post image-right" data-index="20" data-listing-date-sort="1594245600000" data-listing-file-modified-sort="1787334326015" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="730">
 <div class="thumbnail">
 <p><a href="./posts/2020-07-09-wxbs.html" class="no-external"></a></p><a href="./posts/2020-07-09-wxbs.html" class="no-external">
 <p><img loading="lazy" src="./posts/images/wxbs_problems400.png" class="thumbnail-image"></p>
@@ -735,10 +811,13 @@ Jul 17, 2020
 <div class="listing-date">
 Jul 9, 2020
 </div>
+<div class="listing-author">
+Dmytro Mishkin
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="21" data-listing-date-sort="1585263600000" data-listing-file-modified-sort="1735851266849" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18" data-listing-word-count-sort="3443">
+<div class="quarto-post image-right" data-index="21" data-listing-date-sort="1585263600000" data-listing-file-modified-sort="1787334326015" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18" data-listing-word-count-sort="3443">
 <div class="thumbnail">
 <p><a href="./posts/2020-03-27-intro.html" class="no-external"></a></p><a href="./posts/2020-03-27-intro.html" class="no-external">
 <p><img loading="lazy" src="./posts/images/doll_wbs_300.png" class="thumbnail-image"></p>
@@ -759,6 +838,9 @@ Jul 9, 2020
 <a href="./posts/2020-03-27-intro.html" class="no-external">
 <div class="listing-date">
 Mar 27, 2020
+</div>
+<div class="listing-author">
+Dmytro Mishkin
 </div>
 </a>
 </div>
@@ -858,7 +940,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp("https:\/\/ducha-aiki\.github\.io\/wide-baseline-stereo-blog");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
